@@ -78,7 +78,7 @@ func TestClientFunctions(t *testing.T) {
 	client.GetProjectReport("test-report-id")
 	client.AddLineItem("test", nil)
 	client.UpdateLineItem("test-prj-id", "test-lineitem-id", nil)
-	client.ChangeLineItemState("test-prj-id", "test-lineitem-id", samplify.ActionPaused)
+	client.UpdateLineItemState("test-prj-id", "test-lineitem-id", samplify.ActionPaused)
 	client.GetAllLineItems("test-prj-id", nil)
 	client.GetLineItemBy("test-prj-id", "test-lineitem-id")
 	client.GetFeasibility("test-prj-id", nil)

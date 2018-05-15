@@ -58,35 +58,42 @@ type EndLinks struct {
 
 // LineItemHeader ...
 type LineItemHeader struct {
-	ExtLineItemID      string      `json:"extLineItemId"`
-	State              State       `json:"state"`
-	StateReason        string      `json:"stateReason"`
-	StateLastUpdatedAt *CustomTime `json:"stateLastUpdatedAt"`
-	CreatedAt          CustomTime  `json:"createdAt"`
-	UpdatedAt          CustomTime  `json:"updatedAt"`
-	LaunchedAt         *CustomTime `json:"launchedAt"`
+	Model
+	ExtLineItemID string      `json:"extLineItemId"`
+	State         State       `json:"state"`
+	StateReason   string      `json:"stateReason"`
+	LaunchedAt    *CustomTime `json:"launchedAt"`
 }
 
 // LineItem ...
 type LineItem struct {
-	ExtLineItemID       string      `json:"extLineItemId"`
-	State               State       `json:"state"`
-	StateReason         string      `json:"stateReason"`
-	StateLastUpdatedAt  *CustomTime `json:"stateLastUpdatedAt"`
-	CreatedAt           CustomTime  `json:"createdAt"`
-	UpdatedAt           CustomTime  `json:"updatedAt"`
-	LaunchedAt          *CustomTime `json:"launchedAt"`
-	Title               string      `json:"title"`
-	CountryISOCode      string      `json:"countryISOCode"`
-	LanguageISOCode     string      `json:"languageISOCode"`
-	SurveyURL           string      `json:"surveyURL"`
-	SurveyTestURL       string      `json:"surveyTestURL"`
-	IndicativeIncidence float64     `json:"indicativeIncidence"`
-	DaysInField         int64       `json:"daysInField"`
-	LengthOfInterview   int64       `json:"lengthOfInterview"`
-	RequiredCompletes   int64       `json:"requiredCompletes"`
-	QuotaPlan           *QuotaPlan  `json:"quotaPlan"`
-	EndLinks            *EndLinks   `json:"endLinks"`
+	LineItemHeader
+	Title               string     `json:"title"`
+	CountryISOCode      string     `json:"countryISOCode"`
+	LanguageISOCode     string     `json:"languageISOCode"`
+	SurveyURL           string     `json:"surveyURL"`
+	SurveyTestURL       string     `json:"surveyTestURL"`
+	IndicativeIncidence float64    `json:"indicativeIncidence"`
+	DaysInField         int64      `json:"daysInField"`
+	LengthOfInterview   int64      `json:"lengthOfInterview"`
+	RequiredCompletes   int64      `json:"requiredCompletes"`
+	QuotaPlan           *QuotaPlan `json:"quotaPlan"`
+	EndLinks            *EndLinks  `json:"endLinks"`
+}
+
+// LineItemCriteria has the fields to create or update a LineItem
+type LineItemCriteria struct {
+	ExtLineItemID       string     `json:"extLineItemId"`
+	Title               string     `json:"title"`
+	CountryISOCode      string     `json:"countryISOCode"`
+	LanguageISOCode     string     `json:"languageISOCode"`
+	SurveyURL           string     `json:"surveyURL"`
+	SurveyTestURL       string     `json:"surveyTestURL"`
+	IndicativeIncidence float64    `json:"indicativeIncidence"`
+	DaysInField         int64      `json:"daysInField"`
+	LengthOfInterview   int64      `json:"lengthOfInterview"`
+	RequiredCompletes   int64      `json:"requiredCompletes"`
+	QuotaPlan           *QuotaPlan `json:"quotaPlan"`
 }
 
 // BuyProjectLineItem ...

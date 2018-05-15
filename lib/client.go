@@ -83,7 +83,7 @@ func (c *Client) GetProjectReport(extProjectID string) (*ProjectReportResponse, 
 }
 
 // AddLineItem ...
-func (c *Client) AddLineItem(extProjectID string, lineItem *LineItem) (*LineItemResponse, error) {
+func (c *Client) AddLineItem(extProjectID string, lineItem *LineItemCriteria) (*LineItemResponse, error) {
 	res := &LineItemResponse{}
 	path := fmt.Sprintf("/projects/%s/lineItems", extProjectID)
 	err := c.requestAndParseResponse("POST", path, lineItem, res)
@@ -91,18 +91,18 @@ func (c *Client) AddLineItem(extProjectID string, lineItem *LineItem) (*LineItem
 }
 
 // UpdateLineItem ...
-func (c *Client) UpdateLineItem(extProjectID, extLineItemID string, lineItem *LineItem) (*LineItemResponse, error) {
+func (c *Client) UpdateLineItem(extProjectID, extLineItemID string, lineItem *LineItemCriteria) (*LineItemResponse, error) {
 	res := &LineItemResponse{}
 	path := fmt.Sprintf("/projects/%s/lineItems/%s", extProjectID, extLineItemID)
 	err := c.requestAndParseResponse("POST", path, lineItem, res)
 	return res, err
 }
 
-// ChangeLineItemState ... Changes the state of the line item based on provided action.
-func (c *Client) ChangeLineItemState(extProjectID, extLineItemID string, action Action) (
-	*ChangeLineItemStateResponse, error) {
+// UpdateLineItemState ... Changes the state of the line item based on provided action.
+func (c *Client) UpdateLineItemState(extProjectID, extLineItemID string, action Action) (
+	*UpdateLineItemStateResponse, error) {
 
-	res := &ChangeLineItemStateResponse{}
+	res := &UpdateLineItemStateResponse{}
 	path := fmt.Sprintf("/projects/%s/lineItems/%s/%s", extProjectID, extLineItemID, action)
 	err := c.requestAndParseResponse("POST", path, nil, res)
 	return res, err

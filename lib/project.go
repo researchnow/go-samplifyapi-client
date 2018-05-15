@@ -46,12 +46,10 @@ type Exclusions struct {
 
 // ProjectHeader is a Samplify project header
 type ProjectHeader struct {
-	ExtProjectID       string      `json:"extProjectId"`
-	Title              string      `json:"title"`
-	State              State       `json:"state"`
-	StateLastUpdatedAt *CustomTime `json:"stateLastUpdatedAt"`
-	CreatedAt          CustomTime  `json:"createdAt"`
-	UpdatedAt          CustomTime  `json:"updatedAt"`
+	Model
+	ExtProjectID string `json:"extProjectId"`
+	Title        string `json:"title"`
+	State        State  `json:"state"`
 }
 
 // Project ...
@@ -66,13 +64,13 @@ type Project struct {
 
 // CreateUpdateProjectCriteria has the fields to create or update a project
 type CreateUpdateProjectCriteria struct {
-	ExtProjectID       string       `json:"extProjectId"`
-	Title              string       `json:"title"`
-	NotificationEmails []string     `json:"notificationEmails"`
-	Devices            []DeviceType `json:"devices"`
-	Category           *Category    `json:"category"`
-	LineItems          []*LineItem  `json:"lineItems"`
-	Exclusions         *Exclusions  `json:"exclusions"`
+	ExtProjectID       string              `json:"extProjectId"`
+	Title              string              `json:"title"`
+	NotificationEmails []string            `json:"notificationEmails"`
+	Devices            []DeviceType        `json:"devices"`
+	Category           *Category           `json:"category"`
+	LineItems          []*LineItemCriteria `json:"lineItems"`
+	Exclusions         *Exclusions         `json:"exclusions"`
 }
 
 // BuyProjectCriteria ...
