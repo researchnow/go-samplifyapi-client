@@ -58,9 +58,11 @@ func (c *Client) CloseProject(extProjectID string) (*CloseProjectResponse, error
 }
 
 // GetAllProjects ...
-func (c *Client) GetAllProjects() (*GetAllProjectsResponse, error) {
+func (c *Client) GetAllProjects(options *QueryOptions) (*GetAllProjectsResponse, error) {
 	res := &GetAllProjectsResponse{}
-	err := c.requestAndParseResponse("GET", "/projects", nil, res)
+	query := query2String(options)
+	path := fmt.Sprintf("/projects/%s", query)
+	err := c.requestAndParseResponse("GET", path, nil, res)
 	return res, err
 }
 
@@ -107,9 +109,9 @@ func (c *Client) ChangeLineItemState(extProjectID, extLineItemID string, action 
 }
 
 // GetAllLineItems ...
-func (c *Client) GetAllLineItems(extProjectID string) (*GetAllLineItemsResponse, error) {
+func (c *Client) GetAllLineItems(extProjectID string, options *QueryOptions) (*GetAllLineItemsResponse, error) {
 	res := &GetAllLineItemsResponse{}
-	path := fmt.Sprintf("/projects/%s/lineItems", extProjectID)
+	path := fmt.Sprintf("/projects/%s/lineItems%s", extProjectID, query2String(options))
 	err := c.requestAndParseResponse("GET", path, nil, res)
 	return res, err
 }
@@ -126,32 +128,34 @@ func (c *Client) GetLineItemBy(extProjectID, extLineItemID string) (*LineItemRes
 // seconds to execute. Check the `GetFeasibilityResponse.Feasibility.Status` field value to see if it is
 // FeasibilityStatusReady ("READY") or FeasibilityStatusProcessing ("PROCESSING")
 // If GetFeasibilityResponse.Feasibility.Status == FeasibilityStatusProcessing, call this function again in 2 mins.
-func (c *Client) GetFeasibility(extProjectID string) (*GetFeasibilityResponse, error) {
+func (c *Client) GetFeasibility(extProjectID string, options *QueryOptions) (*GetFeasibilityResponse, error) {
 	res := &GetFeasibilityResponse{}
-	path := fmt.Sprintf("/projects/%s/feasibility", extProjectID)
+	path := fmt.Sprintf("/projects/%s/feasibility%s", extProjectID, query2String(options))
 	err := c.requestAndParseResponse("GET", path, nil, res)
 	return res, err
 }
 
 // GetCountries ... Get the list of supported countries and languages in each country.
-func (c *Client) GetCountries() (*GetCountriesResponse, error) {
+func (c *Client) GetCountries(options *QueryOptions) (*GetCountriesResponse, error) {
 	res := &GetCountriesResponse{}
-	err := c.requestAndParseResponse("GET", "/countries", nil, res)
+	path := fmt.Sprintf("/countries%s", query2String(options))
+	err := c.requestAndParseResponse("GET", path, nil, res)
 	return res, err
 }
 
 // GetAttributes ... Get the list of supported attributes for a country and language. This data is required to build up the Quota Plan.
-func (c *Client) GetAttributes(countryCode, languageCode string) (*GetAttributesResponse, error) {
+func (c *Client) GetAttributes(countryCode, languageCode string, options *QueryOptions) (*GetAttributesResponse, error) {
 	res := &GetAttributesResponse{}
-	path := fmt.Sprintf("/attributes/%s/%s", countryCode, languageCode)
+	path := fmt.Sprintf("/attributes/%s/%s%s", countryCode, languageCode, query2String(options))
 	err := c.requestAndParseResponse("GET", path, nil, res)
 	return res, err
 }
 
 // GetSurveyTopics ... Get the list of supported Survey Topics for a project. This data is required to setup a project.
-func (c *Client) GetSurveyTopics() (*GetSurveyTopicsResponse, error) {
+func (c *Client) GetSurveyTopics(options *QueryOptions) (*GetSurveyTopicsResponse, error) {
 	res := &GetSurveyTopicsResponse{}
-	err := c.requestAndParseResponse("GET", "/categories/surveyTopics", nil, res)
+	path := fmt.Sprintf("/categories/surveyTopics%s", query2String(options))
+	err := c.requestAndParseResponse("GET", path, nil, res)
 	return res, err
 }
 

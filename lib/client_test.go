@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rn/samplify/lib"
+	samplify "github.com/researchnow/samplifyapi-client/lib"
 )
 
 func TestAuth(t *testing.T) {
@@ -44,7 +44,7 @@ func TestAuth(t *testing.T) {
 			Acquired:    &now,
 			ExpiresIn:   1800,
 		}
-		client.GetAllProjects()
+		client.GetAllProjects(nil)
 		ts.Close()
 		if auth != tt.expectedAuth {
 			t.FailNow()
