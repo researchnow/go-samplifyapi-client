@@ -61,7 +61,7 @@ func (c *Client) CloseProject(extProjectID string) (*CloseProjectResponse, error
 func (c *Client) GetAllProjects(options *QueryOptions) (*GetAllProjectsResponse, error) {
 	res := &GetAllProjectsResponse{}
 	query := query2String(options)
-	path := fmt.Sprintf("/projects/%s", query)
+	path := fmt.Sprintf("/projects%s", query)
 	err := c.requestAndParseResponse("GET", path, nil, res)
 	return res, err
 }
@@ -69,7 +69,7 @@ func (c *Client) GetAllProjects(options *QueryOptions) (*GetAllProjectsResponse,
 // GetProjectBy returns project by id
 func (c *Client) GetProjectBy(extProjectID string) (*ProjectResponse, error) {
 	res := &ProjectResponse{}
-	path := fmt.Sprintf("/projects/%v", extProjectID)
+	path := fmt.Sprintf("/projects/%s", extProjectID)
 	err := c.requestAndParseResponse("GET", path, nil, res)
 	return res, err
 }
@@ -77,7 +77,7 @@ func (c *Client) GetProjectBy(extProjectID string) (*ProjectResponse, error) {
 // GetProjectReport returns a project's report based on observed data from actual panelists.
 func (c *Client) GetProjectReport(extProjectID string) (*ProjectReportResponse, error) {
 	res := &ProjectReportResponse{}
-	path := fmt.Sprintf("/projects/%v/report", extProjectID)
+	path := fmt.Sprintf("/projects/%s/report", extProjectID)
 	err := c.requestAndParseResponse("GET", path, nil, res)
 	return res, err
 }
