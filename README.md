@@ -9,12 +9,12 @@ A golang client library to connect with researchnow/ssi demand api
 
 ## Usage examples
 
-Default authentication endpoint: "https://api.researchnow.com/auth/v1/token/password"
-Default API base url: "https://api.researchnow.com/sample/v1"
+* Default authentication endpoint: "https://api.researchnow.com/auth/v1/token/password"
+* Default API base url: "https://api.researchnow.com/sample/v1"
 
 For test account, use the following:
-Authentication endpoint: "https://api.dev.pe.researchnow.com/auth/v1/token/password"
-API base url: "https://api.dev.pe.researchnow.com/sample/v1"
+* Authentication endpoint: "https://api.dev.pe.researchnow.com/auth/v1/token/password"
+* API base url: "https://api.dev.pe.researchnow.com/sample/v1"
 
 ### Creating a client connection
 
@@ -103,6 +103,7 @@ The returned, `ProjectResponse` object contains:
 Supports API functionalities, such as:
 * Authentication, including automatic re-authentication on token expire.
 * Project and Line Items related requests. Such as, create, update, get-all, get-by-id requests etc.
+* Filtering & Sorting
 * Pricing & Feasibility
 * Data endpoint functions, serving attributes, categories and countries & languages data.
 
