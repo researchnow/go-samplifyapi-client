@@ -23,15 +23,6 @@ func (ct *CustomTime) UnmarshalJSON(b []byte) (err error) {
 	return
 }
 
-//todo
-// // MarshalJSON ...
-// func (ct *CustomTime) MarshalJSON() ([]byte, error) {
-// 	if ct.Time.UnixNano() == nilTime {
-// 		return []byte("null"), nil
-// 	}
-// 	return []byte(fmt.Sprintf("\"%s\"", ct.Time.Format(ctLayout))), nil
-// }
-
 var nilTime = (time.Time{}).UnixNano()
 
 // IsSet ...

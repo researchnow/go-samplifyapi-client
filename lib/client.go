@@ -9,8 +9,10 @@ import (
 )
 
 const (
-	defaultAuthURL    = "https://api.researchnow.com/auth/v1/token/password"
-	defaultAPIBaseURL = "https://api.researchnow.com/sample/v1"
+	prodAuthURL    = "https://api.researchnow.com/auth/v1/token/password"
+	prodAPIBaseURL = "https://api.researchnow.com/sample/v1"
+	devAuthURL     = "https://api.dev.pe.researchnow.com/auth/v1/token/password"
+	devAPIBaseURL  = "https://api.dev.pe.researchnow.com/sample/v1"
 )
 
 // ClientOptions ...
@@ -218,11 +220,14 @@ func (c *Client) requestAndParseToken() error {
 	return nil
 }
 
-// NewClient returns an API client. If "options" is nil, default values will be used.
-func NewClient(clientID, username, passsword string, options *ClientOptions) *Client {
-	if options == nil {
-		options = &ClientOptions{APIBaseURL: defaultAPIBaseURL, AuthURL: defaultAuthURL}
+// NewClient returns an API client.
+// Uses environment variable `env` = {"dev"|"prod"} to select host. If none provided, "dev" is used.
+func NewClient(clientID, username, passsword string) *Client {
+	options := &ClientOptions{APIBaseURL: devAPIBaseURL, AuthURL: devAuthURL}
+	if isProdEnv() {
+		options = &ClientOptions{APIBaseURL: prodAPIBaseURL, AuthURL: prodAuthURL}
 	}
+	log.Printf("using env: %s\n", getEnvironment())
 	return &Client{
 		Credentials: TokenRequest{
 			ClientID: clientID,

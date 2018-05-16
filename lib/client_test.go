@@ -27,9 +27,9 @@ func TestAuth(t *testing.T) {
 			auth = r.Header.Get("Authorization")
 		}))
 
-		client := samplify.NewClient("", "", "",
-			&samplify.ClientOptions{AuthURL: ts.URL, APIBaseURL: ts.URL},
-		)
+		client := samplify.NewClient("", "", "")
+		client.Options.APIBaseURL = ts.URL
+		client.Options.AuthURL = ts.URL
 		client.Auth = getAuth()
 		client.Auth.AccessToken = tt.accessToken
 		client.GetAllProjects(nil)
@@ -64,9 +64,9 @@ func TestClientFunctions(t *testing.T) {
 		urls = append(urls, r.URL.String())
 	}))
 
-	client := samplify.NewClient("", "", "",
-		&samplify.ClientOptions{AuthURL: ts.URL, APIBaseURL: ts.URL},
-	)
+	client := samplify.NewClient("", "", "")
+	client.Options.APIBaseURL = ts.URL
+	client.Options.AuthURL = ts.URL
 	client.Auth = getAuth()
 
 	client.CreateProject(nil)
@@ -85,6 +85,7 @@ func TestClientFunctions(t *testing.T) {
 	client.GetCountries(nil)
 	client.GetAttributes("GB", "en", nil)
 	client.GetSurveyTopics(nil)
+	ts.Close()
 
 	if len(urls) != len(tests) {
 		t.FailNow()
@@ -122,9 +123,9 @@ func TestQueryString(t *testing.T) {
 			url = r.URL.String()
 		}))
 
-		client := samplify.NewClient("", "", "",
-			&samplify.ClientOptions{AuthURL: ts.URL, APIBaseURL: ts.URL},
-		)
+		client := samplify.NewClient("", "", "")
+		client.Options.APIBaseURL = ts.URL
+		client.Options.AuthURL = ts.URL
 		client.Auth = getAuth()
 		client.GetAllProjects(tt.query)
 		ts.Close()

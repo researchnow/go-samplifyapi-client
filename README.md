@@ -9,24 +9,24 @@ A golang client library to connect with researchnow/ssi demand api
 
 ## Usage examples
 
-* Default authentication endpoint: "https://api.researchnow.com/auth/v1/token/password"
-* Default API base url: "https://api.researchnow.com/sample/v1"
+The following host URLs are configured based on the environment variable setting.
 
-For test account, use the following:
+Prod settings:
+* Use environment `env=prod`
+* Authentication endpoint: "https://api.researchnow.com/auth/v1/token/password"
+* API base url: "https://api.researchnow.com/sample/v1"
+
+Dev (default) settings:
+* Use environment `env=dev`
 * Authentication endpoint: "https://api.dev.pe.researchnow.com/auth/v1/token/password"
 * API base url: "https://api.dev.pe.researchnow.com/sample/v1"
 
 ### Creating a client connection
 
-Using default client:
-```
-client = samplify.NewClient("client_id", "username", "password", nil)
-```
+The new client is initialized based on environment variable setting described above. Default `env` will be considered "dev" if not provided.
 
-Or, with manually configured ClientOptions:
 ```
-client := samplify.NewClient("client_id", "username", "password",
-	&samplify.ClientOptions{AuthURL: devAuthURL, APIBaseURL: devAPIBaseURL})
+client = samplify.NewClient("client_id", "username", "password")
 ```
 
 The session expires after some time but the client will automatically acquire one by making an authentication request before sending out the actual request, again.
@@ -42,8 +42,8 @@ Some of the response objects (such as those that return a list) also contain a "
 * Meta, contains metadata such as page navigation links etc.
 
 ```
-r, err := client.GetAllProjects()
-if err != nil {
+r, err := client.GetAllProjects(nil)
+if err == nil {
 	for _, p := range r.Projects {
 		fmt.Println(p.Title)
 	}
@@ -78,24 +78,51 @@ The returned, `ProjectResponse` object contains:
 * `r.Project` the newly created or updated project object.
 * `r.ResponseStatus`
 
+## Filtering & Sorting
+
+All client functions that take `*QueryOptions` parameter, support filtering and sorting. Nested fields are not supported for filtering and sorting operations.
+
+```
+options := &samplify.QueryOptions{
+	FilterBy: []*samplify.Filter{
+		&samplify.Filter{Field: samplify.QueryFieldTitle, Value: "Test Survey"},
+		&samplify.Filter{Field: samplify.QueryFieldState, Value: samplify.StateProvisioned},
+	},
+	SortBy: []*samplify.Sort{
+		&samplify.Sort{Field: samplify.QueryFieldCreatedAt, Direction: samplify.SortDirectionAsc},
+		&samplify.Sort{Field: samplify.QueryFieldExtProjectID, Direction: samplify.SortDirectionDesc},
+	},
+}
+
+r, err := client.GetAllProjects(options)
+if err == nil {
+	for _, p := range r.Projects {
+		fmt.Println(p.Title)
+	}
+}
+```
+
+If multiple sort objects are provided, the order in which they are added in the slice, is followed.
+
 ## Supported API functions
 
 * CreateProject(project *CreateUpdateProjectCriteria) (*ProjectResponse, error)
 * UpdateProject(project *CreateUpdateProjectCriteria) (*ProjectResponse, error)
 * BuyProject(extProjectID string, buy []*BuyProjectCriteria) (*BuyProjectResponse, error)
 * CloseProject(extProjectID string) (*CloseProjectResponse, error)
-* GetAllProjects() (*GetAllProjectsResponse, error)
+* GetAllProjects(options *QueryOptions) (*GetAllProjectsResponse, error)
 * GetProjectBy(extProjectID string) (*ProjectResponse, error)
 * GetProjectReport(extProjectID string) (*ProjectReportResponse, error)
-* AddLineItem(extProjectID string, lineItem *LineItem) (*LineItemResponse, error)
-* UpdateLineItem(extProjectID, extLineItemID string, lineItem *LineItem) (*LineItemResponse, error)
-* ChangeLineItemState(extProjectID, extLineItemID string, action Action) (*ChangeLineItemStateResponse, error)
-* GetAllLineItems(extProjectID string) (*GetAllLineItemsResponse, error)
+* AddLineItem(extProjectID string, lineItem *LineItemCriteria) (*LineItemResponse, error)
+* UpdateLineItem(extProjectID, extLineItemID string, lineItem *LineItemCriteria) (*LineItemResponse, error)
+* UpdateLineItemState(extProjectID, extLineItemID string, action Action) (*ChangeLineItemStateResponse, error)
+* GetAllLineItems(extProjectID string, options *QueryOptions) (*GetAllLineItemsResponse, error)
 * GetLineItemBy(extProjectID, extLineItemID string) (*LineItemResponse, error)
-* GetFeasibility(extProjectID string) (*GetFeasibilityResponse, error)
-* GetCountries() (*GetCountriesResponse, error)
-* GetAttributes(countryCode, languageCode string) (*GetAttributesResponse, error)
-* GetSurveyTopics() (*GetSurveyTopicsResponse, error)
+* GetFeasibility(extProjectID string, options *QueryOptions) (*GetFeasibilityResponse, error)
+* GetCountries(options *QueryOptions) (*GetCountriesResponse, error)
+* GetAttributes(countryCode, languageCode string, options *QueryOptions) (*GetAttributesResponse, error)
+* GetSurveyTopics(options *QueryOptions) (*GetSurveyTopicsResponse, error)
+
 
 ## Versioning
 
