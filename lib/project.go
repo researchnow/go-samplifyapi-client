@@ -29,8 +29,8 @@ const (
 	StatePaused      State = "PAUSED"
 	StateClosed      State = "CLOSED"
 
-	SateAwaitingApproval State = "AWAITING_APPROVAL"
-	StateInvoiced        State = "INVOICED"
+	StateAwaitingApproval State = "AWAITING_APPROVAL"
+	StateInvoiced         State = "INVOICED"
 )
 
 // Category is Project's Category
@@ -97,7 +97,7 @@ type ProjectReport struct {
 	LineItems          []*LineItemReport `json:"lineItems"`
 }
 
-// SurveyTopic ... Represents survey Topic for a project. Required to setup a project
+// SurveyTopic ... Represents Survey Topic for a project. Required to setup a project
 type SurveyTopic struct {
 	ID   string `json:"id"`
 	Name string `json:"name"`

@@ -41,7 +41,7 @@ const (
 // Sort by top level fields only. Nested fields are not supported for sorting.
 type Sort struct {
 	Field     QueryField
-	Direction SortDirection `json:"direction"`
+	Direction SortDirection
 }
 
 // Filter by top level fields only. Nested fields are not supported for filtering.
