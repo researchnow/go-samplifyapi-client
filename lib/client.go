@@ -11,8 +11,8 @@ import (
 const (
 	prodAuthURL    = "https://api.researchnow.com/auth/v1/token/password"
 	prodAPIBaseURL = "https://api.researchnow.com/sample/v1"
-	devAuthURL     = "https://api.dev.pe.researchnow.com/auth/v1/token/password"
-	devAPIBaseURL  = "https://api.dev.pe.researchnow.com/sample/v1"
+	uatAuthURL     = "https://api.uat.pe.researchnow.com/auth/v1/token/password"
+	uatAPIBaseURL  = "https://api.uat.pe.researchnow.com/sample/v1"
 )
 
 // ClientOptions ...
@@ -221,9 +221,9 @@ func (c *Client) requestAndParseToken() error {
 }
 
 // NewClient returns an API client.
-// Uses environment variable `env` = {"dev"|"prod"} to select host. If none provided, "dev" is used.
+// Uses environment variable `env` = {uat|prod} to select host. If none provided, "uat" is used.
 func NewClient(clientID, username, passsword string) *Client {
-	options := &ClientOptions{APIBaseURL: devAPIBaseURL, AuthURL: devAuthURL}
+	options := &ClientOptions{APIBaseURL: uatAPIBaseURL, AuthURL: uatAuthURL}
 	if isProdEnv() {
 		options = &ClientOptions{APIBaseURL: prodAPIBaseURL, AuthURL: prodAuthURL}
 	}

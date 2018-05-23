@@ -99,6 +99,6 @@ type ProjectReport struct {
 
 // SurveyTopic ... Represents Survey Topic for a project. Required to setup a project
 type SurveyTopic struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+	Topic       string `json:"topic"`
+	Description string `json:"description"`
 }

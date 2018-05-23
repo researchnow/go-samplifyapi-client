@@ -8,10 +8,8 @@ import (
 
 // Error ...
 type Error struct {
-	Path         string `json:"path"`
-	Message      string `json:"message"`
-	InvalidValue string `json:"invalidValue"`
-	Constraint   string `json:"constraint"`
+	Path    string `json:"path"`
+	Message string `json:"message"`
 }
 
 // ErrorResponse ...
@@ -20,7 +18,7 @@ type ErrorResponse struct {
 	RequestID  string     `json:"requestId"`
 	Path       string     `json:"path"`
 	HTTPCode   int        `json:"httpCode"`
-	HTTPPhrase int        `json:"httpPhrase"`
+	HTTPPhrase string     `json:"httpPhrase"`
 	Errors     []*Error   `json:"errors"`
 }
 

@@ -20,7 +20,7 @@ type TokenResponse struct {
 
 // AccessTokenExpired ...
 func (t *TokenResponse) AccessTokenExpired() bool {
-	if t.Acquired == nil ||
+	if len(t.AccessToken) == 0 || t.Acquired == nil ||
 		time.Since(*t.Acquired).Seconds() > float64(t.ExpiresIn) {
 		return true
 	}

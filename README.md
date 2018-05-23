@@ -5,7 +5,7 @@ A golang client library to connect with researchnow/ssi demand api
 ### Prerequisites
 
 * Account credentials to access researchnow/ssi demand api
-* Or, a test account to explore the API on dev server
+* Or, a test account to explore the API on UAT server
 
 ## Usage examples
 
@@ -16,14 +16,14 @@ Prod settings:
 * Authentication endpoint: "https://api.researchnow.com/auth/v1/token/password"
 * API base url: "https://api.researchnow.com/sample/v1"
 
-Dev (default) settings:
-* Use environment `env=dev`
-* Authentication endpoint: "https://api.dev.pe.researchnow.com/auth/v1/token/password"
-* API base url: "https://api.dev.pe.researchnow.com/sample/v1"
+UAT (default) settings:
+* Use environment `env=uat`
+* Authentication endpoint: "https://api.uat.pe.researchnow.com/auth/v1/token/password"
+* API base url: "https://api.uat.pe.researchnow.com/sample/v1"
 
 ### Creating a client connection
 
-The new client is initialized based on environment variable setting described above. Default `env` will be considered "dev" if not provided.
+The new client is initialized based on environment variable setting described above. Default `env` will be considered "uat" if not provided.
 
 ```
 client = samplify.NewClient("client_id", "username", "password")

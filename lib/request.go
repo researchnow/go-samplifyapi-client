@@ -47,13 +47,13 @@ func sendRequest(host, method, url, accessToken string, body interface{}) (*APIR
 		t := time.Now()
 		errPath := fmt.Sprintf("%s%s", host, url)
 		err := &ErrorResponse{
-			Timestamp: &t,
-			RequestID: ar.RequestID,
-			HTTPCode:  resp.StatusCode,
-			Path:      errPath,
-			Errors:    []*Error{&Error{Path: errPath, Message: resp.Status}},
+			Timestamp:  &t,
+			RequestID:  ar.RequestID,
+			HTTPCode:   resp.StatusCode,
+			HTTPPhrase: resp.Status,
+			Path:       errPath,
+			Errors:     []*Error{&Error{Path: errPath, Message: resp.Status}},
 		}
-		json.Unmarshal(bodyjson, err)
 		ar.Body = json.RawMessage(bodyjson)
 		log.Printf("HTTP error:%v; Details:%s", resp.Status, bodyjson)
 		return ar, err
