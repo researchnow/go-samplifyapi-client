@@ -61,6 +61,7 @@ type UpdateLineItemStateResponse struct {
 type GetAllLineItemsResponse struct {
 	List []*struct {
 		LineItemHeader
+		Title           string `json:"title"`
 		CountryISOCode  string `json:"countryISOCode"`
 		LanguageISOCode string `json:"languageISOCode"`
 	} `json:"data"`
@@ -81,6 +82,7 @@ type GetFeasibilityResponse struct {
 type GetCountriesResponse struct {
 	List           []*Country     `json:"data"`
 	ResponseStatus ResponseStatus `json:"status"`
+	Meta           Meta           `json:"meta"`
 }
 
 // GetAttributesResponse ...

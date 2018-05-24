@@ -33,18 +33,18 @@ const (
 	StateInvoiced         State = "INVOICED"
 )
 
-// Category is Project's Category
+// Category is a Project's category
 type Category struct {
 	SurveyTopic []string `json:"surveyTopic"`
 }
 
-// Exclusions ... Samplify project's exclusions
+// Exclusions ... Project's exclusions
 type Exclusions struct {
 	Type ExclusionType `json:"type"`
 	List []string      `json:"list"`
 }
 
-// ProjectHeader is a Samplify project header
+// ProjectHeader ...
 type ProjectHeader struct {
 	Model
 	ExtProjectID string `json:"extProjectId"`
