@@ -30,32 +30,64 @@ type Client struct {
 
 // CreateProject ...
 func (c *Client) CreateProject(project *CreateUpdateProjectCriteria) (*ProjectResponse, error) {
+	err := validate(project)
+	if err != nil {
+		return nil, err
+	}
 	res := &ProjectResponse{}
-	err := c.requestAndParseResponse("POST", "/projects", project, res)
+	err = c.requestAndParseResponse("POST", "/projects", project, res)
 	return res, err
 }
 
 // UpdateProject ...
 func (c *Client) UpdateProject(project *CreateUpdateProjectCriteria) (*ProjectResponse, error) {
+	err := validateNotNull(project)
+	if err != nil {
+		return nil, err
+	}
+	err = validateNotEmpty(project.ExtProjectID)
+	if err != nil {
+		return nil, err
+	}
+	err = validateEmail(project.NotificationEmails...)
+	if err != nil {
+		return nil, err
+	}
+	err = validateDeviceType(project.Devices...)
+	if err != nil {
+		return nil, err
+	}
 	res := &ProjectResponse{}
 	path := fmt.Sprintf("/projects/%s", project.ExtProjectID)
-	err := c.requestAndParseResponse("POST", path, project, res)
+	err = c.requestAndParseResponse("POST", path, project, res)
 	return res, err
 }
 
 // BuyProject ...
 func (c *Client) BuyProject(extProjectID string, buy []*BuyProjectCriteria) (*BuyProjectResponse, error) {
+	err := validateNotEmpty(extProjectID)
+	if err != nil {
+		return nil, err
+	}
+	err = validate(buy)
+	if err != nil {
+		return nil, err
+	}
 	res := &BuyProjectResponse{}
 	path := fmt.Sprintf("/projects/%s/buy", extProjectID)
-	err := c.requestAndParseResponse("POST", path, buy, res)
+	err = c.requestAndParseResponse("POST", path, buy, res)
 	return res, err
 }
 
 // CloseProject ...
 func (c *Client) CloseProject(extProjectID string) (*CloseProjectResponse, error) {
+	err := validateNotEmpty(extProjectID)
+	if err != nil {
+		return nil, err
+	}
 	res := &CloseProjectResponse{}
 	path := fmt.Sprintf("/projects/%s/close", extProjectID)
-	err := c.requestAndParseResponse("POST", path, nil, res)
+	err = c.requestAndParseResponse("POST", path, nil, res)
 	return res, err
 }
 
@@ -70,59 +102,98 @@ func (c *Client) GetAllProjects(options *QueryOptions) (*GetAllProjectsResponse,
 
 // GetProjectBy returns project by id
 func (c *Client) GetProjectBy(extProjectID string) (*ProjectResponse, error) {
+	err := validateNotEmpty(extProjectID)
+	if err != nil {
+		return nil, err
+	}
 	res := &ProjectResponse{}
 	path := fmt.Sprintf("/projects/%s", extProjectID)
-	err := c.requestAndParseResponse("GET", path, nil, res)
+	err = c.requestAndParseResponse("GET", path, nil, res)
 	return res, err
 }
 
 // GetProjectReport returns a project's report based on observed data from actual panelists.
 func (c *Client) GetProjectReport(extProjectID string) (*ProjectReportResponse, error) {
+	err := validateNotEmpty(extProjectID)
+	if err != nil {
+		return nil, err
+	}
 	res := &ProjectReportResponse{}
 	path := fmt.Sprintf("/projects/%s/report", extProjectID)
-	err := c.requestAndParseResponse("GET", path, nil, res)
+	err = c.requestAndParseResponse("GET", path, nil, res)
 	return res, err
 }
 
 // AddLineItem ...
 func (c *Client) AddLineItem(extProjectID string, lineItem *LineItemCriteria) (*LineItemResponse, error) {
+	err := validateNotEmpty(extProjectID)
+	if err != nil {
+		return nil, err
+	}
+	err = validate(lineItem)
+	if err != nil {
+		return nil, err
+	}
 	res := &LineItemResponse{}
 	path := fmt.Sprintf("/projects/%s/lineItems", extProjectID)
-	err := c.requestAndParseResponse("POST", path, lineItem, res)
+	err = c.requestAndParseResponse("POST", path, lineItem, res)
 	return res, err
 }
 
 // UpdateLineItem ...
 func (c *Client) UpdateLineItem(extProjectID, extLineItemID string, lineItem *LineItemCriteria) (*LineItemResponse, error) {
+	err := validateNotEmpty(extProjectID, extLineItemID)
+	if err != nil {
+		return nil, err
+	}
+	err = validate(lineItem)
+	if err != nil {
+		return nil, err
+	}
 	res := &LineItemResponse{}
 	path := fmt.Sprintf("/projects/%s/lineItems/%s", extProjectID, extLineItemID)
-	err := c.requestAndParseResponse("POST", path, lineItem, res)
+	err = c.requestAndParseResponse("POST", path, lineItem, res)
 	return res, err
 }
 
 // UpdateLineItemState ... Changes the state of the line item based on provided action.
 func (c *Client) UpdateLineItemState(extProjectID, extLineItemID string, action Action) (
 	*UpdateLineItemStateResponse, error) {
-
+	err := validateNotEmpty(extProjectID, extLineItemID)
+	if err != nil {
+		return nil, err
+	}
+	err = validateAction(action)
+	if err != nil {
+		return nil, err
+	}
 	res := &UpdateLineItemStateResponse{}
 	path := fmt.Sprintf("/projects/%s/lineItems/%s/%s", extProjectID, extLineItemID, action)
-	err := c.requestAndParseResponse("POST", path, nil, res)
+	err = c.requestAndParseResponse("POST", path, nil, res)
 	return res, err
 }
 
 // GetAllLineItems ...
 func (c *Client) GetAllLineItems(extProjectID string, options *QueryOptions) (*GetAllLineItemsResponse, error) {
+	err := validateNotEmpty(extProjectID)
+	if err != nil {
+		return nil, err
+	}
 	res := &GetAllLineItemsResponse{}
 	path := fmt.Sprintf("/projects/%s/lineItems%s", extProjectID, query2String(options))
-	err := c.requestAndParseResponse("GET", path, nil, res)
+	err = c.requestAndParseResponse("GET", path, nil, res)
 	return res, err
 }
 
 // GetLineItemBy ...
 func (c *Client) GetLineItemBy(extProjectID, extLineItemID string) (*LineItemResponse, error) {
+	err := validateNotEmpty(extProjectID, extLineItemID)
+	if err != nil {
+		return nil, err
+	}
 	res := &LineItemResponse{}
 	path := fmt.Sprintf("/projects/%s/lineItems/%s", extProjectID, extLineItemID)
-	err := c.requestAndParseResponse("GET", path, nil, res)
+	err = c.requestAndParseResponse("GET", path, nil, res)
 	return res, err
 }
 
@@ -131,9 +202,13 @@ func (c *Client) GetLineItemBy(extProjectID, extLineItemID string) (*LineItemRes
 // FeasibilityStatusReady ("READY") or FeasibilityStatusProcessing ("PROCESSING")
 // If GetFeasibilityResponse.Feasibility.Status == FeasibilityStatusProcessing, call this function again in 2 mins.
 func (c *Client) GetFeasibility(extProjectID string, options *QueryOptions) (*GetFeasibilityResponse, error) {
+	err := validateNotEmpty(extProjectID)
+	if err != nil {
+		return nil, err
+	}
 	res := &GetFeasibilityResponse{}
 	path := fmt.Sprintf("/projects/%s/feasibility%s", extProjectID, query2String(options))
-	err := c.requestAndParseResponse("GET", path, nil, res)
+	err = c.requestAndParseResponse("GET", path, nil, res)
 	return res, err
 }
 
@@ -147,9 +222,17 @@ func (c *Client) GetCountries(options *QueryOptions) (*GetCountriesResponse, err
 
 // GetAttributes ... Get the list of supported attributes for a country and language. This data is required to build up the Quota Plan.
 func (c *Client) GetAttributes(countryCode, languageCode string, options *QueryOptions) (*GetAttributesResponse, error) {
+	err := validateCountryCode(countryCode)
+	if err != nil {
+		return nil, err
+	}
+	err = validateLanguageCode(languageCode)
+	if err != nil {
+		return nil, err
+	}
 	res := &GetAttributesResponse{}
 	path := fmt.Sprintf("/attributes/%s/%s%s", countryCode, languageCode, query2String(options))
-	err := c.requestAndParseResponse("GET", path, nil, res)
+	err = c.requestAndParseResponse("GET", path, nil, res)
 	return res, err
 }
 

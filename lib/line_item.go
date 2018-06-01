@@ -21,8 +21,8 @@ const (
 
 //QuotaPlan ...
 type QuotaPlan struct {
-	Filters     []*QuotaFilters `json:"filters"`
-	QuotaGroups []*QuotaGroup   `json:"quotaGroups"`
+	Filters     []*QuotaFilters `json:"filters" valid:"required"`
+	QuotaGroups []*QuotaGroup   `json:"quotaGroups" valid:"required"`
 }
 
 // QuotaFilters ...
@@ -83,17 +83,17 @@ type LineItem struct {
 
 // LineItemCriteria has the fields to create or update a LineItem
 type LineItemCriteria struct {
-	ExtLineItemID       string     `json:"extLineItemId"`
-	Title               string     `json:"title"`
-	CountryISOCode      string     `json:"countryISOCode"`
-	LanguageISOCode     string     `json:"languageISOCode"`
-	SurveyURL           string     `json:"surveyURL"`
-	SurveyTestURL       string     `json:"surveyTestURL"`
-	IndicativeIncidence float64    `json:"indicativeIncidence"`
-	DaysInField         int64      `json:"daysInField"`
-	LengthOfInterview   int64      `json:"lengthOfInterview"`
-	RequiredCompletes   int64      `json:"requiredCompletes"`
-	QuotaPlan           *QuotaPlan `json:"quotaPlan"`
+	ExtLineItemID       string     `json:"extLineItemId" valid:"required"`
+	Title               string     `json:"title" valid:"required"`
+	CountryISOCode      string     `json:"countryISOCode" valid:"required,ISO3166Alpha2"`
+	LanguageISOCode     string     `json:"languageISOCode" valid:"required,languageISOCode"`
+	SurveyURL           string     `json:"surveyURL" valid:"optional,url"`
+	SurveyTestURL       string     `json:"surveyTestURL" valid:"optional,url"`
+	IndicativeIncidence float64    `json:"indicativeIncidence" valid:"required"`
+	DaysInField         int64      `json:"daysInField" valid:"required"`
+	LengthOfInterview   int64      `json:"lengthOfInterview" valid:"required"`
+	RequiredCompletes   int64      `json:"requiredCompletes" valid:"required"`
+	QuotaPlan           *QuotaPlan `json:"quotaPlan" valid:"required"`
 }
 
 // BuyProjectLineItem ...

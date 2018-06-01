@@ -35,12 +35,12 @@ const (
 
 // Category is a Project's category
 type Category struct {
-	SurveyTopic []string `json:"surveyTopic"`
+	SurveyTopic []string `json:"surveyTopic" valid:"required"`
 }
 
 // Exclusions ... Project's exclusions
 type Exclusions struct {
-	Type ExclusionType `json:"type"`
+	Type ExclusionType `json:"type" valid:"ExclusionType"`
 	List []string      `json:"list"`
 }
 
@@ -64,20 +64,20 @@ type Project struct {
 
 // CreateUpdateProjectCriteria has the fields to create or update a project
 type CreateUpdateProjectCriteria struct {
-	ExtProjectID       string              `json:"extProjectId"`
-	Title              string              `json:"title"`
-	NotificationEmails []string            `json:"notificationEmails"`
-	Devices            []DeviceType        `json:"devices"`
-	Category           *Category           `json:"category"`
-	LineItems          []*LineItemCriteria `json:"lineItems"`
-	Exclusions         *Exclusions         `json:"exclusions"`
+	ExtProjectID       string              `json:"extProjectId" valid:"required"`
+	Title              string              `json:"title,omitempty" valid:"required"`
+	NotificationEmails []string            `json:"notificationEmails,omitempty" valid:"email,required"`
+	Devices            []DeviceType        `json:"devices,omitempty" valid:"required,DeviceType"`
+	Category           *Category           `json:"category,omitempty" valid:"required"`
+	LineItems          []*LineItemCriteria `json:"lineItems,omitempty" valid:"required"`
+	Exclusions         *Exclusions         `json:"exclusions,omitempty" valid:"optional"`
 }
 
 // BuyProjectCriteria ...
 type BuyProjectCriteria struct {
-	ExtLineItemID string `json:"extLineItemId"`
-	SurveyURL     string `json:"surveyURL"`
-	SurveyTestURL string `json:"surveyTestURL"`
+	ExtLineItemID string `json:"extLineItemId" valid:"required"`
+	SurveyURL     string `json:"surveyURL" valid:"required,url"`
+	SurveyTestURL string `json:"surveyTestURL" valid:"required,url"`
 }
 
 // ProjectReport ...
