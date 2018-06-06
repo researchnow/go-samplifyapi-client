@@ -59,10 +59,13 @@ type EndLinks struct {
 // LineItemHeader ...
 type LineItemHeader struct {
 	Model
-	ExtLineItemID string      `json:"extLineItemId"`
-	State         State       `json:"state"`
-	StateReason   string      `json:"stateReason"`
-	LaunchedAt    *CustomTime `json:"launchedAt"`
+	Title           string      `json:"title"`
+	CountryISOCode  string      `json:"countryISOCode"`
+	LanguageISOCode string      `json:"languageISOCode"`
+	ExtLineItemID   string      `json:"extLineItemId"`
+	State           State       `json:"state"`
+	StateReason     string      `json:"stateReason"`
+	LaunchedAt      *CustomTime `json:"launchedAt"`
 }
 
 // LineItem ...
