@@ -64,13 +64,13 @@ type Project struct {
 
 // CreateUpdateProjectCriteria has the fields to create or update a project
 type CreateUpdateProjectCriteria struct {
-	ExtProjectID       string              `json:"extProjectId"`
-	Title              string              `json:"title"`
-	NotificationEmails []string            `json:"notificationEmails"`
-	Devices            []DeviceType        `json:"devices"`
-	Category           *Category           `json:"category"`
-	LineItems          []*LineItemCriteria `json:"lineItems"`
-	Exclusions         *Exclusions         `json:"exclusions"`
+	ExtProjectID       string               `json:"extProjectId"`
+	Title              *string              `json:"title"`
+	NotificationEmails *[]string            `json:"notificationEmails"`
+	Devices            *[]DeviceType        `json:"devices"`
+	Category           *Category            `json:"category"`
+	LineItems          *[]*LineItemCriteria `json:"lineItems"`
+	Exclusions         *Exclusions          `json:"exclusions"`
 }
 
 // BuyProjectCriteria ...
