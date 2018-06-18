@@ -90,8 +90,8 @@ type LineItemCriteria struct {
 	Title               string     `json:"title"`
 	CountryISOCode      string     `json:"countryISOCode"`
 	LanguageISOCode     string     `json:"languageISOCode"`
-	SurveyURL           *string    `json:"surveyURL"`
-	SurveyTestURL       *string    `json:"surveyTestURL"`
+	SurveyURL           *string    `json:"surveyURL,omitempty"`
+	SurveyTestURL       *string    `json:"surveyTestURL,omitempty"`
 	IndicativeIncidence float64    `json:"indicativeIncidence"`
 	DaysInField         int64      `json:"daysInField"`
 	LengthOfInterview   int64      `json:"lengthOfInterview"`
