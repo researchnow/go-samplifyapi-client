@@ -33,7 +33,6 @@ type GetAllProjectsResponse struct {
 type ProjectReportResponse struct {
 	Report         *ProjectReport `json:"data"`
 	ResponseStatus ResponseStatus `json:"status"`
-	Meta           Meta           `json:"meta"`
 }
 
 // CloseProjectResponse ...
