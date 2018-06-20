@@ -39,8 +39,8 @@ type QuotaGroup struct {
 
 // Quota ...
 type Quota struct {
-	AttributeID string         `json:"attributeId"`
-	Options     []*QuotaOption `json:"options"`
+	AttributeID string          `json:"attributeId"`
+	Options     *[]*QuotaOption `json:"options"`
 }
 
 // QuotaOption ...
@@ -84,8 +84,8 @@ type LineItem struct {
 	EndLinks            *EndLinks  `json:"endLinks"`
 }
 
-// LineItemCriteria has the fields to create or update a LineItem
-type LineItemCriteria struct {
+// CreateLineItemCriteria has the fields to create or update a LineItem
+type CreateLineItemCriteria struct {
 	ExtLineItemID       string     `json:"extLineItemId"`
 	Title               string     `json:"title"`
 	CountryISOCode      string     `json:"countryISOCode"`
@@ -96,6 +96,21 @@ type LineItemCriteria struct {
 	DaysInField         int64      `json:"daysInField"`
 	LengthOfInterview   int64      `json:"lengthOfInterview"`
 	RequiredCompletes   int64      `json:"requiredCompletes"`
+	QuotaPlan           *QuotaPlan `json:"quotaPlan"`
+}
+
+// UpdateLineItemCriteria has the fields to create or update a LineItem
+type UpdateLineItemCriteria struct {
+	ExtLineItemID       string     `json:"extLineItemId"`
+	Title               *string    `json:"title"`
+	CountryISOCode      *string    `json:"countryISOCode"`
+	LanguageISOCode     *string    `json:"languageISOCode"`
+	SurveyURL           *string    `json:"surveyURL,omitempty"`
+	SurveyTestURL       *string    `json:"surveyTestURL,omitempty"`
+	IndicativeIncidence *float64   `json:"indicativeIncidence"`
+	DaysInField         *int64     `json:"daysInField"`
+	LengthOfInterview   *int64     `json:"lengthOfInterview"`
+	RequiredCompletes   *int64     `json:"requiredCompletes"`
 	QuotaPlan           *QuotaPlan `json:"quotaPlan"`
 }
 

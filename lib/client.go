@@ -85,7 +85,7 @@ func (c *Client) GetProjectReport(extProjectID string) (*ProjectReportResponse, 
 }
 
 // AddLineItem ...
-func (c *Client) AddLineItem(extProjectID string, lineItem *LineItemCriteria) (*LineItemResponse, error) {
+func (c *Client) AddLineItem(extProjectID string, lineItem *CreateLineItemCriteria) (*LineItemResponse, error) {
 	res := &LineItemResponse{}
 	path := fmt.Sprintf("/projects/%s/lineItems", extProjectID)
 	err := c.requestAndParseResponse("POST", path, lineItem, res)
@@ -93,7 +93,7 @@ func (c *Client) AddLineItem(extProjectID string, lineItem *LineItemCriteria) (*
 }
 
 // UpdateLineItem ...
-func (c *Client) UpdateLineItem(extProjectID, extLineItemID string, lineItem *LineItemCriteria) (*LineItemResponse, error) {
+func (c *Client) UpdateLineItem(extProjectID, extLineItemID string, lineItem *UpdateLineItemCriteria) (*LineItemResponse, error) {
 	res := &LineItemResponse{}
 	path := fmt.Sprintf("/projects/%s/lineItems/%s", extProjectID, extLineItemID)
 	err := c.requestAndParseResponse("POST", path, lineItem, res)

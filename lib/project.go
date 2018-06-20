@@ -64,25 +64,25 @@ type Project struct {
 
 // CreateProjectCriteria holds fields to create a project.
 type CreateProjectCriteria struct {
-	ExtProjectID       string              `json:"extProjectId"`
-	Title              string              `json:"title"`
-	NotificationEmails []string            `json:"notificationEmails"`
-	Devices            []DeviceType        `json:"devices"`
-	Category           *Category           `json:"category"`
-	LineItems          []*LineItemCriteria `json:"lineItems"`
-	Exclusions         *Exclusions         `json:"exclusions"`
+	ExtProjectID       string                    `json:"extProjectId"`
+	Title              string                    `json:"title"`
+	NotificationEmails []string                  `json:"notificationEmails"`
+	Devices            []DeviceType              `json:"devices"`
+	Category           *Category                 `json:"category"`
+	LineItems          []*CreateLineItemCriteria `json:"lineItems"`
+	Exclusions         *Exclusions               `json:"exclusions"`
 }
 
 // UpdateProjectCriteria has the fields to update a project.
 // Excluding ExtProjectID, its fields are optional.
 type UpdateProjectCriteria struct {
-	ExtProjectID       string               `json:"extProjectId"`
-	Title              *string              `json:"title,omitempty"`
-	NotificationEmails *[]string            `json:"notificationEmails,omitempty"`
-	Devices            *[]DeviceType        `json:"devices,omitempty"`
-	Category           *Category            `json:"category,omitempty"`
-	LineItems          *[]*LineItemCriteria `json:"lineItems,omitempty"`
-	Exclusions         *Exclusions          `json:"exclusions,omitempty"`
+	ExtProjectID       string                     `json:"extProjectId"`
+	Title              *string                    `json:"title,omitempty"`
+	NotificationEmails *[]string                  `json:"notificationEmails,omitempty"`
+	Devices            *[]DeviceType              `json:"devices,omitempty"`
+	Category           *Category                  `json:"category,omitempty"`
+	LineItems          *[]*CreateLineItemCriteria `json:"lineItems,omitempty"`
+	Exclusions         *Exclusions                `json:"exclusions,omitempty"`
 }
 
 // BuyProjectCriteria ...
