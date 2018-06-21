@@ -33,20 +33,20 @@ type QuotaFilters struct {
 
 // QuotaGroup ...
 type QuotaGroup struct {
-	Name   string   `json:"name"`
-	Quotas []*Quota `json:"quotas"`
+	Name       string       `json:"name"`
+	QuotaCells []*QuotaCell `json:"quotaCells"`
 }
 
-// Quota ...
-type Quota struct {
-	AttributeID string         `json:"attributeId"`
-	Options     []*QuotaOption `json:"options"`
+// QuotaCell ...
+type QuotaCell struct {
+	QuotaNodes []*QuotaNode `json:"quotaNodes"`
+	Perc       float64      `json:"perc"`
 }
 
-// QuotaOption ...
-type QuotaOption struct {
-	Option []string `json:"option"`
-	Perc   float64  `json:"perc"`
+// QuotaNode ...
+type QuotaNode struct {
+	AttributeID string   `json:"attributeId"`
+	OptionIDs   []string `json:"optionIds"`
 }
 
 // EndLinks ...
