@@ -29,14 +29,14 @@ type Client struct {
 }
 
 // CreateProject ...
-func (c *Client) CreateProject(project *CreateUpdateProjectCriteria) (*ProjectResponse, error) {
+func (c *Client) CreateProject(project *CreateProjectCriteria) (*ProjectResponse, error) {
 	res := &ProjectResponse{}
 	err := c.requestAndParseResponse("POST", "/projects", project, res)
 	return res, err
 }
 
 // UpdateProject ...
-func (c *Client) UpdateProject(project *CreateUpdateProjectCriteria) (*ProjectResponse, error) {
+func (c *Client) UpdateProject(project *UpdateProjectCriteria) (*ProjectResponse, error) {
 	res := &ProjectResponse{}
 	path := fmt.Sprintf("/projects/%s", project.ExtProjectID)
 	err := c.requestAndParseResponse("POST", path, project, res)
@@ -85,7 +85,7 @@ func (c *Client) GetProjectReport(extProjectID string) (*ProjectReportResponse, 
 }
 
 // AddLineItem ...
-func (c *Client) AddLineItem(extProjectID string, lineItem *LineItemCriteria) (*LineItemResponse, error) {
+func (c *Client) AddLineItem(extProjectID string, lineItem *CreateLineItemCriteria) (*LineItemResponse, error) {
 	res := &LineItemResponse{}
 	path := fmt.Sprintf("/projects/%s/lineItems", extProjectID)
 	err := c.requestAndParseResponse("POST", path, lineItem, res)
@@ -93,7 +93,7 @@ func (c *Client) AddLineItem(extProjectID string, lineItem *LineItemCriteria) (*
 }
 
 // UpdateLineItem ...
-func (c *Client) UpdateLineItem(extProjectID, extLineItemID string, lineItem *LineItemCriteria) (*LineItemResponse, error) {
+func (c *Client) UpdateLineItem(extProjectID, extLineItemID string, lineItem *UpdateLineItemCriteria) (*LineItemResponse, error) {
 	res := &LineItemResponse{}
 	path := fmt.Sprintf("/projects/%s/lineItems/%s", extProjectID, extLineItemID)
 	err := c.requestAndParseResponse("POST", path, lineItem, res)

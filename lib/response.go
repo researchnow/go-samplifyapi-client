@@ -58,14 +58,9 @@ type UpdateLineItemStateResponse struct {
 
 // GetAllLineItemsResponse ...
 type GetAllLineItemsResponse struct {
-	List []*struct {
-		LineItemHeader
-		Title           string `json:"title"`
-		CountryISOCode  string `json:"countryISOCode"`
-		LanguageISOCode string `json:"languageISOCode"`
-	} `json:"data"`
-	ResponseStatus ResponseStatus `json:"status"`
-	Meta           Meta           `json:"meta"`
+	List           []*LineItemHeader `json:"data"`
+	ResponseStatus ResponseStatus    `json:"status"`
+	Meta           Meta              `json:"meta"`
 }
 
 // GetFeasibilityResponse ...

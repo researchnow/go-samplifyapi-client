@@ -70,7 +70,7 @@ func TestClientFunctions(t *testing.T) {
 	client.Auth = getAuth()
 
 	client.CreateProject(nil)
-	client.UpdateProject(&samplify.CreateUpdateProjectCriteria{ExtProjectID: "update-test"})
+	client.UpdateProject(&samplify.UpdateProjectCriteria{ExtProjectID: "update-test"})
 	client.BuyProject("buy-test", nil)
 	client.CloseProject("close-test")
 	client.GetAllProjects(nil)

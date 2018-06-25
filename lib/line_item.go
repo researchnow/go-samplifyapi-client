@@ -39,8 +39,8 @@ type QuotaGroup struct {
 
 // Quota ...
 type Quota struct {
-	AttributeID string         `json:"attributeId"`
-	Options     []*QuotaOption `json:"options"`
+	AttributeID string          `json:"attributeId"`
+	Options     *[]*QuotaOption `json:"options"`
 }
 
 // QuotaOption ...
@@ -59,10 +59,13 @@ type EndLinks struct {
 // LineItemHeader ...
 type LineItemHeader struct {
 	Model
-	ExtLineItemID string      `json:"extLineItemId"`
-	State         State       `json:"state"`
-	StateReason   string      `json:"stateReason"`
-	LaunchedAt    *CustomTime `json:"launchedAt"`
+	Title           string      `json:"title"`
+	CountryISOCode  string      `json:"countryISOCode"`
+	LanguageISOCode string      `json:"languageISOCode"`
+	ExtLineItemID   string      `json:"extLineItemId"`
+	State           State       `json:"state"`
+	StateReason     string      `json:"stateReason"`
+	LaunchedAt      *CustomTime `json:"launchedAt"`
 }
 
 // LineItem ...
@@ -81,18 +84,33 @@ type LineItem struct {
 	EndLinks            *EndLinks  `json:"endLinks"`
 }
 
-// LineItemCriteria has the fields to create or update a LineItem
-type LineItemCriteria struct {
+// CreateLineItemCriteria has the fields to create or update a LineItem
+type CreateLineItemCriteria struct {
 	ExtLineItemID       string     `json:"extLineItemId"`
 	Title               string     `json:"title"`
 	CountryISOCode      string     `json:"countryISOCode"`
 	LanguageISOCode     string     `json:"languageISOCode"`
-	SurveyURL           string     `json:"surveyURL"`
-	SurveyTestURL       string     `json:"surveyTestURL"`
+	SurveyURL           *string    `json:"surveyURL,omitempty"`
+	SurveyTestURL       *string    `json:"surveyTestURL,omitempty"`
 	IndicativeIncidence float64    `json:"indicativeIncidence"`
 	DaysInField         int64      `json:"daysInField"`
 	LengthOfInterview   int64      `json:"lengthOfInterview"`
 	RequiredCompletes   int64      `json:"requiredCompletes"`
+	QuotaPlan           *QuotaPlan `json:"quotaPlan"`
+}
+
+// UpdateLineItemCriteria has the fields to create or update a LineItem
+type UpdateLineItemCriteria struct {
+	ExtLineItemID       string     `json:"extLineItemId"`
+	Title               *string    `json:"title"`
+	CountryISOCode      *string    `json:"countryISOCode"`
+	LanguageISOCode     *string    `json:"languageISOCode"`
+	SurveyURL           *string    `json:"surveyURL,omitempty"`
+	SurveyTestURL       *string    `json:"surveyTestURL,omitempty"`
+	IndicativeIncidence *float64   `json:"indicativeIncidence"`
+	DaysInField         *int64     `json:"daysInField"`
+	LengthOfInterview   *int64     `json:"lengthOfInterview"`
+	RequiredCompletes   *int64     `json:"requiredCompletes"`
 	QuotaPlan           *QuotaPlan `json:"quotaPlan"`
 }
 
