@@ -22,7 +22,7 @@ func validateStruct(obj interface{}) error {
 }
 
 func validateNotNull(obj interface{}) error {
-	if obj == nil {
+	if reflect.ValueOf(obj).IsNil() {
 		return errRequiredFieldEmpty
 	}
 	return nil
@@ -66,20 +66,6 @@ func validateAction(action Action) error {
 	return errInvalidFieldValue
 }
 
-func validateCountryCode(countryCode string) error {
-	if !govalidator.IsISO3166Alpha2(countryCode) {
-		return errInvalidFieldValue
-	}
-	return nil
-}
-
-func validateLanguageCode(languageCode string) error {
-	if !govalidator.IsISO693Alpha2(languageCode) {
-		return errInvalidFieldValue
-	}
-	return nil
-}
-
 func validateEmail(email ...string) error {
 	for _, e := range email {
 		if !govalidator.IsEmail(e) {
@@ -94,6 +80,29 @@ func validateDeviceType(device ...DeviceType) error {
 		if d != DeviceTypeDesktop &&
 			d != DeviceTypeMobile &&
 			d != DeviceTypeTablet {
+			return errInvalidFieldValue
+		}
+	}
+	return nil
+}
+
+func isCountryCodeOrEmpty(countryCode string) error {
+	if len(countryCode) > 0 && !govalidator.IsISO3166Alpha2(countryCode) {
+		return errInvalidFieldValue
+	}
+	return nil
+}
+
+func isLanguageCodeOrEmpty(languageCode string) error {
+	if len(languageCode) > 0 && !govalidator.IsISO693Alpha2(languageCode) {
+		return errInvalidFieldValue
+	}
+	return nil
+}
+
+func isURLOrEmpty(url ...string) error {
+	for _, u := range url {
+		if len(u) > 0 && !govalidator.IsURL(u) {
 			return errInvalidFieldValue
 		}
 	}

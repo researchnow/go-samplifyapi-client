@@ -146,7 +146,19 @@ func (c *Client) UpdateLineItem(extProjectID, extLineItemID string, lineItem *Li
 	if err != nil {
 		return nil, err
 	}
-	err = validate(lineItem)
+	err = validateNotNull(lineItem)
+	if err != nil {
+		return nil, err
+	}
+	err = isCountryCodeOrEmpty(lineItem.CountryISOCode)
+	if err != nil {
+		return nil, err
+	}
+	err = isLanguageCodeOrEmpty(lineItem.LanguageISOCode)
+	if err != nil {
+		return nil, err
+	}
+	err = isURLOrEmpty(lineItem.SurveyURL, lineItem.SurveyTestURL)
 	if err != nil {
 		return nil, err
 	}
@@ -222,11 +234,15 @@ func (c *Client) GetCountries(options *QueryOptions) (*GetCountriesResponse, err
 
 // GetAttributes ... Get the list of supported attributes for a country and language. This data is required to build up the Quota Plan.
 func (c *Client) GetAttributes(countryCode, languageCode string, options *QueryOptions) (*GetAttributesResponse, error) {
-	err := validateCountryCode(countryCode)
+	err := validateNotEmpty(countryCode, languageCode)
 	if err != nil {
 		return nil, err
 	}
-	err = validateLanguageCode(languageCode)
+	err = isCountryCodeOrEmpty(countryCode)
+	if err != nil {
+		return nil, err
+	}
+	err = isLanguageCodeOrEmpty(languageCode)
 	if err != nil {
 		return nil, err
 	}
