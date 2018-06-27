@@ -46,7 +46,7 @@ type QuotaCell struct {
 // QuotaNode ...
 type QuotaNode struct {
 	AttributeID string   `json:"attributeId"`
-	OptionIDs   []string `json:"optionIds"`
+	OptionIDs   []string `json:"options"`
 }
 
 // EndLinks ...
