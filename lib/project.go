@@ -62,8 +62,8 @@ type Project struct {
 	Exclusions         *Exclusions  `json:"exclusions"`
 }
 
-// CreateUpdateProjectCriteria has the fields to create or update a project
-type CreateUpdateProjectCriteria struct {
+// ProjectCriteria has the fields to create or update a project
+type ProjectCriteria struct {
 	ExtProjectID       string              `json:"extProjectId"`
 	Title              string              `json:"title"`
 	NotificationEmails []string            `json:"notificationEmails"`

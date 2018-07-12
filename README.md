@@ -56,7 +56,7 @@ if err == nil {
 
 Create a new project:
 ```
-p := &samplify.CreateUpdateProjectCriteria{
+p := &samplify.ProjectCriteria{
 	ExtProjectID: "prj01",
 	Title:        "Samplify Test Project 01",
 	...
@@ -67,7 +67,7 @@ r, err := client.CreateProject(p)
 Update an existing project:
 
 ```
-p := &samplify.CreateUpdateProjectCriteria{
+p := &samplify.ProjectCriteria{
 	ExtProjectID: "prj01",
 	Title:        "Updated, samplify test project 01",
 	...
@@ -109,8 +109,8 @@ If multiple sort objects are provided, the order in which they are added in the 
 
 ## Supported API functions
 
-* CreateProject(project *CreateUpdateProjectCriteria) (*ProjectResponse, error)
-* UpdateProject(project *CreateUpdateProjectCriteria) (*ProjectResponse, error)
+* CreateProject(project *ProjectCriteria) (*ProjectResponse, error)
+* UpdateProject(project *ProjectCriteria) (*ProjectResponse, error)
 * BuyProject(extProjectID string, buy []*BuyProjectCriteria) (*BuyProjectResponse, error)
 * CloseProject(extProjectID string) (*CloseProjectResponse, error)
 * GetAllProjects(options *QueryOptions) (*GetAllProjectsResponse, error)

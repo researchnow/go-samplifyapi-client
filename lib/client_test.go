@@ -69,15 +69,15 @@ func TestClientFunctions(t *testing.T) {
 	client.Options.AuthURL = ts.URL
 	client.Auth = getAuth()
 
-	client.CreateProject(nil)
-	client.UpdateProject(&samplify.CreateUpdateProjectCriteria{ExtProjectID: "update-test"})
-	client.BuyProject("buy-test", nil)
+	client.CreateProject(getProjectCriteria())
+	client.UpdateProject(&samplify.ProjectCriteria{ExtProjectID: "update-test"})
+	client.BuyProject("buy-test", getBuyProjectCriteria())
 	client.CloseProject("close-test")
 	client.GetAllProjects(nil)
 	client.GetProjectBy("test-prj-id")
 	client.GetProjectReport("test-report-id")
-	client.AddLineItem("test", nil)
-	client.UpdateLineItem("test-prj-id", "test-lineitem-id", nil)
+	client.AddLineItem("test", getLineItemCriteria())
+	client.UpdateLineItem("test-prj-id", "test-lineitem-id", &samplify.LineItemCriteria{})
 	client.UpdateLineItemState("test-prj-id", "test-lineitem-id", samplify.ActionPaused)
 	client.GetAllLineItems("test-prj-id", nil)
 	client.GetLineItemBy("test-prj-id", "test-lineitem-id")
@@ -88,6 +88,7 @@ func TestClientFunctions(t *testing.T) {
 	ts.Close()
 
 	if len(urls) != len(tests) {
+		t.Errorf("Validation failed on endpoint(s)\n")
 		t.FailNow()
 	}
 	for i, tt := range tests {
@@ -172,5 +173,65 @@ func getAuth() samplify.TokenResponse {
 		AccessToken: "test",
 		Acquired:    &now,
 		ExpiresIn:   1800,
+	}
+}
+
+func getProjectCriteria() *samplify.ProjectCriteria {
+	return &samplify.ProjectCriteria{
+		ExtProjectID:       "project001",
+		Title:              "Test Survey",
+		NotificationEmails: []string{"api-test@researchnow.com"},
+		Devices:            []samplify.DeviceType{samplify.DeviceTypeMobile, samplify.DeviceTypeDesktop},
+		Category:           &samplify.Category{SurveyTopic: []string{"AUTOMOTIVE", "BUSINESS"}},
+		LineItems:          []*samplify.LineItemCriteria{getLineItemCriteria()},
+	}
+}
+
+func getLineItemCriteria() *samplify.LineItemCriteria {
+	return &samplify.LineItemCriteria{
+		ExtLineItemID:       "lineItem001",
+		Title:               "US College",
+		CountryISOCode:      "US",
+		LanguageISOCode:     "en",
+		SurveyURL:           "www.mysurvey.com/live/survey?pid=2424131312&k2=59931&psid=VgrJ2-9iUQZK3noVDtXobw",
+		SurveyTestURL:       "www.mysurvey.com/test/survey?pid=2424131312&k2=59931&psid=VgrJ2-9iUQZK3noVDtXobw",
+		IndicativeIncidence: 20.0,
+		DaysInField:         20,
+		LengthOfInterview:   10,
+		RequiredCompletes:   200,
+		QuotaPlan: &samplify.QuotaPlan{
+			Filters: []*samplify.QuotaFilters{
+				&samplify.QuotaFilters{AttributeID: "4091", Options: []string{"3", "4"}},
+			},
+			QuotaGroups: []*samplify.QuotaGroup{
+				&samplify.QuotaGroup{
+					Name: "Gender distribution",
+					QuotaCells: []*samplify.QuotaCell{
+						&samplify.QuotaCell{
+							QuotaNodes: []*samplify.QuotaNode{
+								&samplify.QuotaNode{AttributeID: "11", OptionIDs: []string{"1"}},
+							},
+							Perc: 30,
+						},
+						&samplify.QuotaCell{
+							QuotaNodes: []*samplify.QuotaNode{
+								&samplify.QuotaNode{AttributeID: "11", OptionIDs: []string{"2"}},
+							},
+							Perc: 70,
+						},
+					},
+				},
+			},
+		},
+	}
+}
+
+func getBuyProjectCriteria() []*samplify.BuyProjectCriteria {
+	return []*samplify.BuyProjectCriteria{
+		&samplify.BuyProjectCriteria{
+			ExtLineItemID: "lineItem001",
+			SurveyURL:     "www.mysurvey.com/live/survey?pid=2424131312&k2=59931&psid=VgrJ2-9iUQZK3noVDtXobw",
+			SurveyTestURL: "www.mysurvey.com/test/survey?pid=2424131312&k2=59931&psid=VgrJ2-9iUQZK3noVDtXobw",
+		},
 	}
 }

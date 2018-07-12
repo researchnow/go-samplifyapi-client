@@ -29,14 +29,14 @@ type Client struct {
 }
 
 // CreateProject ...
-func (c *Client) CreateProject(project *CreateUpdateProjectCriteria) (*ProjectResponse, error) {
+func (c *Client) CreateProject(project *ProjectCriteria) (*ProjectResponse, error) {
 	res := &ProjectResponse{}
 	err := c.requestAndParseResponse("POST", "/projects", project, res)
 	return res, err
 }
 
 // UpdateProject ...
-func (c *Client) UpdateProject(project *CreateUpdateProjectCriteria) (*ProjectResponse, error) {
+func (c *Client) UpdateProject(project *ProjectCriteria) (*ProjectResponse, error) {
 	res := &ProjectResponse{}
 	path := fmt.Sprintf("/projects/%s", project.ExtProjectID)
 	err := c.requestAndParseResponse("POST", path, project, res)
