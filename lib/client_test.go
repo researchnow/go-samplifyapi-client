@@ -70,7 +70,7 @@ func TestClientFunctions(t *testing.T) {
 	client.Auth = getAuth()
 
 	client.CreateProject(getProjectCriteria())
-	client.UpdateProject(&samplify.CreateUpdateProjectCriteria{ExtProjectID: "update-test"})
+	client.UpdateProject(&samplify.ProjectCriteria{ExtProjectID: "update-test"})
 	client.BuyProject("buy-test", getBuyProjectCriteria())
 	client.CloseProject("close-test")
 	client.GetAllProjects(nil)
@@ -176,8 +176,8 @@ func getAuth() samplify.TokenResponse {
 	}
 }
 
-func getProjectCriteria() *samplify.CreateUpdateProjectCriteria {
-	return &samplify.CreateUpdateProjectCriteria{
+func getProjectCriteria() *samplify.ProjectCriteria {
+	return &samplify.ProjectCriteria{
 		ExtProjectID:       "project001",
 		Title:              "Test Survey",
 		NotificationEmails: []string{"api-test@researchnow.com"},
@@ -194,6 +194,7 @@ func getLineItemCriteria() *samplify.LineItemCriteria {
 		CountryISOCode:      "US",
 		LanguageISOCode:     "en",
 		SurveyURL:           "www.mysurvey.com/live/survey?pid=2424131312&k2=59931&psid=VgrJ2-9iUQZK3noVDtXobw",
+		SurveyTestURL:       "www.mysurvey.com/test/survey?pid=2424131312&k2=59931&psid=VgrJ2-9iUQZK3noVDtXobw",
 		IndicativeIncidence: 20.0,
 		DaysInField:         20,
 		LengthOfInterview:   10,
@@ -205,19 +206,18 @@ func getLineItemCriteria() *samplify.LineItemCriteria {
 			QuotaGroups: []*samplify.QuotaGroup{
 				&samplify.QuotaGroup{
 					Name: "Gender distribution",
-					Quotas: []*samplify.Quota{
-						&samplify.Quota{
-							AttributeID: "11",
-							Options: []*samplify.QuotaOption{
-								&samplify.QuotaOption{
-									Option: []string{"1"},
-									Perc:   30.0,
-								},
-								&samplify.QuotaOption{
-									Option: []string{"2"},
-									Perc:   70.0,
-								},
+					QuotaCells: []*samplify.QuotaCell{
+						&samplify.QuotaCell{
+							QuotaNodes: []*samplify.QuotaNode{
+								&samplify.QuotaNode{AttributeID: "11", OptionIDs: []string{"1"}},
 							},
+							Perc: 30,
+						},
+						&samplify.QuotaCell{
+							QuotaNodes: []*samplify.QuotaNode{
+								&samplify.QuotaNode{AttributeID: "11", OptionIDs: []string{"2"}},
+							},
+							Perc: 70,
 						},
 					},
 				},

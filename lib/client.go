@@ -9,10 +9,10 @@ import (
 )
 
 const (
-	prodAuthURL    = "https://api.researchnow.com/auth/v1/token/password"
-	prodAPIBaseURL = "https://api.researchnow.com/sample/v1"
-	uatAuthURL     = "https://api.uat.pe.researchnow.com/auth/v1/token/password"
-	uatAPIBaseURL  = "https://api.uat.pe.researchnow.com/sample/v1"
+	prodAuthBaseURL = "https://api.researchnow.com/auth/v1"
+	prodAPIBaseURL  = "https://api.researchnow.com/sample/v1"
+	uatAuthBaseURL  = "https://api.uat.pe.researchnow.com/auth/v1"
+	uatAPIBaseURL   = "https://api.uat.pe.researchnow.com/sample/v1"
 )
 
 // ClientOptions ...
@@ -29,7 +29,7 @@ type Client struct {
 }
 
 // CreateProject ...
-func (c *Client) CreateProject(project *CreateUpdateProjectCriteria) (*ProjectResponse, error) {
+func (c *Client) CreateProject(project *ProjectCriteria) (*ProjectResponse, error) {
 	err := validate(project)
 	if err != nil {
 		return nil, err
@@ -40,7 +40,7 @@ func (c *Client) CreateProject(project *CreateUpdateProjectCriteria) (*ProjectRe
 }
 
 // UpdateProject ...
-func (c *Client) UpdateProject(project *CreateUpdateProjectCriteria) (*ProjectResponse, error) {
+func (c *Client) UpdateProject(project *ProjectCriteria) (*ProjectResponse, error) {
 	err := validateNotNull(project)
 	if err != nil {
 		return nil, err
@@ -260,7 +260,55 @@ func (c *Client) GetSurveyTopics(options *QueryOptions) (*GetSurveyTopicsRespons
 	return res, err
 }
 
-// GetAuth ... Access token is automatically acquired. This is just for debug purposes.
+// RefreshToken ...
+func (c *Client) RefreshToken() error {
+	if c.Auth.AccessTokenExpired() {
+		auth, err := c.GetAuth()
+		if err != nil {
+			return err
+		}
+		c.Auth = auth
+		return nil
+	}
+	t := time.Now()
+	req := struct {
+		ClientID     string `json:"clientId"`
+		RefreshToken string `json:"refreshToken"`
+	}{
+		ClientID:     c.Credentials.ClientID,
+		RefreshToken: c.Auth.RefreshToken,
+	}
+	ar, err := sendRequest(c.Options.AuthURL, "POST", "/token/refresh", "", req)
+	if err != nil {
+		return err
+	}
+	err = json.Unmarshal(ar.Body, &c.Auth)
+	if err != nil {
+		return err
+	}
+	c.Auth.Acquired = &t
+	return nil
+}
+
+// Logout ...
+func (c *Client) Logout() error {
+	if c.Auth.AccessTokenExpired() {
+		return nil
+	}
+	req := struct {
+		ClientID     string `json:"clientId"`
+		RefreshToken string `json:"refreshToken"`
+		AccessToken  string `json:"accessToken"`
+	}{
+		ClientID:     c.Credentials.ClientID,
+		RefreshToken: c.Auth.RefreshToken,
+		AccessToken:  c.Auth.AccessToken,
+	}
+	_, err := sendRequest(c.Options.AuthURL, "POST", "/logout", "", req)
+	return err
+}
+
+// GetAuth ...
 func (c *Client) GetAuth() (TokenResponse, error) {
 	err := c.requestAndParseToken()
 	if err != nil {
@@ -307,7 +355,7 @@ func (c *Client) request(method, url string, body interface{}) (*APIResponse, er
 func (c *Client) requestAndParseToken() error {
 	log.Printf("Acquiring access token for %v", c.Credentials.ClientID)
 	t := time.Now()
-	ar, err := sendRequest(c.Options.AuthURL, "POST", "", "", c.Credentials)
+	ar, err := sendRequest(c.Options.AuthURL, "POST", "/token/password", "", c.Credentials)
 	if err != nil {
 		return err
 	}
@@ -322,9 +370,9 @@ func (c *Client) requestAndParseToken() error {
 // NewClient returns an API client.
 // Uses environment variable `env` = {uat|prod} to select host. If none provided, "uat" is used.
 func NewClient(clientID, username, passsword string) *Client {
-	options := &ClientOptions{APIBaseURL: uatAPIBaseURL, AuthURL: uatAuthURL}
+	options := &ClientOptions{APIBaseURL: uatAPIBaseURL, AuthURL: uatAuthBaseURL}
 	if isProdEnv() {
-		options = &ClientOptions{APIBaseURL: prodAPIBaseURL, AuthURL: prodAuthURL}
+		options = &ClientOptions{APIBaseURL: prodAPIBaseURL, AuthURL: prodAuthBaseURL}
 	}
 	log.Printf("using env: %s\n", getEnvironment())
 	return &Client{

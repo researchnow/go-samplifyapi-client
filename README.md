@@ -56,7 +56,7 @@ if err == nil {
 
 Create a new project:
 ```
-p := &samplify.CreateUpdateProjectCriteria{
+p := &samplify.ProjectCriteria{
 	ExtProjectID: "prj01",
 	Title:        "Samplify Test Project 01",
 	...
@@ -67,7 +67,7 @@ r, err := client.CreateProject(p)
 Update an existing project:
 
 ```
-p := &samplify.CreateUpdateProjectCriteria{
+p := &samplify.ProjectCriteria{
 	ExtProjectID: "prj01",
 	Title:        "Updated, samplify test project 01",
 	...
@@ -81,7 +81,7 @@ The returned, `ProjectResponse` object contains:
 
 ## Filtering & Sorting
 
-All client functions that take `*QueryOptions` parameter, support filtering and sorting. Nested fields are not supported for filtering and sorting operations.
+All client functions that take `*QueryOptions` parameter, support filtering/sorting & pagination. Nested fields are not supported for filtering and sorting operations. Default `limit` value is set to 10 but values up to 50 are permitted.
 
 ```
 options := &samplify.QueryOptions{
@@ -93,6 +93,8 @@ options := &samplify.QueryOptions{
 		&samplify.Sort{Field: samplify.QueryFieldCreatedAt, Direction: samplify.SortDirectionAsc},
 		&samplify.Sort{Field: samplify.QueryFieldExtProjectID, Direction: samplify.SortDirectionDesc},
 	},
+	Offset: 10,
+	Limit: 5,
 }
 
 r, err := client.GetAllProjects(options)
@@ -107,8 +109,8 @@ If multiple sort objects are provided, the order in which they are added in the 
 
 ## Supported API functions
 
-* CreateProject(project *CreateUpdateProjectCriteria) (*ProjectResponse, error)
-* UpdateProject(project *CreateUpdateProjectCriteria) (*ProjectResponse, error)
+* CreateProject(project *ProjectCriteria) (*ProjectResponse, error)
+* UpdateProject(project *ProjectCriteria) (*ProjectResponse, error)
 * BuyProject(extProjectID string, buy []*BuyProjectCriteria) (*BuyProjectResponse, error)
 * CloseProject(extProjectID string) (*CloseProjectResponse, error)
 * GetAllProjects(options *QueryOptions) (*GetAllProjectsResponse, error)
@@ -123,6 +125,8 @@ If multiple sort objects are provided, the order in which they are added in the 
 * GetCountries(options *QueryOptions) (*GetCountriesResponse, error)
 * GetAttributes(countryCode, languageCode string, options *QueryOptions) (*GetAttributesResponse, error)
 * GetSurveyTopics(options *QueryOptions) (*GetSurveyTopicsResponse, error)
+* RefreshToken() error
+* Logout() error
 
 
 ## Versioning

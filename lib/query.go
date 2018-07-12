@@ -50,10 +50,15 @@ type Filter struct {
 	Value interface{}
 }
 
-// QueryOptions ... Filtering/Sorting for GET endpoints that return an object list
+const maxLimit uint = 50
+
+// QueryOptions ... Filtering/Sorting and pagination params for GET endpoints that return an object list
+// Default limit = 10, maximum limit value = 50
 type QueryOptions struct {
 	FilterBy []*Filter
 	SortBy   []*Sort
+	Offset   uint
+	Limit    uint
 }
 
 func query2String(options *QueryOptions) string {
@@ -74,6 +79,19 @@ func query2String(options *QueryOptions) string {
 				query = fmt.Sprintf("%s%s%s:%s", query, sep, s.Field, s.Direction)
 				sep = ","
 			}
+		}
+		if len(sep) > 0 {
+			sep = "&amp;"
+		}
+		if options.Offset > 0 {
+			query = fmt.Sprintf("%s%soffset=%d", query, sep, options.Offset)
+			sep = "&amp;"
+		}
+		if options.Limit > 0 {
+			if options.Limit > maxLimit {
+				options.Limit = maxLimit
+			}
+			query = fmt.Sprintf("%s%slimit=%d", query, sep, options.Limit)
 		}
 	}
 	return query
