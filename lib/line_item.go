@@ -122,9 +122,21 @@ type LineItemReport struct {
 type Feasibility struct {
 	Status           FeasibilityStatus `json:"status"`
 	CostPerInterview float64           `json:"costPerInterview"`
-	Expiry           CustomTime        `json:"expiry"`
 	Currency         string            `json:"currency"`
 	Feasible         bool              `json:"feasible"`
+	TotalCount       int64             `json:"totalCount"`
+	ValueCounts      []*ValueCount     `json:"valueCounts"`
+}
+
+// ValueCount ...
+type ValueCount struct {
+	QuotaCells []*FeasibilityQuotaCell `json:"quotaCells"`
+}
+
+// FeasibilityQuotaCell ...
+type FeasibilityQuotaCell struct {
+	FeasibilityCount int64        `json:"feasibilityCount"`
+	QuotaNodes       []*QuotaNode `json:"quotaNodes"`
 }
 
 // Attribute ... Supported attribute for a country and language. Required to build up the Quota Plan
