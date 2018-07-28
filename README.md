@@ -56,7 +56,7 @@ if err == nil {
 
 Create a new project:
 ```
-p := &samplify.ProjectCriteria{
+p := &samplify.CreateProjectCriteria{
 	ExtProjectID: "prj01",
 	Title:        "Samplify Test Project 01",
 	...
@@ -67,9 +67,10 @@ r, err := client.CreateProject(p)
 Update an existing project:
 
 ```
-p := &samplify.ProjectCriteria{
+title := "Updated, samplify test project 01"
+p := &samplify.UpdateProjectCriteria{
 	ExtProjectID: "prj01",
-	Title:        "Updated, samplify test project 01",
+	Title:        &title,
 	...
 }
 r, err := client.UpdateProject(p)
@@ -109,15 +110,15 @@ If multiple sort objects are provided, the order in which they are added in the 
 
 ## Supported API functions
 
-* CreateProject(project *ProjectCriteria) (*ProjectResponse, error)
-* UpdateProject(project *ProjectCriteria) (*ProjectResponse, error)
+* CreateProject(project *CreateProjectCriteria) (*ProjectResponse, error)
+* UpdateProject(project *UpdateProjectCriteria) (*ProjectResponse, error)
 * BuyProject(extProjectID string, buy []*BuyProjectCriteria) (*BuyProjectResponse, error)
 * CloseProject(extProjectID string) (*CloseProjectResponse, error)
 * GetAllProjects(options *QueryOptions) (*GetAllProjectsResponse, error)
 * GetProjectBy(extProjectID string) (*ProjectResponse, error)
 * GetProjectReport(extProjectID string) (*ProjectReportResponse, error)
-* AddLineItem(extProjectID string, lineItem *LineItemCriteria) (*LineItemResponse, error)
-* UpdateLineItem(extProjectID, extLineItemID string, lineItem *LineItemCriteria) (*LineItemResponse, error)
+* AddLineItem(extProjectID string, lineItem *CreateLineItemCriteria) (*LineItemResponse, error)
+* UpdateLineItem(extProjectID, extLineItemID string, lineItem *UpdateLineItemCriteria) (*LineItemResponse, error)
 * UpdateLineItemState(extProjectID, extLineItemID string, action Action) (*ChangeLineItemStateResponse, error)
 * GetAllLineItems(extProjectID string, options *QueryOptions) (*GetAllLineItemsResponse, error)
 * GetLineItemBy(extProjectID, extLineItemID string) (*LineItemResponse, error)

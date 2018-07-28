@@ -62,15 +62,26 @@ type Project struct {
 	Exclusions         *Exclusions  `json:"exclusions"`
 }
 
-// ProjectCriteria has the fields to create or update a project
-type ProjectCriteria struct {
-	ExtProjectID       string              `json:"extProjectId" valid:"required"`
-	Title              string              `json:"title,omitempty" valid:"required"`
-	NotificationEmails []string            `json:"notificationEmails,omitempty" valid:"email,required"`
-	Devices            []DeviceType        `json:"devices,omitempty" valid:"required,DeviceType"`
-	Category           *Category           `json:"category,omitempty" valid:"required"`
-	LineItems          []*LineItemCriteria `json:"lineItems,omitempty" valid:"required"`
-	Exclusions         *Exclusions         `json:"exclusions,omitempty" valid:"optional"`
+// CreateProjectCriteria has the fields to create a project
+type CreateProjectCriteria struct {
+	ExtProjectID       string                    `json:"extProjectId" valid:"required"`
+	Title              string                    `json:"title" valid:"required"`
+	NotificationEmails []string                  `json:"notificationEmails" valid:"email,required"`
+	Devices            []DeviceType              `json:"devices" valid:"required,DeviceType"`
+	Category           *Category                 `json:"category" valid:"required"`
+	LineItems          []*CreateLineItemCriteria `json:"lineItems" valid:"required"`
+	Exclusions         *Exclusions               `json:"exclusions,omitempty" valid:"optional"`
+}
+
+// UpdateProjectCriteria has the fields to update a project
+type UpdateProjectCriteria struct {
+	ExtProjectID       string                     `json:"extProjectId" valid:"required"`
+	Title              *string                    `json:"title,omitempty" valid:"optional"`
+	NotificationEmails *[]string                  `json:"notificationEmails,omitempty" valid:"email,optional"`
+	Devices            *[]DeviceType              `json:"devices,omitempty" valid:"DeviceType,optional"`
+	Category           *Category                  `json:"category,omitempty" valid:"optional"`
+	LineItems          *[]*UpdateLineItemCriteria `json:"lineItems,omitempty" valid:"optional"`
+	Exclusions         *Exclusions                `json:"exclusions,omitempty" valid:"optional"`
 }
 
 // BuyProjectCriteria ...
