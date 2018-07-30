@@ -114,8 +114,17 @@ func init() {
 		switch v := i.(type) {
 		case string:
 			return govalidator.IsISO693Alpha2(v)
+		case *string:
+			return govalidator.IsISO693Alpha2(*v)
 		case []string:
 			for _, code := range v {
+				if !govalidator.IsISO693Alpha2(code) {
+					return false
+				}
+			}
+			return true
+		case *[]string:
+			for _, code := range *v {
 				if !govalidator.IsISO693Alpha2(code) {
 					return false
 				}
@@ -137,8 +146,17 @@ func init() {
 		switch v := i.(type) {
 		case DeviceType:
 			return isValid(v)
+		case *DeviceType:
+			return isValid(*v)
 		case []DeviceType:
 			for _, device := range v {
+				if !isValid(device) {
+					return false
+				}
+			}
+			return true
+		case *[]DeviceType:
+			for _, device := range *v {
 				if !isValid(device) {
 					return false
 				}

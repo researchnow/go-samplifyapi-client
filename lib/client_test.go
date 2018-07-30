@@ -70,14 +70,14 @@ func TestClientFunctions(t *testing.T) {
 	client.Auth = getAuth()
 
 	client.CreateProject(getProjectCriteria())
-	client.UpdateProject(&samplify.ProjectCriteria{ExtProjectID: "update-test"})
+	client.UpdateProject(&samplify.UpdateProjectCriteria{ExtProjectID: "update-test"})
 	client.BuyProject("buy-test", getBuyProjectCriteria())
 	client.CloseProject("close-test")
 	client.GetAllProjects(nil)
 	client.GetProjectBy("test-prj-id")
 	client.GetProjectReport("test-report-id")
 	client.AddLineItem("test", getLineItemCriteria())
-	client.UpdateLineItem("test-prj-id", "test-lineitem-id", &samplify.LineItemCriteria{})
+	client.UpdateLineItem("test-prj-id", "test-lineitem-id", &samplify.UpdateLineItemCriteria{})
 	client.UpdateLineItemState("test-prj-id", "test-lineitem-id", samplify.ActionPaused)
 	client.GetAllLineItems("test-prj-id", nil)
 	client.GetLineItemBy("test-prj-id", "test-lineitem-id")
@@ -176,25 +176,27 @@ func getAuth() samplify.TokenResponse {
 	}
 }
 
-func getProjectCriteria() *samplify.ProjectCriteria {
-	return &samplify.ProjectCriteria{
+func getProjectCriteria() *samplify.CreateProjectCriteria {
+	return &samplify.CreateProjectCriteria{
 		ExtProjectID:       "project001",
 		Title:              "Test Survey",
 		NotificationEmails: []string{"api-test@researchnow.com"},
 		Devices:            []samplify.DeviceType{samplify.DeviceTypeMobile, samplify.DeviceTypeDesktop},
 		Category:           &samplify.Category{SurveyTopic: []string{"AUTOMOTIVE", "BUSINESS"}},
-		LineItems:          []*samplify.LineItemCriteria{getLineItemCriteria()},
+		LineItems:          []*samplify.CreateLineItemCriteria{getLineItemCriteria()},
 	}
 }
 
-func getLineItemCriteria() *samplify.LineItemCriteria {
-	return &samplify.LineItemCriteria{
+func getLineItemCriteria() *samplify.CreateLineItemCriteria {
+	surveyURL := "www.mysurvey.com/live/survey?pid=2424131312&k2=59931&psid=VgrJ2-9iUQZK3noVDtXobw"
+	surveyTestURL := "www.mysurvey.com/test/survey?pid=2424131312&k2=59931&psid=VgrJ2-9iUQZK3noVDtXobw"
+	return &samplify.CreateLineItemCriteria{
 		ExtLineItemID:       "lineItem001",
 		Title:               "US College",
 		CountryISOCode:      "US",
 		LanguageISOCode:     "en",
-		SurveyURL:           "www.mysurvey.com/live/survey?pid=2424131312&k2=59931&psid=VgrJ2-9iUQZK3noVDtXobw",
-		SurveyTestURL:       "www.mysurvey.com/test/survey?pid=2424131312&k2=59931&psid=VgrJ2-9iUQZK3noVDtXobw",
+		SurveyURL:           &surveyURL,
+		SurveyTestURL:       &surveyTestURL,
 		IndicativeIncidence: 20.0,
 		DaysInField:         20,
 		LengthOfInterview:   10,

@@ -56,16 +56,23 @@ type UpdateLineItemStateResponse struct {
 	ResponseStatus ResponseStatus  `json:"status"`
 }
 
+// LineItemListItem ...
+type LineItemListItem struct {
+	Model
+	ExtLineItemID   string      `json:"extLineItemId"`
+	State           State       `json:"state"`
+	StateReason     string      `json:"stateReason"`
+	LaunchedAt      *CustomTime `json:"launchedAt"`
+	Title           string      `json:"title"`
+	CountryISOCode  string      `json:"countryISOCode"`
+	LanguageISOCode string      `json:"languageISOCode"`
+}
+
 // GetAllLineItemsResponse ...
 type GetAllLineItemsResponse struct {
-	List []*struct {
-		LineItemHeader
-		Title           string `json:"title"`
-		CountryISOCode  string `json:"countryISOCode"`
-		LanguageISOCode string `json:"languageISOCode"`
-	} `json:"data"`
-	ResponseStatus ResponseStatus `json:"status"`
-	Meta           Meta           `json:"meta"`
+	List           []*LineItemListItem `json:"data"`
+	ResponseStatus ResponseStatus      `json:"status"`
+	Meta           Meta                `json:"meta"`
 }
 
 // GetFeasibilityResponse ...

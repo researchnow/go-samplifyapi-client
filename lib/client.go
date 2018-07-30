@@ -29,7 +29,7 @@ type Client struct {
 }
 
 // CreateProject ...
-func (c *Client) CreateProject(project *ProjectCriteria) (*ProjectResponse, error) {
+func (c *Client) CreateProject(project *CreateProjectCriteria) (*ProjectResponse, error) {
 	err := validate(project)
 	if err != nil {
 		return nil, err
@@ -40,20 +40,8 @@ func (c *Client) CreateProject(project *ProjectCriteria) (*ProjectResponse, erro
 }
 
 // UpdateProject ...
-func (c *Client) UpdateProject(project *ProjectCriteria) (*ProjectResponse, error) {
-	err := validateNotNull(project)
-	if err != nil {
-		return nil, err
-	}
-	err = validateNotEmpty(project.ExtProjectID)
-	if err != nil {
-		return nil, err
-	}
-	err = validateEmail(project.NotificationEmails...)
-	if err != nil {
-		return nil, err
-	}
-	err = validateDeviceType(project.Devices...)
+func (c *Client) UpdateProject(project *UpdateProjectCriteria) (*ProjectResponse, error) {
+	err := validate(project)
 	if err != nil {
 		return nil, err
 	}
@@ -125,7 +113,7 @@ func (c *Client) GetProjectReport(extProjectID string) (*ProjectReportResponse, 
 }
 
 // AddLineItem ...
-func (c *Client) AddLineItem(extProjectID string, lineItem *LineItemCriteria) (*LineItemResponse, error) {
+func (c *Client) AddLineItem(extProjectID string, lineItem *CreateLineItemCriteria) (*LineItemResponse, error) {
 	err := validateNotEmpty(extProjectID)
 	if err != nil {
 		return nil, err
@@ -141,24 +129,14 @@ func (c *Client) AddLineItem(extProjectID string, lineItem *LineItemCriteria) (*
 }
 
 // UpdateLineItem ...
-func (c *Client) UpdateLineItem(extProjectID, extLineItemID string, lineItem *LineItemCriteria) (*LineItemResponse, error) {
+func (c *Client) UpdateLineItem(extProjectID, extLineItemID string,
+	lineItem *UpdateLineItemCriteria) (*LineItemResponse, error) {
+
 	err := validateNotEmpty(extProjectID, extLineItemID)
 	if err != nil {
 		return nil, err
 	}
-	err = validateNotNull(lineItem)
-	if err != nil {
-		return nil, err
-	}
-	err = isCountryCodeOrEmpty(lineItem.CountryISOCode)
-	if err != nil {
-		return nil, err
-	}
-	err = isLanguageCodeOrEmpty(lineItem.LanguageISOCode)
-	if err != nil {
-		return nil, err
-	}
-	err = isURLOrEmpty(lineItem.SurveyURL, lineItem.SurveyTestURL)
+	err = validate(lineItem)
 	if err != nil {
 		return nil, err
 	}

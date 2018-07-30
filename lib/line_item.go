@@ -81,19 +81,34 @@ type LineItem struct {
 	EndLinks            *EndLinks  `json:"endLinks"`
 }
 
-// LineItemCriteria has the fields to create or update a LineItem
-type LineItemCriteria struct {
-	ExtLineItemID       string     `json:"extLineItemId,omitempty" valid:"required"`
-	Title               string     `json:"title,omitempty" valid:"required"`
-	CountryISOCode      string     `json:"countryISOCode,omitempty" valid:"required,ISO3166Alpha2"`
-	LanguageISOCode     string     `json:"languageISOCode,omitempty" valid:"required,languageISOCode"`
-	SurveyURL           string     `json:"surveyURL,omitempty" valid:"optional,url"`
-	SurveyTestURL       string     `json:"surveyTestURL,omitempty" valid:"optional,url"`
-	IndicativeIncidence float64    `json:"indicativeIncidence,omitempty" valid:"required"`
-	DaysInField         int64      `json:"daysInField,omitempty" valid:"required"`
-	LengthOfInterview   int64      `json:"lengthOfInterview,omitempty" valid:"required"`
-	RequiredCompletes   int64      `json:"requiredCompletes,omitempty" valid:"required"`
-	QuotaPlan           *QuotaPlan `json:"quotaPlan,omitempty" valid:"required"`
+// CreateLineItemCriteria has the fields to create a LineItem
+type CreateLineItemCriteria struct {
+	ExtLineItemID       string     `json:"extLineItemId" valid:"required"`
+	Title               string     `json:"title" valid:"required"`
+	CountryISOCode      string     `json:"countryISOCode" valid:"required,ISO3166Alpha2"`
+	LanguageISOCode     string     `json:"languageISOCode" valid:"required,languageISOCode"`
+	SurveyURL           *string    `json:"surveyURL,omitempty" valid:"optional,url"`
+	SurveyTestURL       *string    `json:"surveyTestURL,omitempty" valid:"optional,url"`
+	IndicativeIncidence float64    `json:"indicativeIncidence" valid:"required"`
+	DaysInField         int64      `json:"daysInField" valid:"required"`
+	LengthOfInterview   int64      `json:"lengthOfInterview" valid:"required"`
+	RequiredCompletes   int64      `json:"requiredCompletes" valid:"required"`
+	QuotaPlan           *QuotaPlan `json:"quotaPlan" valid:"required"`
+}
+
+// UpdateLineItemCriteria has the fields to update a LineItem
+type UpdateLineItemCriteria struct {
+	ExtLineItemID       string     `json:"extLineItemId"`
+	Title               *string    `json:"title,omitempty" valid:"optional"`
+	CountryISOCode      *string    `json:"countryISOCode,omitempty" valid:"optional,ISO3166Alpha2"`
+	LanguageISOCode     *string    `json:"languageISOCode,omitempty" valid:"optional,languageISOCode"`
+	SurveyURL           *string    `json:"surveyURL,omitempty" valid:"optional,url"`
+	SurveyTestURL       *string    `json:"surveyTestURL,omitempty" valid:"optional,url"`
+	IndicativeIncidence *float64   `json:"indicativeIncidence,omitempty" valid:"optional"`
+	DaysInField         *int64     `json:"daysInField,omitempty" valid:"optional"`
+	LengthOfInterview   *int64     `json:"lengthOfInterview,omitempty" valid:"optional"`
+	RequiredCompletes   *int64     `json:"requiredCompletes,omitempty" valid:"optional"`
+	QuotaPlan           *QuotaPlan `json:"quotaPlan,omitempty" valid:"optional"`
 }
 
 // BuyProjectLineItem ...
