@@ -59,6 +59,7 @@ type QueryOptions struct {
 	SortBy   []*Sort
 	Offset   uint
 	Limit    uint
+	Scope    string
 }
 
 func query2String(options *QueryOptions) string {
@@ -66,6 +67,10 @@ func query2String(options *QueryOptions) string {
 	if options != nil {
 		query = "?"
 		sep := ""
+		if len(options.Scope) > 0 {
+			query = fmt.Sprintf("?scope=%s", options.Scope)
+			sep = "&amp;"
+		}
 		if len(options.FilterBy) > 0 {
 			for _, f := range options.FilterBy {
 				query = fmt.Sprintf("%s%s%s=%s", query, sep, f.Field, url.QueryEscape(fmt.Sprintf("%s", f.Value)))
