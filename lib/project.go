@@ -100,7 +100,7 @@ type ProjectReport struct {
 	Screenouts         int64             `json:"screenouts"`
 	Overquotas         int64             `json:"overquotas"`
 	Starts             int64             `json:"starts"`
-	Conversion         int64             `json:"conversion"`
+	Conversion         float64           `json:"conversion"`
 	RemainingCompletes int64             `json:"remainingCompletes"`
 	ActualMedianLOI    int64             `json:"actualMedianLOI"`
 	IncurredCost       float64           `json:"incurredCost"`
