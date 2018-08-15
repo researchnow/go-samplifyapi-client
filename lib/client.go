@@ -238,6 +238,14 @@ func (c *Client) GetSurveyTopics(options *QueryOptions) (*GetSurveyTopicsRespons
 	return res, err
 }
 
+// GetApplication ...
+func (c *Client) GetApplication() (*GetApplicationResponse, error) {
+	res := &GetApplicationResponse{}
+	path := "/users/applications"
+	err := c.requestAndParseResponse("GET", path, nil, res)
+	return res, err
+}
+
 // RefreshToken ...
 func (c *Client) RefreshToken() error {
 	if c.Auth.AccessTokenExpired() {

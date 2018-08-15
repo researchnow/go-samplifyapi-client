@@ -104,6 +104,18 @@ type GetSurveyTopicsResponse struct {
 	Meta           Meta           `json:"meta"`
 }
 
+// GetApplicationResponse ...
+type GetApplicationResponse struct {
+	Apps []*struct {
+		AppID   int64  `json:"appId"`
+		Current bool   `json:"current"`
+		Default bool   `json:"default"`
+		Name    string `json:"name"`
+	} `json:"data"`
+	ResponseStatus ResponseStatus `json:"status"`
+	Meta           Meta           `json:"meta"`
+}
+
 // ResponseStatus is the custom status part in API response. (Optional in some endpoints)
 type ResponseStatus struct {
 	Message string      `json:"message"`
