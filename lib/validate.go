@@ -188,4 +188,22 @@ func init() {
 			return false
 		}
 	}))
+	govalidator.CustomTypeTagMap.Set("DeliveryType", govalidator.CustomTypeValidator(func(i interface{}, o interface{}) bool {
+		var isValid = func(val DeliveryType) bool {
+			if val != DeliveryTypeSlow &&
+				val != DeliveryTypeBalanced &&
+				val != DeliveryTypeFast {
+				return false
+			}
+			return true
+		}
+		switch v := i.(type) {
+		case DeliveryType:
+			return isValid(v)
+		case *DeliveryType:
+			return isValid(*v)
+		default:
+			return false
+		}
+	}))
 }

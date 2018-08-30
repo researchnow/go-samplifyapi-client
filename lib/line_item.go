@@ -19,6 +19,16 @@ const (
 	FeasibilityStatusProcessing FeasibilityStatus = "PROCESSING"
 )
 
+// DeliveryType ...
+type DeliveryType string
+
+// DeliveryType values
+const (
+	DeliveryTypeSlow     DeliveryType = "SLOW"
+	DeliveryTypeBalanced DeliveryType = "BALANCED"
+	DeliveryTypeFast     DeliveryType = "FAST"
+)
+
 //QuotaPlan ...
 type QuotaPlan struct {
 	Filters     []*QuotaFilters `json:"filters,omitempty" valid:"required"`
@@ -68,47 +78,50 @@ type LineItemHeader struct {
 // LineItem ...
 type LineItem struct {
 	LineItemHeader
-	Title               string     `json:"title"`
-	CountryISOCode      string     `json:"countryISOCode"`
-	LanguageISOCode     string     `json:"languageISOCode"`
-	SurveyURL           string     `json:"surveyURL"`
-	SurveyTestURL       string     `json:"surveyTestURL"`
-	IndicativeIncidence float64    `json:"indicativeIncidence"`
-	DaysInField         int64      `json:"daysInField"`
-	LengthOfInterview   int64      `json:"lengthOfInterview"`
-	RequiredCompletes   int64      `json:"requiredCompletes"`
-	QuotaPlan           *QuotaPlan `json:"quotaPlan"`
-	EndLinks            *EndLinks  `json:"endLinks"`
+	Title               string       `json:"title"`
+	CountryISOCode      string       `json:"countryISOCode"`
+	LanguageISOCode     string       `json:"languageISOCode"`
+	SurveyURL           string       `json:"surveyURL"`
+	SurveyTestURL       string       `json:"surveyTestURL"`
+	IndicativeIncidence float64      `json:"indicativeIncidence"`
+	DaysInField         int64        `json:"daysInField"`
+	LengthOfInterview   int64        `json:"lengthOfInterview"`
+	DeliveryType        DeliveryType `json:"deliveryType"`
+	RequiredCompletes   int64        `json:"requiredCompletes"`
+	QuotaPlan           *QuotaPlan   `json:"quotaPlan"`
+	EndLinks            *EndLinks    `json:"endLinks"`
 }
 
 // CreateLineItemCriteria has the fields to create a LineItem
 type CreateLineItemCriteria struct {
-	ExtLineItemID       string     `json:"extLineItemId" valid:"required"`
-	Title               string     `json:"title" valid:"required"`
-	CountryISOCode      string     `json:"countryISOCode" valid:"required,ISO3166Alpha2"`
-	LanguageISOCode     string     `json:"languageISOCode" valid:"required,languageISOCode"`
-	SurveyURL           *string    `json:"surveyURL,omitempty" valid:"optional,url"`
-	SurveyTestURL       *string    `json:"surveyTestURL,omitempty" valid:"optional,url"`
-	IndicativeIncidence float64    `json:"indicativeIncidence" valid:"required"`
-	DaysInField         int64      `json:"daysInField" valid:"required"`
-	LengthOfInterview   int64      `json:"lengthOfInterview" valid:"required"`
-	RequiredCompletes   int64      `json:"requiredCompletes" valid:"required"`
-	QuotaPlan           *QuotaPlan `json:"quotaPlan" valid:"required"`
+	ExtLineItemID       string        `json:"extLineItemId" valid:"required"`
+	Title               string        `json:"title" valid:"required"`
+	CountryISOCode      string        `json:"countryISOCode" valid:"required,ISO3166Alpha2"`
+	LanguageISOCode     string        `json:"languageISOCode" valid:"required,languageISOCode"`
+	SurveyURL           *string       `json:"surveyURL,omitempty" valid:"optional,url"`
+	SurveyTestURL       *string       `json:"surveyTestURL,omitempty" valid:"optional,url"`
+	IndicativeIncidence float64       `json:"indicativeIncidence" valid:"required"`
+	DaysInField         int64         `json:"daysInField" valid:"required"`
+	LengthOfInterview   int64         `json:"lengthOfInterview" valid:"required"`
+	DeliveryType        *DeliveryType `json:"deliveryType" valid:"optional,DeliveryType"`
+	RequiredCompletes   int64         `json:"requiredCompletes" valid:"required"`
+	QuotaPlan           *QuotaPlan    `json:"quotaPlan" valid:"required"`
 }
 
 // UpdateLineItemCriteria has the fields to update a LineItem
 type UpdateLineItemCriteria struct {
-	ExtLineItemID       string     `json:"extLineItemId"`
-	Title               *string    `json:"title,omitempty" valid:"optional"`
-	CountryISOCode      *string    `json:"countryISOCode,omitempty" valid:"optional,ISO3166Alpha2"`
-	LanguageISOCode     *string    `json:"languageISOCode,omitempty" valid:"optional,languageISOCode"`
-	SurveyURL           *string    `json:"surveyURL,omitempty" valid:"optional,url"`
-	SurveyTestURL       *string    `json:"surveyTestURL,omitempty" valid:"optional,url"`
-	IndicativeIncidence *float64   `json:"indicativeIncidence,omitempty" valid:"optional"`
-	DaysInField         *int64     `json:"daysInField,omitempty" valid:"optional"`
-	LengthOfInterview   *int64     `json:"lengthOfInterview,omitempty" valid:"optional"`
-	RequiredCompletes   *int64     `json:"requiredCompletes,omitempty" valid:"optional"`
-	QuotaPlan           *QuotaPlan `json:"quotaPlan,omitempty" valid:"optional"`
+	ExtLineItemID       string        `json:"extLineItemId"`
+	Title               *string       `json:"title,omitempty" valid:"optional"`
+	CountryISOCode      *string       `json:"countryISOCode,omitempty" valid:"optional,ISO3166Alpha2"`
+	LanguageISOCode     *string       `json:"languageISOCode,omitempty" valid:"optional,languageISOCode"`
+	SurveyURL           *string       `json:"surveyURL,omitempty" valid:"optional,url"`
+	SurveyTestURL       *string       `json:"surveyTestURL,omitempty" valid:"optional,url"`
+	IndicativeIncidence *float64      `json:"indicativeIncidence,omitempty" valid:"optional"`
+	DaysInField         *int64        `json:"daysInField,omitempty" valid:"optional"`
+	LengthOfInterview   *int64        `json:"lengthOfInterview,omitempty" valid:"optional"`
+	DeliveryType        *DeliveryType `json:"deliveryType" valid:"optional,DeliveryType"`
+	RequiredCompletes   *int64        `json:"requiredCompletes,omitempty" valid:"optional"`
+	QuotaPlan           *QuotaPlan    `json:"quotaPlan,omitempty" valid:"optional"`
 }
 
 // BuyProjectLineItem ...
