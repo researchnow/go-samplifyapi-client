@@ -50,10 +50,10 @@ type Filter struct {
 	Value interface{}
 }
 
-const maxLimit uint = 50
+const maxLimit uint = 1000
 
 // QueryOptions ... Filtering/Sorting and pagination params for GET endpoints that return an object list
-// Default limit = 10, maximum limit value = 50
+// Default limit = 10, maximum limit value = 1000
 type QueryOptions struct {
 	FilterBy []*Filter
 	SortBy   []*Sort

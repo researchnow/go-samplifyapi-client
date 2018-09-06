@@ -82,7 +82,7 @@ The returned, `ProjectResponse` object contains:
 
 ## Filtering & Sorting
 
-All client functions that take `*QueryOptions` parameter, support filtering/sorting & pagination. Nested fields are not supported for filtering and sorting operations. Default `limit` value is set to 10 but values up to 50 are permitted.
+All client functions that take `*QueryOptions` parameter, support filtering/sorting & pagination. Nested fields are not supported for filtering and sorting operations. Default `limit` value is set to 10 but value up to 1000 is permitted.
 
 ```
 options := &samplify.QueryOptions{
