@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -347,12 +348,13 @@ func (c *Client) requestAndParseToken() error {
 
 // NewClient returns an API client.
 // Uses environment variable `env` = {uat|prod} to select host. If none provided, "uat" is used.
-func NewClient(clientID, username, passsword string) *Client {
-	options := &ClientOptions{APIBaseURL: uatAPIBaseURL, AuthURL: uatAuthBaseURL}
-	if isProdEnv() {
+func NewClient(clientID, username, passsword string, options *ClientOptions) *Client {
+	if options == nil {
 		options = &ClientOptions{APIBaseURL: prodAPIBaseURL, AuthURL: prodAuthBaseURL}
+		if os.Getenv("env") != "prod" {
+			options = &ClientOptions{APIBaseURL: uatAPIBaseURL, AuthURL: uatAuthBaseURL}
+		}
 	}
-	log.Printf("using env: %s\n", getEnvironment())
 	return &Client{
 		Credentials: TokenRequest{
 			ClientID: clientID,
