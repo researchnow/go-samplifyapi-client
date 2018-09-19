@@ -26,3 +26,12 @@ func (t *TokenResponse) AccessTokenExpired() bool {
 	}
 	return false
 }
+
+// RefreshTokenExpired ...
+func (t *TokenResponse) RefreshTokenExpired() bool {
+	if len(t.RefreshToken) == 0 || t.Acquired == nil ||
+		time.Since(*t.Acquired).Seconds() > float64(t.RefreshExpiresIn) {
+		return true
+	}
+	return false
+}

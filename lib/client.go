@@ -2,9 +2,11 @@ package samplify
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -14,6 +16,9 @@ const (
 	uatAuthBaseURL  = "https://api.uat.pe.researchnow.com/auth/v1"
 	uatAPIBaseURL   = "https://api.uat.pe.researchnow.com/sample/v1"
 )
+
+// ErrSessionExpired ... Returns if both Access and Refresh tokens are expired
+var ErrSessionExpired = errors.New("session expired")
 
 // ClientOptions ...
 type ClientOptions struct {
@@ -240,13 +245,8 @@ func (c *Client) GetSurveyTopics(options *QueryOptions) (*GetSurveyTopicsRespons
 
 // RefreshToken ...
 func (c *Client) RefreshToken() error {
-	if c.Auth.AccessTokenExpired() {
-		auth, err := c.GetAuth()
-		if err != nil {
-			return err
-		}
-		c.Auth = auth
-		return nil
+	if c.Auth.RefreshTokenExpired() {
+		return ErrSessionExpired
 	}
 	t := time.Now()
 	req := struct {
@@ -349,10 +349,9 @@ func (c *Client) requestAndParseToken() error {
 // Uses environment variable `env` = {uat|prod} to select host. If none provided, "uat" is used.
 func NewClient(clientID, username, passsword string) *Client {
 	options := &ClientOptions{APIBaseURL: uatAPIBaseURL, AuthURL: uatAuthBaseURL}
-	if isProdEnv() {
+	if os.Getenv("env") == "prod" {
 		options = &ClientOptions{APIBaseURL: prodAPIBaseURL, AuthURL: prodAuthBaseURL}
 	}
-	log.Printf("using env: %s\n", getEnvironment())
 	return &Client{
 		Credentials: TokenRequest{
 			ClientID: clientID,
