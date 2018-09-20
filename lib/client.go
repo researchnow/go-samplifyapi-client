@@ -6,15 +6,19 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 	"time"
 )
 
-const (
-	prodAuthBaseURL = "https://api.researchnow.com/auth/v1"
-	prodAPIBaseURL  = "https://api.researchnow.com/sample/v1"
-	uatAuthBaseURL  = "https://api.uat.pe.researchnow.com/auth/v1"
-	uatAPIBaseURL   = "https://api.uat.pe.researchnow.com/sample/v1"
+// ClientOptions to use while creating a new Client
+var (
+	UATClientOptions = &ClientOptions{
+		APIBaseURL: "https://api.uat.pe.researchnow.com/sample/v1",
+		AuthURL:    "https://api.uat.pe.researchnow.com/auth/v1",
+	}
+	ProdClientOptions = &ClientOptions{
+		APIBaseURL: "https://api.researchnow.com/sample/v1",
+		AuthURL:    "https://api.researchnow.com/auth/v1",
+	}
 )
 
 // ErrSessionExpired ... Returns if both Access and Refresh tokens are expired
@@ -346,11 +350,10 @@ func (c *Client) requestAndParseToken() error {
 }
 
 // NewClient returns an API client.
-// Uses environment variable `env` = {uat|prod} to select host. If none provided, "uat" is used.
-func NewClient(clientID, username, passsword string) *Client {
-	options := &ClientOptions{APIBaseURL: uatAPIBaseURL, AuthURL: uatAuthBaseURL}
-	if os.Getenv("env") == "prod" {
-		options = &ClientOptions{APIBaseURL: prodAPIBaseURL, AuthURL: prodAuthBaseURL}
+// If options is nil, UATClientOptions will be used.
+func NewClient(clientID, username, passsword string, options *ClientOptions) *Client {
+	if options == nil {
+		options = UATClientOptions
 	}
 	return &Client{
 		Credentials: TokenRequest{
