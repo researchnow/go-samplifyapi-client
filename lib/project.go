@@ -47,9 +47,10 @@ type Exclusions struct {
 // ProjectHeader ...
 type ProjectHeader struct {
 	Model
-	ExtProjectID string `json:"extProjectId"`
-	Title        string `json:"title"`
-	State        State  `json:"state"`
+	ExtProjectID string  `json:"extProjectId"`
+	Title        string  `json:"title"`
+	State        State   `json:"state"`
+	Author       *Author `json:"author"`
 }
 
 // Project ...
