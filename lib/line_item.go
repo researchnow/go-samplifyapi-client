@@ -61,9 +61,11 @@ type QuotaNode struct {
 
 // EndLinks ...
 type EndLinks struct {
-	Complete  string `json:"complete"`
-	Screenout string `json:"screenout"`
-	OverQuota string `json:"overquota"`
+	Complete      string `json:"complete"`
+	Screenout     string `json:"screenout"`
+	OverQuota     string `json:"overquota"`
+	SecurityKey1  string `json:"securityKey1"`
+	SecurityLevel string `json:"securityLevel"`
 }
 
 // LineItemHeader ...
@@ -169,11 +171,13 @@ type FeasibilityQuotaCell struct {
 
 // Attribute ... Supported attribute for a country and language. Required to build up the Quota Plan
 type Attribute struct {
-	ID      string             `json:"id"`
-	Name    string             `json:"name"`
-	Text    string             `json:"text"`
-	Type    string             `json:"type"`
-	Options []*AttributeOption `json:"options"`
+	ID                 string             `json:"id"`
+	Name               string             `json:"name"`
+	Text               string             `json:"text"`
+	IsAllowedInFilters bool               `json:"isAllowedInFilters"`
+	IsAllowedInQuotas  bool               `json:"isAllowedInQuotas"`
+	Type               string             `json:"type"`
+	Options            []*AttributeOption `json:"options"`
 }
 
 // AttributeOption ...
