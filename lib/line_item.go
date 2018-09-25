@@ -142,6 +142,7 @@ type LineItemReport struct {
 	Screenouts         int64   `json:"screenouts"`
 	Starts             int64   `json:"starts"`
 	Conversion         float64 `json:"conversion"`
+	CurrencyCode       string  `json:"currencyCode"`
 	RemainingCompletes int64   `json:"remainingCompletes"`
 	ActualMedianLOI    int64   `json:"actualMedianLOI"`
 	IncurredCost       float64 `json:"incurredCost"`
