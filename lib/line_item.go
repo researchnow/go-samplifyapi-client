@@ -32,7 +32,7 @@ const (
 //QuotaPlan ...
 type QuotaPlan struct {
 	Filters     []*QuotaFilters `json:"filters,omitempty" valid:"required"`
-	QuotaGroups []*QuotaGroup   `json:"quotaGroups,omitempty" valid:"required"`
+	QuotaGroups []*QuotaGroup   `json:"quotaGroups,omitempty" valid:"optional"`
 }
 
 // QuotaFilters ...
