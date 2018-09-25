@@ -10,24 +10,15 @@ A golang client library to connect with researchnow/ssi demand api
 
 ## Usage examples
 
-The following host URLs are configured based on the environment variable setting.
-
-Prod settings:
-* Use environment `env=prod`
-* Authentication endpoint: "https://api.researchnow.com/auth/v1/token/password"
-* API base url: "https://api.researchnow.com/sample/v1"
-
-UAT (default) settings:
-* Use environment `env=uat`
-* Authentication endpoint: "https://api.uat.pe.researchnow.com/auth/v1/token/password"
-* API base url: "https://api.uat.pe.researchnow.com/sample/v1"
+Predefined `ClientOptions` are available for creating a new client.
+Use `UATClientOptions` or `ProdClientOptions` for uat or prod environment, respectively.
 
 ### Creating a client connection
 
-The new client is initialized based on environment variable setting described above. Default `env` will be considered "uat" if not provided.
+The new client is initialized based on `ClientOptions` parameter, described above. If `ClientOptions` is nil, `UATClientOptions` will be used.
 
 ```
-client = samplify.NewClient("client_id", "username", "password")
+client = samplify.NewClient("client_id", "username", "password", samplify.UATClientOptions)
 ```
 
 The session expires after some time but the client will automatically acquire one by making an authentication request before sending out the actual request, again.
