@@ -32,7 +32,7 @@ const (
 //QuotaPlan ...
 type QuotaPlan struct {
 	Filters     []*QuotaFilters `json:"filters,omitempty" valid:"required"`
-	QuotaGroups []*QuotaGroup   `json:"quotaGroups,omitempty" valid:"required"`
+	QuotaGroups []*QuotaGroup   `json:"quotaGroups,omitempty" valid:"optional"`
 }
 
 // QuotaFilters ...
@@ -43,7 +43,7 @@ type QuotaFilters struct {
 
 // QuotaGroup ...
 type QuotaGroup struct {
-	Name       string       `json:"name"`
+	Name       *string      `json:"name"`
 	QuotaCells []*QuotaCell `json:"quotaCells"`
 }
 
@@ -56,14 +56,16 @@ type QuotaCell struct {
 // QuotaNode ...
 type QuotaNode struct {
 	AttributeID string   `json:"attributeId"`
-	OptionIDs   []string `json:"options"`
+	Options     []string `json:"options"`
 }
 
 // EndLinks ...
 type EndLinks struct {
-	Complete  string `json:"complete"`
-	Screenout string `json:"screenout"`
-	OverQuota string `json:"overquota"`
+	Complete      string `json:"complete"`
+	Screenout     string `json:"screenout"`
+	OverQuota     string `json:"overquota"`
+	SecurityKey1  string `json:"securityKey1"`
+	SecurityLevel string `json:"securityLevel"`
 }
 
 // LineItemHeader ...
@@ -140,6 +142,7 @@ type LineItemReport struct {
 	Screenouts         int64   `json:"screenouts"`
 	Starts             int64   `json:"starts"`
 	Conversion         float64 `json:"conversion"`
+	CurrencyCode       string  `json:"currencyCode"`
 	RemainingCompletes int64   `json:"remainingCompletes"`
 	ActualMedianLOI    int64   `json:"actualMedianLOI"`
 	IncurredCost       float64 `json:"incurredCost"`
@@ -169,11 +172,13 @@ type FeasibilityQuotaCell struct {
 
 // Attribute ... Supported attribute for a country and language. Required to build up the Quota Plan
 type Attribute struct {
-	ID      string             `json:"id"`
-	Name    string             `json:"name"`
-	Text    string             `json:"text"`
-	Type    string             `json:"type"`
-	Options []*AttributeOption `json:"options"`
+	ID                 string             `json:"id"`
+	Name               string             `json:"name"`
+	Text               string             `json:"text"`
+	IsAllowedInFilters bool               `json:"isAllowedInFilters"`
+	IsAllowedInQuotas  bool               `json:"isAllowedInQuotas"`
+	Type               string             `json:"type"`
+	Options            []*AttributeOption `json:"options"`
 }
 
 // AttributeOption ...
