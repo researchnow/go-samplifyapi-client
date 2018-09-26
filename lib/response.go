@@ -29,13 +29,6 @@ type GetAllProjectsResponse struct {
 	Meta           Meta             `json:"meta"`
 }
 
-// Author ...
-type Author struct {
-	Name     string `json:"name"`
-	Type     string `json:"type"`
-	Username string `json:"username"`
-}
-
 // ProjectReportResponse ...
 type ProjectReportResponse struct {
 	Report         *ProjectReport `json:"data"`

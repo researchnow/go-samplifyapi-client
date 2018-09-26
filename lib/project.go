@@ -44,6 +44,13 @@ type Exclusions struct {
 	List []string      `json:"list"`
 }
 
+// Author ...
+type Author struct {
+	Name     string `json:"name"`
+	Type     string `json:"type"`
+	Username string `json:"username"`
+}
+
 // ProjectHeader ...
 type ProjectHeader struct {
 	Model
