@@ -43,7 +43,7 @@ type QuotaFilters struct {
 
 // QuotaGroup ...
 type QuotaGroup struct {
-	Name       string       `json:"name"`
+	Name       *string      `json:"name"`
 	QuotaCells []*QuotaCell `json:"quotaCells"`
 }
 
@@ -56,7 +56,7 @@ type QuotaCell struct {
 // QuotaNode ...
 type QuotaNode struct {
 	AttributeID string   `json:"attributeId"`
-	OptionIDs   []string `json:"options"`
+	Options     []string `json:"options"`
 }
 
 // EndLinks ...

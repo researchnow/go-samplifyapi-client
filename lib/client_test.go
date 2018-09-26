@@ -27,7 +27,7 @@ func TestAuth(t *testing.T) {
 			auth = r.Header.Get("Authorization")
 		}))
 
-		client := samplify.NewClient("", "", "")
+		client := samplify.NewClient("", "", "", nil)
 		client.Options.APIBaseURL = ts.URL
 		client.Options.AuthURL = ts.URL
 		client.Auth = getAuth()
@@ -64,7 +64,7 @@ func TestClientFunctions(t *testing.T) {
 		urls = append(urls, r.URL.String())
 	}))
 
-	client := samplify.NewClient("", "", "")
+	client := samplify.NewClient("", "", "", nil)
 	client.Options.APIBaseURL = ts.URL
 	client.Options.AuthURL = ts.URL
 	client.Auth = getAuth()
@@ -124,7 +124,7 @@ func TestQueryString(t *testing.T) {
 			url = r.URL.String()
 		}))
 
-		client := samplify.NewClient("", "", "")
+		client := samplify.NewClient("", "", "", nil)
 		client.Options.APIBaseURL = ts.URL
 		client.Options.AuthURL = ts.URL
 		client.Auth = getAuth()
@@ -207,17 +207,16 @@ func getLineItemCriteria() *samplify.CreateLineItemCriteria {
 			},
 			QuotaGroups: []*samplify.QuotaGroup{
 				&samplify.QuotaGroup{
-					Name: "Gender distribution",
 					QuotaCells: []*samplify.QuotaCell{
 						&samplify.QuotaCell{
 							QuotaNodes: []*samplify.QuotaNode{
-								&samplify.QuotaNode{AttributeID: "11", OptionIDs: []string{"1"}},
+								&samplify.QuotaNode{AttributeID: "11", Options: []string{"1"}},
 							},
 							Perc: 30,
 						},
 						&samplify.QuotaCell{
 							QuotaNodes: []*samplify.QuotaNode{
-								&samplify.QuotaNode{AttributeID: "11", OptionIDs: []string{"2"}},
+								&samplify.QuotaNode{AttributeID: "11", Options: []string{"2"}},
 							},
 							Perc: 70,
 						},
