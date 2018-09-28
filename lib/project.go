@@ -95,8 +95,8 @@ type UpdateProjectCriteria struct {
 // BuyProjectCriteria ...
 type BuyProjectCriteria struct {
 	ExtLineItemID string `json:"extLineItemId" valid:"required"`
-	SurveyURL     string `json:"surveyURL" valid:"required,url"`
-	SurveyTestURL string `json:"surveyTestURL" valid:"required,url"`
+	SurveyURL     string `json:"surveyURL" valid:"required,surveyURL"`
+	SurveyTestURL string `json:"surveyTestURL" valid:"required,surveyURL"`
 }
 
 // ProjectReport ...

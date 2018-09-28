@@ -3,6 +3,7 @@ package samplify
 import (
 	"errors"
 	"reflect"
+	"strings"
 
 	"github.com/asaskevich/govalidator"
 )
@@ -96,15 +97,6 @@ func isCountryCodeOrEmpty(countryCode string) error {
 func isLanguageCodeOrEmpty(languageCode string) error {
 	if len(languageCode) > 0 && !govalidator.IsISO693Alpha2(languageCode) {
 		return errInvalidFieldValue
-	}
-	return nil
-}
-
-func isURLOrEmpty(url ...string) error {
-	for _, u := range url {
-		if len(u) > 0 && !govalidator.IsURL(u) {
-			return errInvalidFieldValue
-		}
 	}
 	return nil
 }
@@ -220,6 +212,24 @@ func init() {
 			return isValid(&v)
 		case *QuotaPlan:
 			return isValid(v)
+		default:
+			return false
+		}
+	}))
+	govalidator.CustomTypeTagMap.Set("surveyURL", govalidator.CustomTypeValidator(func(i interface{}, o interface{}) bool {
+		var isValid = func(val string) bool {
+			s := strings.Split(val, "?")
+			if len(s) != 2 {
+				return false
+			}
+			b := govalidator.IsURL(s[0])
+			return b
+		}
+		switch v := i.(type) {
+		case string:
+			return isValid(v)
+		case *string:
+			return isValid(*v)
 		default:
 			return false
 		}
