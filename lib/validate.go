@@ -206,4 +206,22 @@ func init() {
 			return false
 		}
 	}))
+	govalidator.CustomTypeTagMap.Set("quotaPlan", govalidator.CustomTypeValidator(func(i interface{}, o interface{}) bool {
+		var isValid = func(val *QuotaPlan) bool {
+			if val != nil &&
+				val.Filters == nil &&
+				val.QuotaGroups == nil {
+				return false
+			}
+			return true
+		}
+		switch v := i.(type) {
+		case QuotaPlan:
+			return isValid(&v)
+		case *QuotaPlan:
+			return isValid(v)
+		default:
+			return false
+		}
+	}))
 }

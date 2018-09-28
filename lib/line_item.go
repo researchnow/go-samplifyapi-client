@@ -31,7 +31,7 @@ const (
 
 //QuotaPlan ...
 type QuotaPlan struct {
-	Filters     []*QuotaFilters `json:"filters,omitempty" valid:"required"`
+	Filters     []*QuotaFilters `json:"filters,omitempty" valid:"optional"`
 	QuotaGroups []*QuotaGroup   `json:"quotaGroups,omitempty" valid:"optional"`
 }
 
@@ -107,7 +107,7 @@ type CreateLineItemCriteria struct {
 	LengthOfInterview   int64         `json:"lengthOfInterview" valid:"required"`
 	DeliveryType        *DeliveryType `json:"deliveryType" valid:"optional,DeliveryType"`
 	RequiredCompletes   int64         `json:"requiredCompletes" valid:"required"`
-	QuotaPlan           *QuotaPlan    `json:"quotaPlan" valid:"required"`
+	QuotaPlan           *QuotaPlan    `json:"quotaPlan" valid:"required,quotaPlan"`
 }
 
 // UpdateLineItemCriteria has the fields to update a LineItem
@@ -123,7 +123,7 @@ type UpdateLineItemCriteria struct {
 	LengthOfInterview   *int64        `json:"lengthOfInterview,omitempty" valid:"optional"`
 	DeliveryType        *DeliveryType `json:"deliveryType" valid:"optional,DeliveryType"`
 	RequiredCompletes   *int64        `json:"requiredCompletes,omitempty" valid:"optional"`
-	QuotaPlan           *QuotaPlan    `json:"quotaPlan,omitempty" valid:"optional"`
+	QuotaPlan           *QuotaPlan    `json:"quotaPlan,omitempty" valid:"optional,quotaPlan"`
 }
 
 // BuyProjectLineItem ...
