@@ -59,6 +59,8 @@ func TestClientFunctions(t *testing.T) {
 		"/countries",
 		"/attributes/GB/en",
 		"/categories/surveyTopics",
+		"/events",
+		"/events/1",
 	}
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		urls = append(urls, r.URL.String())
@@ -85,6 +87,8 @@ func TestClientFunctions(t *testing.T) {
 	client.GetCountries(nil)
 	client.GetAttributes("GB", "en", nil)
 	client.GetSurveyTopics(nil)
+	client.GetEvents(nil)
+	client.GetEventBy("1")
 	ts.Close()
 
 	if len(urls) != len(tests) {

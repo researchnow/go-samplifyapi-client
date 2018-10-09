@@ -104,6 +104,19 @@ type GetSurveyTopicsResponse struct {
 	Meta           Meta           `json:"meta"`
 }
 
+// GetEventListResponse ...
+type GetEventListResponse struct {
+	List           []*Event       `json:"data"`
+	ResponseStatus ResponseStatus `json:"status"`
+	Meta           Meta           `json:"meta"`
+}
+
+// GetEventResponse ...
+type GetEventResponse struct {
+	Event          *Event         `json:"data"`
+	ResponseStatus ResponseStatus `json:"status"`
+}
+
 // ResponseStatus is the custom status part in API response. (Optional in some endpoints)
 type ResponseStatus struct {
 	Message string      `json:"message"`

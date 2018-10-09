@@ -247,6 +247,22 @@ func (c *Client) GetSurveyTopics(options *QueryOptions) (*GetSurveyTopicsRespons
 	return res, err
 }
 
+// GetEvents ... Returns the list of all events that have occurred for your company account. Most recent events occur at the top of the list.
+func (c *Client) GetEvents(options *QueryOptions) (*GetEventListResponse, error) {
+	res := &GetEventListResponse{}
+	path := fmt.Sprintf("/events%s", query2String(options))
+	err := c.requestAndParseResponse("GET", path, nil, res)
+	return res, err
+}
+
+// GetEventBy ... Returns the requested event based on the eventID
+func (c *Client) GetEventBy(eventID string) (*GetEventResponse, error) {
+	res := &GetEventResponse{}
+	path := fmt.Sprintf("/events/%s", eventID)
+	err := c.requestAndParseResponse("GET", path, nil, res)
+	return res, err
+}
+
 // RefreshToken ...
 func (c *Client) RefreshToken() error {
 	if c.Auth.RefreshTokenExpired() {
