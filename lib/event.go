@@ -1,5 +1,12 @@
 package samplify
 
+import "errors"
+
+// Event errors
+var (
+	ErrEventActionNotApplicable = errors.New("requested action is not applicable for this event")
+)
+
 // EventType ...
 type EventType string
 

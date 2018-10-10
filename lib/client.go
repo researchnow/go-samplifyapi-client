@@ -263,6 +263,24 @@ func (c *Client) GetEventBy(eventID string) (*GetEventResponse, error) {
 	return res, err
 }
 
+// AcceptEvent ...
+func (c *Client) AcceptEvent(event *Event) error {
+	if event.Actions == nil || len(event.Actions.AcceptURL) == 0 {
+		return ErrEventActionNotApplicable
+	}
+	_, err := c.request("POST", event.Actions.AcceptURL, "", nil)
+	return err
+}
+
+// RejectEvent ...
+func (c *Client) RejectEvent(event *Event) error {
+	if event.Actions == nil || len(event.Actions.RejectURL) == 0 {
+		return ErrEventActionNotApplicable
+	}
+	_, err := c.request("POST", event.Actions.RejectURL, "", nil)
+	return err
+}
+
 // RefreshToken ...
 func (c *Client) RefreshToken() error {
 	if c.Auth.RefreshTokenExpired() {
@@ -316,7 +334,7 @@ func (c *Client) GetAuth() (TokenResponse, error) {
 }
 
 func (c *Client) requestAndParseResponse(method, url string, body interface{}, resObj interface{}) error {
-	ar, err := c.request(method, url, body)
+	ar, err := c.request(method, c.Options.APIBaseURL, url, body)
 	if err != nil {
 		if ar != nil {
 			json.Unmarshal(ar.Body, &resObj)
@@ -331,21 +349,19 @@ func (c *Client) requestAndParseResponse(method, url string, body interface{}, r
 	return nil
 }
 
-func (c *Client) request(method, url string, body interface{}) (*APIResponse, error) {
-	if c.Auth.AccessTokenExpired() {
-		err := c.requestAndParseToken()
-		if err != nil {
-			return nil, err
-		}
+func (c *Client) request(method, host, url string, body interface{}) (*APIResponse, error) {
+	err := c.validateTokens()
+	if err != nil {
+		return nil, err
 	}
-	ar, err := sendRequest(c.Options.APIBaseURL, method, url, c.Auth.AccessToken, body)
+	ar, err := sendRequest(host, method, url, c.Auth.AccessToken, body)
 	errResp, ok := err.(*ErrorResponse)
 	if ok && errResp.HTTPCode == http.StatusUnauthorized {
 		err := c.requestAndParseToken()
 		if err != nil {
 			return nil, err
 		}
-		return sendRequest(c.Options.APIBaseURL, method, url, c.Auth.AccessToken, body)
+		return sendRequest(host, method, url, c.Auth.AccessToken, body)
 	}
 	return ar, err
 }
@@ -362,6 +378,20 @@ func (c *Client) requestAndParseToken() error {
 		return err
 	}
 	c.Auth.Acquired = &t
+	return nil
+}
+
+// ValidateTokens ...
+func (c *Client) validateTokens() error {
+	if c.Auth.AccessTokenExpired() {
+		err := c.RefreshToken()
+		if err != nil {
+			err := c.requestAndParseToken()
+			if err != nil {
+				return err
+			}
+		}
+	}
 	return nil
 }
 
