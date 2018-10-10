@@ -65,6 +65,7 @@ type EndLinks struct {
 	Screenout     string `json:"screenout"`
 	OverQuota     string `json:"overquota"`
 	SecurityKey1  string `json:"securityKey1"`
+	SecurityKey2  string `json:"securityKey2"`
 	SecurityLevel string `json:"securityLevel"`
 }
 
