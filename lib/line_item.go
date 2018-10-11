@@ -95,7 +95,7 @@ type LineItem struct {
 	EndLinks            *EndLinks    `json:"endLinks"`
 }
 
-// CreateLineItemCriteria has the fields to create a LineItem
+// `CreateL`ineItemCriteria has the fields to create a LineItem
 type CreateLineItemCriteria struct {
 	ExtLineItemID       string        `json:"extLineItemId" valid:"required"`
 	Title               string        `json:"title" valid:"required"`
@@ -108,7 +108,7 @@ type CreateLineItemCriteria struct {
 	LengthOfInterview   int64         `json:"lengthOfInterview" valid:"required"`
 	DeliveryType        *DeliveryType `json:"deliveryType" valid:"optional,DeliveryType"`
 	RequiredCompletes   int64         `json:"requiredCompletes" valid:"required"`
-	QuotaPlan           *QuotaPlan    `json:"quotaPlan" valid:"required,quotaPlan"`
+	QuotaPlan           *QuotaPlan    `json:"quotaPlan" valid:"optional,quotaPlan"`
 }
 
 // UpdateLineItemCriteria has the fields to update a LineItem

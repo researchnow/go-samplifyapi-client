@@ -31,6 +31,9 @@ const (
 
 	StateAwaitingApproval State = "AWAITING_APPROVAL"
 	StateInvoiced         State = "INVOICED"
+	StateQAApproved       State = "QA_APPROVED"
+	StateRejected         State = "REJECTED"
+	StateCancelled        State = "CANCELLED"
 )
 
 // Category is a Project's category
@@ -75,7 +78,7 @@ type CreateProjectCriteria struct {
 	ExtProjectID       string                    `json:"extProjectId" valid:"required"`
 	Title              string                    `json:"title" valid:"required"`
 	NotificationEmails []string                  `json:"notificationEmails" valid:"email,required"`
-	Devices            []DeviceType              `json:"devices" valid:"required,DeviceType"`
+	Devices            []DeviceType              `json:"devices" valid:"optional,DeviceType"`
 	Category           *Category                 `json:"category" valid:"required"`
 	LineItems          []*CreateLineItemCriteria `json:"lineItems" valid:"required"`
 	Exclusions         *Exclusions               `json:"exclusions,omitempty" valid:"optional"`
