@@ -39,7 +39,7 @@ type Client struct {
 
 // CreateProject ...
 func (c *Client) CreateProject(project *CreateProjectCriteria) (*ProjectResponse, error) {
-	err := validate(project)
+	err := Validate(project)
 	if err != nil {
 		return nil, err
 	}
@@ -50,7 +50,7 @@ func (c *Client) CreateProject(project *CreateProjectCriteria) (*ProjectResponse
 
 // UpdateProject ...
 func (c *Client) UpdateProject(project *UpdateProjectCriteria) (*ProjectResponse, error) {
-	err := validate(project)
+	err := Validate(project)
 	if err != nil {
 		return nil, err
 	}
@@ -62,11 +62,11 @@ func (c *Client) UpdateProject(project *UpdateProjectCriteria) (*ProjectResponse
 
 // BuyProject ...
 func (c *Client) BuyProject(extProjectID string, buy []*BuyProjectCriteria) (*BuyProjectResponse, error) {
-	err := validateNotEmpty(extProjectID)
+	err := ValidateNotEmpty(extProjectID)
 	if err != nil {
 		return nil, err
 	}
-	err = validate(buy)
+	err = Validate(buy)
 	if err != nil {
 		return nil, err
 	}
@@ -78,7 +78,7 @@ func (c *Client) BuyProject(extProjectID string, buy []*BuyProjectCriteria) (*Bu
 
 // CloseProject ...
 func (c *Client) CloseProject(extProjectID string) (*CloseProjectResponse, error) {
-	err := validateNotEmpty(extProjectID)
+	err := ValidateNotEmpty(extProjectID)
 	if err != nil {
 		return nil, err
 	}
@@ -99,7 +99,7 @@ func (c *Client) GetAllProjects(options *QueryOptions) (*GetAllProjectsResponse,
 
 // GetProjectBy returns project by id
 func (c *Client) GetProjectBy(extProjectID string) (*ProjectResponse, error) {
-	err := validateNotEmpty(extProjectID)
+	err := ValidateNotEmpty(extProjectID)
 	if err != nil {
 		return nil, err
 	}
@@ -111,7 +111,7 @@ func (c *Client) GetProjectBy(extProjectID string) (*ProjectResponse, error) {
 
 // GetProjectReport returns a project's report based on observed data from actual panelists.
 func (c *Client) GetProjectReport(extProjectID string) (*ProjectReportResponse, error) {
-	err := validateNotEmpty(extProjectID)
+	err := ValidateNotEmpty(extProjectID)
 	if err != nil {
 		return nil, err
 	}
@@ -123,11 +123,11 @@ func (c *Client) GetProjectReport(extProjectID string) (*ProjectReportResponse, 
 
 // AddLineItem ...
 func (c *Client) AddLineItem(extProjectID string, lineItem *CreateLineItemCriteria) (*LineItemResponse, error) {
-	err := validateNotEmpty(extProjectID)
+	err := ValidateNotEmpty(extProjectID)
 	if err != nil {
 		return nil, err
 	}
-	err = validate(lineItem)
+	err = Validate(lineItem)
 	if err != nil {
 		return nil, err
 	}
@@ -141,11 +141,11 @@ func (c *Client) AddLineItem(extProjectID string, lineItem *CreateLineItemCriter
 func (c *Client) UpdateLineItem(extProjectID, extLineItemID string,
 	lineItem *UpdateLineItemCriteria) (*LineItemResponse, error) {
 
-	err := validateNotEmpty(extProjectID, extLineItemID)
+	err := ValidateNotEmpty(extProjectID, extLineItemID)
 	if err != nil {
 		return nil, err
 	}
-	err = validate(lineItem)
+	err = Validate(lineItem)
 	if err != nil {
 		return nil, err
 	}
@@ -158,11 +158,11 @@ func (c *Client) UpdateLineItem(extProjectID, extLineItemID string,
 // UpdateLineItemState ... Changes the state of the line item based on provided action.
 func (c *Client) UpdateLineItemState(extProjectID, extLineItemID string, action Action) (
 	*UpdateLineItemStateResponse, error) {
-	err := validateNotEmpty(extProjectID, extLineItemID)
+	err := ValidateNotEmpty(extProjectID, extLineItemID)
 	if err != nil {
 		return nil, err
 	}
-	err = validateAction(action)
+	err = ValidateAction(action)
 	if err != nil {
 		return nil, err
 	}
@@ -174,7 +174,7 @@ func (c *Client) UpdateLineItemState(extProjectID, extLineItemID string, action 
 
 // GetAllLineItems ...
 func (c *Client) GetAllLineItems(extProjectID string, options *QueryOptions) (*GetAllLineItemsResponse, error) {
-	err := validateNotEmpty(extProjectID)
+	err := ValidateNotEmpty(extProjectID)
 	if err != nil {
 		return nil, err
 	}
@@ -186,7 +186,7 @@ func (c *Client) GetAllLineItems(extProjectID string, options *QueryOptions) (*G
 
 // GetLineItemBy ...
 func (c *Client) GetLineItemBy(extProjectID, extLineItemID string) (*LineItemResponse, error) {
-	err := validateNotEmpty(extProjectID, extLineItemID)
+	err := ValidateNotEmpty(extProjectID, extLineItemID)
 	if err != nil {
 		return nil, err
 	}
@@ -201,7 +201,7 @@ func (c *Client) GetLineItemBy(extProjectID, extLineItemID string) (*LineItemRes
 // FeasibilityStatusReady ("READY") or FeasibilityStatusProcessing ("PROCESSING")
 // If GetFeasibilityResponse.Feasibility.Status == FeasibilityStatusProcessing, call this function again in 2 mins.
 func (c *Client) GetFeasibility(extProjectID string, options *QueryOptions) (*GetFeasibilityResponse, error) {
-	err := validateNotEmpty(extProjectID)
+	err := ValidateNotEmpty(extProjectID)
 	if err != nil {
 		return nil, err
 	}
@@ -221,15 +221,15 @@ func (c *Client) GetCountries(options *QueryOptions) (*GetCountriesResponse, err
 
 // GetAttributes ... Get the list of supported attributes for a country and language. This data is required to build up the Quota Plan.
 func (c *Client) GetAttributes(countryCode, languageCode string, options *QueryOptions) (*GetAttributesResponse, error) {
-	err := validateNotEmpty(countryCode, languageCode)
+	err := ValidateNotEmpty(countryCode, languageCode)
 	if err != nil {
 		return nil, err
 	}
-	err = isCountryCodeOrEmpty(countryCode)
+	err = IsCountryCodeOrEmpty(countryCode)
 	if err != nil {
 		return nil, err
 	}
-	err = isLanguageCodeOrEmpty(languageCode)
+	err = IsLanguageCodeOrEmpty(languageCode)
 	if err != nil {
 		return nil, err
 	}
@@ -245,6 +245,40 @@ func (c *Client) GetSurveyTopics(options *QueryOptions) (*GetSurveyTopicsRespons
 	path := fmt.Sprintf("/categories/surveyTopics%s", query2String(options))
 	err := c.requestAndParseResponse("GET", path, nil, res)
 	return res, err
+}
+
+// GetEvents ... Returns the list of all events that have occurred for your company account. Most recent events occur at the top of the list.
+func (c *Client) GetEvents(options *QueryOptions) (*GetEventListResponse, error) {
+	res := &GetEventListResponse{}
+	path := fmt.Sprintf("/events%s", query2String(options))
+	err := c.requestAndParseResponse("GET", path, nil, res)
+	return res, err
+}
+
+// GetEventBy ... Returns the requested event based on the eventID
+func (c *Client) GetEventBy(eventID string) (*GetEventResponse, error) {
+	res := &GetEventResponse{}
+	path := fmt.Sprintf("/events/%s", eventID)
+	err := c.requestAndParseResponse("GET", path, nil, res)
+	return res, err
+}
+
+// AcceptEvent ...
+func (c *Client) AcceptEvent(event *Event) error {
+	if event.Actions == nil || len(event.Actions.AcceptURL) == 0 {
+		return ErrEventActionNotApplicable
+	}
+	_, err := c.request("POST", event.Actions.AcceptURL, "", nil)
+	return err
+}
+
+// RejectEvent ...
+func (c *Client) RejectEvent(event *Event) error {
+	if event.Actions == nil || len(event.Actions.RejectURL) == 0 {
+		return ErrEventActionNotApplicable
+	}
+	_, err := c.request("POST", event.Actions.RejectURL, "", nil)
+	return err
 }
 
 // RefreshToken ...
@@ -300,7 +334,7 @@ func (c *Client) GetAuth() (TokenResponse, error) {
 }
 
 func (c *Client) requestAndParseResponse(method, url string, body interface{}, resObj interface{}) error {
-	ar, err := c.request(method, url, body)
+	ar, err := c.request(method, c.Options.APIBaseURL, url, body)
 	if err != nil {
 		if ar != nil {
 			json.Unmarshal(ar.Body, &resObj)
@@ -315,21 +349,19 @@ func (c *Client) requestAndParseResponse(method, url string, body interface{}, r
 	return nil
 }
 
-func (c *Client) request(method, url string, body interface{}) (*APIResponse, error) {
-	if c.Auth.AccessTokenExpired() {
-		err := c.requestAndParseToken()
-		if err != nil {
-			return nil, err
-		}
+func (c *Client) request(method, host, url string, body interface{}) (*APIResponse, error) {
+	err := c.validateTokens()
+	if err != nil {
+		return nil, err
 	}
-	ar, err := sendRequest(c.Options.APIBaseURL, method, url, c.Auth.AccessToken, body)
+	ar, err := sendRequest(host, method, url, c.Auth.AccessToken, body)
 	errResp, ok := err.(*ErrorResponse)
 	if ok && errResp.HTTPCode == http.StatusUnauthorized {
 		err := c.requestAndParseToken()
 		if err != nil {
 			return nil, err
 		}
-		return sendRequest(c.Options.APIBaseURL, method, url, c.Auth.AccessToken, body)
+		return sendRequest(host, method, url, c.Auth.AccessToken, body)
 	}
 	return ar, err
 }
@@ -346,6 +378,20 @@ func (c *Client) requestAndParseToken() error {
 		return err
 	}
 	c.Auth.Acquired = &t
+	return nil
+}
+
+// ValidateTokens ...
+func (c *Client) validateTokens() error {
+	if c.Auth.AccessTokenExpired() {
+		err := c.RefreshToken()
+		if err != nil {
+			err := c.requestAndParseToken()
+			if err != nil {
+				return err
+			}
+		}
+	}
 	return nil
 }
 

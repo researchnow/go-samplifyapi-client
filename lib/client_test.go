@@ -59,6 +59,8 @@ func TestClientFunctions(t *testing.T) {
 		"/countries",
 		"/attributes/GB/en",
 		"/categories/surveyTopics",
+		"/events",
+		"/events/1",
 	}
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		urls = append(urls, r.URL.String())
@@ -85,6 +87,8 @@ func TestClientFunctions(t *testing.T) {
 	client.GetCountries(nil)
 	client.GetAttributes("GB", "en", nil)
 	client.GetSurveyTopics(nil)
+	client.GetEvents(nil)
+	client.GetEventBy("1")
 	ts.Close()
 
 	if len(urls) != len(tests) {
@@ -188,8 +192,8 @@ func getProjectCriteria() *samplify.CreateProjectCriteria {
 }
 
 func getLineItemCriteria() *samplify.CreateLineItemCriteria {
-	surveyURL := "www.mysurvey.com/live/survey?pid=2424131312&k2=59931&psid=VgrJ2-9iUQZK3noVDtXobw"
-	surveyTestURL := "www.mysurvey.com/test/survey?pid=2424131312&k2=59931&psid=VgrJ2-9iUQZK3noVDtXobw"
+	surveyURL := "www.mysurvey.com/live/survey?pid=<#DubKnowledge[1500/Entity id]>&k2=<#Project[Secure Key 2]>&psid=<#IdParameter[Value]>"
+	surveyTestURL := "www.mysurvey.com/test/survey"
 	return &samplify.CreateLineItemCriteria{
 		ExtLineItemID:       "lineItem001",
 		Title:               "US College",
@@ -231,8 +235,8 @@ func getBuyProjectCriteria() []*samplify.BuyProjectCriteria {
 	return []*samplify.BuyProjectCriteria{
 		&samplify.BuyProjectCriteria{
 			ExtLineItemID: "lineItem001",
-			SurveyURL:     "www.mysurvey.com/live/survey?pid=2424131312&k2=59931&psid=VgrJ2-9iUQZK3noVDtXobw",
-			SurveyTestURL: "www.mysurvey.com/test/survey?pid=2424131312&k2=59931&psid=VgrJ2-9iUQZK3noVDtXobw",
+			SurveyURL:     "www.mysurvey.com/live/survey?pid=<#DubKnowledge[1500/Entity id]>&k2=<#Project[Secure Key 2]>&psid=<#IdParameter[Value]>",
+			SurveyTestURL: "www.mysurvey.com/test/survey",
 		},
 	}
 }

@@ -65,6 +65,7 @@ type EndLinks struct {
 	Screenout     string `json:"screenout"`
 	OverQuota     string `json:"overquota"`
 	SecurityKey1  string `json:"securityKey1"`
+	SecurityKey2  string `json:"securityKey2"`
 	SecurityLevel string `json:"securityLevel"`
 }
 
@@ -100,14 +101,14 @@ type CreateLineItemCriteria struct {
 	Title               string        `json:"title" valid:"required"`
 	CountryISOCode      string        `json:"countryISOCode" valid:"required,ISO3166Alpha2"`
 	LanguageISOCode     string        `json:"languageISOCode" valid:"required,languageISOCode"`
-	SurveyURL           *string       `json:"surveyURL,omitempty" valid:"optional,url"`
-	SurveyTestURL       *string       `json:"surveyTestURL,omitempty" valid:"optional,url"`
+	SurveyURL           *string       `json:"surveyURL,omitempty" valid:"optional,surveyURL"`
+	SurveyTestURL       *string       `json:"surveyTestURL,omitempty" valid:"optional"`
 	IndicativeIncidence float64       `json:"indicativeIncidence" valid:"required"`
 	DaysInField         int64         `json:"daysInField" valid:"required"`
 	LengthOfInterview   int64         `json:"lengthOfInterview" valid:"required"`
 	DeliveryType        *DeliveryType `json:"deliveryType" valid:"optional,DeliveryType"`
 	RequiredCompletes   int64         `json:"requiredCompletes" valid:"required"`
-	QuotaPlan           *QuotaPlan    `json:"quotaPlan" valid:"required,quotaPlan"`
+	QuotaPlan           *QuotaPlan    `json:"quotaPlan" valid:"optional,quotaPlan"`
 }
 
 // UpdateLineItemCriteria has the fields to update a LineItem
@@ -116,8 +117,8 @@ type UpdateLineItemCriteria struct {
 	Title               *string       `json:"title,omitempty" valid:"optional"`
 	CountryISOCode      *string       `json:"countryISOCode,omitempty" valid:"optional,ISO3166Alpha2"`
 	LanguageISOCode     *string       `json:"languageISOCode,omitempty" valid:"optional,languageISOCode"`
-	SurveyURL           *string       `json:"surveyURL,omitempty" valid:"optional,url"`
-	SurveyTestURL       *string       `json:"surveyTestURL,omitempty" valid:"optional,url"`
+	SurveyURL           *string       `json:"surveyURL,omitempty" valid:"optional,surveyURL"`
+	SurveyTestURL       *string       `json:"surveyTestURL,omitempty" valid:"optional"`
 	IndicativeIncidence *float64      `json:"indicativeIncidence,omitempty" valid:"optional"`
 	DaysInField         *int64        `json:"daysInField,omitempty" valid:"optional"`
 	LengthOfInterview   *int64        `json:"lengthOfInterview,omitempty" valid:"optional"`

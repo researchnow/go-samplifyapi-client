@@ -3,129 +3,182 @@ package samplify
 import (
 	"errors"
 	"reflect"
+	"strings"
 
 	"github.com/asaskevich/govalidator"
 )
 
-var errRequiredFieldEmpty = errors.New("required field is empty")
-var errInvalidFieldValue = errors.New("invalid field value")
+// Validation Errors
+var (
+	ErrRequiredFieldEmpty = errors.New("required field is empty")
+	ErrInvalidFieldValue  = errors.New("invalid field value")
+)
 
-func validateStruct(obj interface{}) error {
-	valid, err := govalidator.ValidateStruct(obj)
-	if err != nil {
-		return err
-	}
-	if !valid {
-		return errRequiredFieldEmpty
-	}
-	return nil
-}
-
-func validateNotNull(obj interface{}) error {
-	if reflect.ValueOf(obj).IsNil() {
-		return errRequiredFieldEmpty
-	}
-	return nil
-}
-
-func validateNotEmpty(values ...string) error {
-	for _, val := range values {
-		if len(val) == 0 {
-			return errRequiredFieldEmpty
-		}
-	}
-	return nil
-}
-
-func validate(obj interface{}) error {
+// Validate ...
+func Validate(obj interface{}) error {
 	kind := reflect.TypeOf(obj).Kind()
 	switch kind {
 	case reflect.Slice:
 		o := reflect.ValueOf(obj)
 		if o.Len() == 0 {
-			return errRequiredFieldEmpty
+			return ErrRequiredFieldEmpty
 		}
 		for i := 0; i < o.Len(); i++ {
-			if err := validateStruct(o.Index(i).Interface()); err != nil {
+			if err := ValidateStruct(o.Index(i).Interface()); err != nil {
 				return err
 			}
 		}
 		return nil
 	default:
 		o := reflect.ValueOf(obj)
-		return validateStruct(o.Interface())
+		return ValidateStruct(o.Interface())
 	}
 }
 
-func validateAction(action Action) error {
+// ValidateStruct ...
+func ValidateStruct(obj interface{}) error {
+	valid, err := govalidator.ValidateStruct(obj)
+	if err != nil {
+		return err
+	}
+	if !valid {
+		return ErrRequiredFieldEmpty
+	}
+	return nil
+}
+
+// ValidateNotNull ...
+func ValidateNotNull(obj interface{}) error {
+	if reflect.ValueOf(obj).IsNil() {
+		return ErrRequiredFieldEmpty
+	}
+	return nil
+}
+
+// ValidateNotEmpty ...
+func ValidateNotEmpty(values ...string) error {
+	for _, val := range values {
+		if len(val) == 0 {
+			return ErrRequiredFieldEmpty
+		}
+	}
+	return nil
+}
+
+// ValidateAction ...
+func ValidateAction(action Action) error {
 	if action == ActionClosed ||
 		action == ActionLaunched ||
 		action == ActionPaused {
 		return nil
 	}
-	return errInvalidFieldValue
+	return ErrInvalidFieldValue
 }
 
-func validateEmail(email ...string) error {
+// ValidateEmail ...
+func ValidateEmail(email ...string) error {
 	for _, e := range email {
 		if !govalidator.IsEmail(e) {
-			return errInvalidFieldValue
+			return ErrInvalidFieldValue
 		}
 	}
 	return nil
 }
 
-func validateDeviceType(device ...DeviceType) error {
-	for _, d := range device {
-		if d != DeviceTypeDesktop &&
-			d != DeviceTypeMobile &&
-			d != DeviceTypeTablet {
-			return errInvalidFieldValue
-		}
+// ValidateLanguageISOCode ...
+func ValidateLanguageISOCode(val string) error {
+	if govalidator.IsISO693Alpha2(val) {
+		return nil
+	}
+	return ErrInvalidFieldValue
+}
+
+// ValidateDeviceType ...
+func ValidateDeviceType(val DeviceType) error {
+	if val != DeviceTypeDesktop &&
+		val != DeviceTypeMobile &&
+		val != DeviceTypeTablet {
+		return ErrInvalidFieldValue
 	}
 	return nil
 }
 
-func isCountryCodeOrEmpty(countryCode string) error {
+// ValidateExclusionType ...
+func ValidateExclusionType(val ExclusionType) error {
+	if val != ExclusionTypeProject &&
+		val != ExclusionTypeTag {
+		return ErrInvalidFieldValue
+	}
+	return nil
+}
+
+// ValidateDeliveryType ...
+func ValidateDeliveryType(val DeliveryType) error {
+	if val != DeliveryTypeSlow &&
+		val != DeliveryTypeBalanced &&
+		val != DeliveryTypeFast {
+		return ErrInvalidFieldValue
+	}
+	return nil
+}
+
+// ValidateQuotaPlan ...
+func ValidateQuotaPlan(val *QuotaPlan) error {
+	if val != nil &&
+		val.Filters == nil &&
+		val.QuotaGroups == nil {
+		return ErrInvalidFieldValue
+	}
+	return nil
+}
+
+// ValidateSurveyURL ...
+func ValidateSurveyURL(val string) error {
+	s := strings.Split(val, "?")
+	if len(s) != 2 {
+		return ErrInvalidFieldValue
+	}
+	yes := govalidator.IsURL(s[0])
+	if yes {
+		return nil
+	}
+	return ErrInvalidFieldValue
+}
+
+// IsCountryCodeOrEmpty ...
+func IsCountryCodeOrEmpty(countryCode string) error {
 	if len(countryCode) > 0 && !govalidator.IsISO3166Alpha2(countryCode) {
-		return errInvalidFieldValue
+		return ErrInvalidFieldValue
 	}
 	return nil
 }
 
-func isLanguageCodeOrEmpty(languageCode string) error {
+// IsLanguageCodeOrEmpty ...
+func IsLanguageCodeOrEmpty(languageCode string) error {
 	if len(languageCode) > 0 && !govalidator.IsISO693Alpha2(languageCode) {
-		return errInvalidFieldValue
-	}
-	return nil
-}
-
-func isURLOrEmpty(url ...string) error {
-	for _, u := range url {
-		if len(u) > 0 && !govalidator.IsURL(u) {
-			return errInvalidFieldValue
-		}
+		return ErrInvalidFieldValue
 	}
 	return nil
 }
 
 func init() {
 	govalidator.CustomTypeTagMap.Set("languageISOCode", govalidator.CustomTypeValidator(func(i interface{}, o interface{}) bool {
+		var err error
 		switch v := i.(type) {
 		case string:
-			return govalidator.IsISO693Alpha2(v)
+			err = ValidateLanguageISOCode(v)
 		case *string:
-			return govalidator.IsISO693Alpha2(*v)
+			err = ValidateLanguageISOCode(*v)
 		case []string:
 			for _, code := range v {
-				if !govalidator.IsISO693Alpha2(code) {
+				if ValidateLanguageISOCode(code) != nil {
 					return false
 				}
 			}
 			return true
 		case *[]string:
 			for _, code := range *v {
-				if !govalidator.IsISO693Alpha2(code) {
+				if ValidateLanguageISOCode(code) != nil {
 					return false
 				}
 			}
@@ -133,31 +186,28 @@ func init() {
 		default:
 			return false
 		}
+		if err != nil {
+			return false
+		}
+		return true
 	}))
 	govalidator.CustomTypeTagMap.Set("DeviceType", govalidator.CustomTypeValidator(func(i interface{}, o interface{}) bool {
-		var isValid = func(val DeviceType) bool {
-			if val != DeviceTypeDesktop &&
-				val != DeviceTypeMobile &&
-				val != DeviceTypeTablet {
-				return false
-			}
-			return true
-		}
+		var err error
 		switch v := i.(type) {
 		case DeviceType:
-			return isValid(v)
+			err = ValidateDeviceType(v)
 		case *DeviceType:
-			return isValid(*v)
+			err = ValidateDeviceType(*v)
 		case []DeviceType:
 			for _, device := range v {
-				if !isValid(device) {
+				if ValidateDeviceType(device) != nil {
 					return false
 				}
 			}
 			return true
 		case *[]DeviceType:
 			for _, device := range *v {
-				if !isValid(device) {
+				if ValidateDeviceType(device) != nil {
 					return false
 				}
 			}
@@ -165,21 +215,19 @@ func init() {
 		default:
 			return false
 		}
+		if err != nil {
+			return false
+		}
+		return true
 	}))
 	govalidator.CustomTypeTagMap.Set("ExclusionType", govalidator.CustomTypeValidator(func(i interface{}, o interface{}) bool {
-		var isValid = func(val ExclusionType) bool {
-			if val != ExclusionTypeProject &&
-				val != ExclusionTypeTag {
-				return false
-			}
-			return true
-		}
+		var err error
 		switch v := i.(type) {
 		case ExclusionType:
-			return isValid(v)
+			err = ValidateExclusionType(v)
 		case []ExclusionType:
 			for _, ex := range v {
-				if !isValid(ex) {
+				if ValidateExclusionType(ex) != nil {
 					return false
 				}
 			}
@@ -187,41 +235,54 @@ func init() {
 		default:
 			return false
 		}
+		if err != nil {
+			return false
+		}
+		return true
 	}))
 	govalidator.CustomTypeTagMap.Set("DeliveryType", govalidator.CustomTypeValidator(func(i interface{}, o interface{}) bool {
-		var isValid = func(val DeliveryType) bool {
-			if val != DeliveryTypeSlow &&
-				val != DeliveryTypeBalanced &&
-				val != DeliveryTypeFast {
-				return false
-			}
-			return true
-		}
+		var err error
 		switch v := i.(type) {
 		case DeliveryType:
-			return isValid(v)
+			err = ValidateDeliveryType(v)
 		case *DeliveryType:
-			return isValid(*v)
+			err = ValidateDeliveryType(*v)
 		default:
 			return false
 		}
+		if err != nil {
+			return false
+		}
+		return true
 	}))
 	govalidator.CustomTypeTagMap.Set("quotaPlan", govalidator.CustomTypeValidator(func(i interface{}, o interface{}) bool {
-		var isValid = func(val *QuotaPlan) bool {
-			if val != nil &&
-				val.Filters == nil &&
-				val.QuotaGroups == nil {
-				return false
-			}
-			return true
-		}
+		var err error
 		switch v := i.(type) {
 		case QuotaPlan:
-			return isValid(&v)
+			err = ValidateQuotaPlan(&v)
 		case *QuotaPlan:
-			return isValid(v)
+			err = ValidateQuotaPlan(v)
 		default:
 			return false
 		}
+		if err != nil {
+			return false
+		}
+		return true
+	}))
+	govalidator.CustomTypeTagMap.Set("surveyURL", govalidator.CustomTypeValidator(func(i interface{}, o interface{}) bool {
+		var err error
+		switch v := i.(type) {
+		case string:
+			err = ValidateSurveyURL(v)
+		case *string:
+			err = ValidateSurveyURL(*v)
+		default:
+			return false
+		}
+		if err != nil {
+			return false
+		}
+		return true
 	}))
 }
