@@ -51,6 +51,7 @@ type EventResource struct {
 	CostPerInterview  *EventValues       `json:"costPerInterview"`
 	EstimatedCost     *EventValues       `json:"estimatedCost"`
 	LengthOfInterview *EventValues       `json:"lengthOfInterview"`
+	Currency          string             `json:"currency"`
 	Status            *EventStatusValues `json:"status"`
 	Reason            string             `json:"reason"`
 }
