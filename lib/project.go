@@ -105,6 +105,7 @@ type BuyProjectCriteria struct {
 // ProjectReport ...
 type ProjectReport struct {
 	ExtProjectID       string            `json:"extProjectId"`
+	Title              string            `json:"title"`
 	State              State             `json:"state"`
 	Attempts           int64             `json:"attempts"`
 	Completes          int64             `json:"completes"`
@@ -117,7 +118,7 @@ type ProjectReport struct {
 	ActualMedianLOI    int64             `json:"actualMedianLOI"`
 	IncurredCost       float64           `json:"incurredCost"`
 	EstimatedCost      float64           `json:"estimatedCost"`
-	LineItems          []*LineItemReport `json:"lineItems"`
+	LineItems          []*LineItemReport `json:"lineItemReports"`
 }
 
 // SurveyTopic ... Represents Survey Topic for a project. Required to setup a project

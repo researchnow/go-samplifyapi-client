@@ -136,6 +136,9 @@ type BuyProjectLineItem struct {
 // LineItemReport ...
 type LineItemReport struct {
 	ExtLineItemID      string  `json:"extLineItemId"`
+	Title              string  `json:"title"`
+	CountryISOCode     string  `json:"countryISOCode"`
+	LanguageISOCode    string  `json:"languageISOCode"`
 	State              State   `json:"state"`
 	Attempts           int64   `json:"attempts"`
 	Completes          int64   `json:"completes"`

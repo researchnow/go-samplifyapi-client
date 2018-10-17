@@ -52,8 +52,8 @@ type LineItemResponse struct {
 
 // UpdateLineItemStateResponse ...
 type UpdateLineItemStateResponse struct {
-	LineItem       *LineItemHeader `json:"data"`
-	ResponseStatus ResponseStatus  `json:"status"`
+	LineItem       *LineItem      `json:"data"`
+	ResponseStatus ResponseStatus `json:"status"`
 }
 
 // LineItemListItem ...
