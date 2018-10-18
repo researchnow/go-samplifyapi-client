@@ -29,11 +29,13 @@ const (
 	StatePaused      State = "PAUSED"
 	StateClosed      State = "CLOSED"
 
-	StateAwaitingApproval State = "AWAITING_APPROVAL"
-	StateInvoiced         State = "INVOICED"
-	StateQAApproved       State = "QA_APPROVED"
-	StateRejected         State = "REJECTED"
-	StateCancelled        State = "CANCELLED"
+	StateAwaitingApproval       State = "AWAITING_APPROVAL"
+	StateInvoiced               State = "INVOICED"
+	StateQAApproved             State = "QA_APPROVED"
+	StateRejected               State = "REJECTED"
+	StateCancelled              State = "CANCELLED"
+	StateAwaitingApprovalPaused State = "AWAITING_APPROVAL_PAUSED"
+	StateRejectedPaused         State = "REJECTED_PAUSED"
 )
 
 // Category is a Project's category
