@@ -24,10 +24,13 @@ var (
 // ErrSessionExpired ... Returns if both Access and Refresh tokens are expired
 var ErrSessionExpired = errors.New("session expired")
 
+const defaulttimeout = 20
+
 // ClientOptions ...
 type ClientOptions struct {
 	APIBaseURL string
 	AuthURL    string
+	Timeout    *int
 }
 
 // Client is used to make API requests to the Samplify API.
@@ -294,7 +297,7 @@ func (c *Client) RefreshToken() error {
 		ClientID:     c.Credentials.ClientID,
 		RefreshToken: c.Auth.RefreshToken,
 	}
-	ar, err := sendRequest(c.Options.AuthURL, "POST", "/token/refresh", "", req)
+	ar, err := sendRequest(c.Options.AuthURL, "POST", "/token/refresh", "", req, *c.Options.Timeout)
 	if err != nil {
 		return err
 	}
@@ -320,7 +323,7 @@ func (c *Client) Logout() error {
 		RefreshToken: c.Auth.RefreshToken,
 		AccessToken:  c.Auth.AccessToken,
 	}
-	_, err := sendRequest(c.Options.AuthURL, "POST", "/logout", "", req)
+	_, err := sendRequest(c.Options.AuthURL, "POST", "/logout", "", req, *c.Options.Timeout)
 	return err
 }
 
@@ -341,7 +344,6 @@ func (c *Client) requestAndParseResponse(method, url string, body interface{}, r
 		}
 		return err
 	}
-
 	err = json.Unmarshal(ar.Body, &resObj)
 	if err != nil {
 		return err
@@ -354,14 +356,14 @@ func (c *Client) request(method, host, url string, body interface{}) (*APIRespon
 	if err != nil {
 		return nil, err
 	}
-	ar, err := sendRequest(host, method, url, c.Auth.AccessToken, body)
+	ar, err := sendRequest(host, method, url, c.Auth.AccessToken, body, *c.Options.Timeout)
 	errResp, ok := err.(*ErrorResponse)
 	if ok && errResp.HTTPCode == http.StatusUnauthorized {
 		err := c.requestAndParseToken()
 		if err != nil {
 			return nil, err
 		}
-		return sendRequest(host, method, url, c.Auth.AccessToken, body)
+		return sendRequest(host, method, url, c.Auth.AccessToken, body, *c.Options.Timeout)
 	}
 	return ar, err
 }
@@ -369,7 +371,7 @@ func (c *Client) request(method, host, url string, body interface{}) (*APIRespon
 func (c *Client) requestAndParseToken() error {
 	log.Printf("Acquiring access token for %v", c.Credentials.ClientID)
 	t := time.Now()
-	ar, err := sendRequest(c.Options.AuthURL, "POST", "/token/password", "", c.Credentials)
+	ar, err := sendRequest(c.Options.AuthURL, "POST", "/token/password", "", c.Credentials, *c.Options.Timeout)
 	if err != nil {
 		return err
 	}
@@ -400,6 +402,12 @@ func (c *Client) validateTokens() error {
 func NewClient(clientID, username, passsword string, options *ClientOptions) *Client {
 	if options == nil {
 		options = UATClientOptions
+	}
+	if options != nil {
+		if options.Timeout == nil {
+			timeout := defaulttimeout
+			options.Timeout = &timeout
+		}
 	}
 	return &Client{
 		Credentials: TokenRequest{

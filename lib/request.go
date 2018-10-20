@@ -16,14 +16,16 @@ type APIResponse struct {
 	RequestID string
 }
 
-func sendRequest(host, method, url, accessToken string, body interface{}) (*APIResponse, error) {
+func sendRequest(host, method, url, accessToken string, body interface{}, timeout int) (*APIResponse, error) {
 	log.Printf("Method:%v; URL:%v", method, fmt.Sprintf("%s%s", host, url))
 	jstr, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
-
-	client := &http.Client{}
+	dur := time.Duration(timeout)
+	client := &http.Client{
+		Timeout: time.Second * dur,
+	}
 	req, err := http.NewRequest(method, fmt.Sprintf("%s%s", host, url), bytes.NewBuffer(jstr))
 	req.Header.Add("Accept", "application/json")
 	req.Header.Add("Content-type", "application/json")
