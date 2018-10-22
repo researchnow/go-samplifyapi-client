@@ -140,6 +140,7 @@ type LineItemReport struct {
 	CountryISOCode     string  `json:"countryISOCode"`
 	LanguageISOCode    string  `json:"languageISOCode"`
 	State              State   `json:"state"`
+	StateReason        string  `json:"stateReason"`
 	Attempts           int64   `json:"attempts"`
 	Completes          int64   `json:"completes"`
 	Overquotas         int64   `json:"overquotas"`
