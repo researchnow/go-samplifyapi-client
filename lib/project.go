@@ -115,12 +115,12 @@ type ProjectReport struct {
 	Overquotas         int64             `json:"overquotas"`
 	Starts             int64             `json:"starts"`
 	Conversion         float64           `json:"conversion"`
-	CurrencyCode       string            `json:"currencyCode"`
+	CurrencyCode       string            `json:"currency"`
 	RemainingCompletes int64             `json:"remainingCompletes"`
 	ActualMedianLOI    int64             `json:"actualMedianLOI"`
 	IncurredCost       float64           `json:"incurredCost"`
 	EstimatedCost      float64           `json:"estimatedCost"`
-	LineItems          []*LineItemReport `json:"lineItemReports"`
+	LineItems          []*LineItemReport `json:"lineItems"`
 }
 
 // SurveyTopic ... Represents Survey Topic for a project. Required to setup a project
