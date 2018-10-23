@@ -55,11 +55,14 @@ const maxLimit uint = 1000
 // QueryOptions ... Filtering/Sorting and pagination params for GET endpoints that return an object list
 // Default limit = 10, maximum limit value = 1000
 type QueryOptions struct {
-	FilterBy []*Filter
-	SortBy   []*Sort
-	Offset   uint
-	Limit    uint
-	Scope    string
+	FilterBy      []*Filter
+	SortBy        []*Sort
+	Offset        uint
+	Limit         uint
+	Scope         string
+	ExtProjectID  string
+	ExtLineItemID string
+	EventType     string
 }
 
 func query2String(options *QueryOptions) string {
