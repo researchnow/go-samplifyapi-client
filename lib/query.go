@@ -60,8 +60,8 @@ type QueryOptions struct {
 	Offset        uint
 	Limit         uint
 	Scope         string
-	ExtProjectID  string
-	ExtLineItemID string
+	ExtProjectId  string
+	ExtLineItemId string
 	EventType     string
 }
 
