@@ -35,6 +35,7 @@ const (
 	StateRejected               State = "REJECTED"
 	StateCancelled              State = "CANCELLED"
 	StateAwaitingApprovalPaused State = "AWAITING_APPROVAL_PAUSED"
+	StateAwaitingClientApproval State = "AWAITING_CLIENT_APPROVAL"
 	StateRejectedPaused         State = "REJECTED_PAUSED"
 )
 

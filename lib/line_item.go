@@ -95,6 +95,26 @@ type LineItem struct {
 	EndLinks            *EndLinks    `json:"endLinks"`
 }
 
+// IsUpdateable returns false if the line item cannot be updated.
+func (l *LineItem) IsUpdateable() bool {
+	if l.State == StateProvisioned ||
+		l.State == StateAwaitingApproval {
+		return true
+	}
+	return false
+}
+
+// IsRebalanceable returns false if the line item cannot be updated.
+func (l *LineItem) IsRebalanceable() bool {
+	if l.State == StateClosed ||
+		l.State == StateCancelled ||
+		l.State == StateInvoiced ||
+		l.State == StateAwaitingClientApproval {
+		return false
+	}
+	return true
+}
+
 // CreateLineItemCriteria has the fields to create a LineItem
 type CreateLineItemCriteria struct {
 	ExtLineItemID       string        `json:"extLineItemId" valid:"required"`
