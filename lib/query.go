@@ -60,9 +60,9 @@ type QueryOptions struct {
 	Offset        uint
 	Limit         uint
 	Scope         string
-	ExtProjectID  string
-	ExtLineItemID string
-	EventType     string
+	ExtProjectId  *string
+	ExtLineItemId *string
+	EventType     *string
 }
 
 func query2String(options *QueryOptions) string {
@@ -100,6 +100,15 @@ func query2String(options *QueryOptions) string {
 				options.Limit = maxLimit
 			}
 			query = fmt.Sprintf("%s%slimit=%d", query, sep, options.Limit)
+		}
+		if options.ExtProjectId != nil {
+			query = fmt.Sprintf("%s%sextProjectId=%s", query, sep, *options.ExtProjectId)
+		}
+		if options.ExtLineItemId != nil {
+			query = fmt.Sprintf("%s%sextLineItemId=%s", query, sep, *options.ExtLineItemId)
+		}
+		if options.EventType != nil {
+			query = fmt.Sprintf("%s%seventType=%s", query, sep, *options.EventType)
 		}
 	}
 	return query

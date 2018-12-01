@@ -155,23 +155,25 @@ type BuyProjectLineItem struct {
 
 // LineItemReport ...
 type LineItemReport struct {
-	ExtLineItemID      string  `json:"extLineItemId"`
-	Title              string  `json:"title"`
-	CountryISOCode     string  `json:"countryISOCode"`
-	LanguageISOCode    string  `json:"languageISOCode"`
-	State              State   `json:"state"`
-	StateReason        string  `json:"stateReason"`
-	Attempts           int64   `json:"attempts"`
-	Completes          int64   `json:"completes"`
-	Overquotas         int64   `json:"overquotas"`
-	Screenouts         int64   `json:"screenouts"`
-	Starts             int64   `json:"starts"`
-	Conversion         float64 `json:"conversion"`
-	CurrencyCode       string  `json:"currency"`
-	RemainingCompletes int64   `json:"remainingCompletes"`
-	ActualMedianLOI    int64   `json:"actualMedianLOI"`
-	IncurredCost       float64 `json:"incurredCost"`
-	EstimatedCost      float64 `json:"estimatedCost"`
+	ExtLineItemID         string  `json:"extLineItemId"`
+	Title                 string  `json:"title"`
+	CountryISOCode        string  `json:"countryISOCode"`
+	LanguageISOCode       string  `json:"languageISOCode"`
+	State                 State   `json:"state"`
+	StateReason           string  `json:"stateReason"`
+	Attempts              int64   `json:"attempts"`
+	Completes             int64   `json:"completes"`
+	Overquotas            int64   `json:"overquotas"`
+	Screenouts            int64   `json:"screenouts"`
+	Starts                int64   `json:"starts"`
+	Conversion            float64 `json:"conversion"`
+	CurrencyCode          string  `json:"currency"`
+	RemainingCompletes    int64   `json:"remainingCompletes"`
+	ActualMedianLOI       int64   `json:"actualMedianLOI"`
+	IncurredCost          float64 `json:"incurredCost"`
+	EstimatedCost         float64 `json:"estimatedCost"`
+	LastAcceptedIncidence float64 `json:"lastAcceptedIncidenceRate"`
+	LastAcceptedLOI       int64   `json:"lastAcceptedLOI"`
 }
 
 // Feasibility ...

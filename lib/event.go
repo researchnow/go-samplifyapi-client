@@ -48,12 +48,13 @@ type EventStatusValues struct {
 
 // EventResource ...
 type EventResource struct {
-	CostPerInterview  *EventValues       `json:"costPerInterview"`
-	EstimatedCost     *EventValues       `json:"estimatedCost"`
-	LengthOfInterview *EventValues       `json:"lengthOfInterview"`
-	Currency          string             `json:"currency"`
-	Status            *EventStatusValues `json:"status"`
-	Reason            string             `json:"reason"`
+	CostPerInterview    *EventValues       `json:"costPerInterview"`
+	EstimatedCost       *EventValues       `json:"estimatedCost"`
+	LengthOfInterview   *EventValues       `json:"lengthOfInterview"`
+	IndicativeIncidence *EventValues       `json:"incidenceRate"`
+	Currency            string             `json:"currency"`
+	Status              *EventStatusValues `json:"status"`
+	Reason              string             `json:"reason"`
 }
 
 // Event ...
@@ -65,4 +66,5 @@ type Event struct {
 	Resource      *EventResource `json:"resource"`
 	Actions       *EventActions  `json:"actions"`
 	CreatedAt     CustomTime     `json:"createdAt"`
+	ParentEventID *int64         `json:"parentEventId,omitempty"`
 }
