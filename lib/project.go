@@ -38,7 +38,6 @@ const (
 	StateAwaitingApprovalPaused State = "AWAITING_APPROVAL_PAUSED"
 	StateAwaitingClientApproval State = "AWAITING_CLIENT_APPROVAL"
 	StateRejectedPaused         State = "REJECTED_PAUSED"
-	StateAwaitingClientApproval State = "AWAITING_CLIENT_APPROVAL"
 )
 
 // Category is a Project's category
