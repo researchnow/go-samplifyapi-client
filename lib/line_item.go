@@ -206,10 +206,13 @@ type Attribute struct {
 	IsAllowedInQuotas  bool               `json:"isAllowedInQuotas"`
 	Type               string             `json:"type"`
 	Options            []*AttributeOption `json:"options"`
+	Format             *string            `json:"format,omitempty"`
+	LocalizedText      *string            `json:"localizedText,omitempty"`
 }
 
 // AttributeOption ...
 type AttributeOption struct {
-	ID   string `json:"id"`
-	Text string `json:"text"`
+	ID            string  `json:"id"`
+	Text          string  `json:"text"`
+	LocalizedText *string `json:"localizedText,omitempty"`
 }
