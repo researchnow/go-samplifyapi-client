@@ -3,6 +3,7 @@ package samplify
 import (
 	"errors"
 	"reflect"
+	"strings"
 
 	"github.com/asaskevich/govalidator"
 )
@@ -133,7 +134,8 @@ func ValidateQuotaPlan(val *QuotaPlan) error {
 
 // ValidateSurveyURL ...
 func ValidateSurveyURL(val string) error {
-	yes := govalidator.IsURL(val)
+	s := strings.Split(val, "?")
+	yes := govalidator.IsURL(s[0])
 	if yes {
 		return nil
 	}
