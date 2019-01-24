@@ -83,6 +83,18 @@ type GetFeasibilityResponse struct {
 	} `json:"data"`
 	ResponseStatus ResponseStatus `json:"status"`
 }
+// GetInvoicesResponse ...
+type GetInvoiceResponse struct {
+	Invoice        *Invoice       `json:"data"`
+	ResponseStatus ResponseStatus `json:"status"`
+	Meta           Meta           `json:"meta"`
+}
+// ReconcileResponse ...
+type UploadReconcileResponse struct {
+	Reconcile      *Reconcile     `json:"data"`
+	ResponseStatus ResponseStatus `json:"status"`
+	Meta           Meta           `json:"meta"`
+}
 
 // GetCountriesResponse ...
 type GetCountriesResponse struct {

@@ -213,6 +213,20 @@ func (c *Client) GetFeasibility(extProjectID string, options *QueryOptions) (*Ge
 	err = c.requestAndParseResponse("GET", path, nil, res)
 	return res, err
 }
+// GetInvoice ... Get the invoice of the requested project
+func (c *Client) GetInvoice(extProjectID string, options *QueryOptions) (*GetInvoiceResponse, error) {
+	res := &GetInvoiceResponse{}
+	path := fmt.Sprintf("/projects/%s/invoices", extProjectID)
+	err := c.requestAndParseResponse("GET", path, nil, res)
+	return res, err
+}
+// Reconcile ...  Upload the Request correction file
+func (c *Client) UploadReconcile(extProjectID string, rFile []byte, options *QueryOptions) (*UploadReconcileResponse, error) {
+	res := &UploadReconcileResponse{}
+	path := fmt.Sprintf("/projects/%s/reconcile", extProjectID)
+	err := c.requestAndParseResponse("POST", path, rFile, res)
+	return res, err
+}
 
 // GetCountries ... Get the list of supported countries and languages in each country.
 func (c *Client) GetCountries(options *QueryOptions) (*GetCountriesResponse, error) {

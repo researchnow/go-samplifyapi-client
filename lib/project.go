@@ -1,5 +1,7 @@
 package samplify
 
+import "os"
+
 // DeviceType ...
 type DeviceType string
 
@@ -75,6 +77,7 @@ type Project struct {
 	Category           *Category    `json:"category"`
 	LineItems          []*LineItem  `json:"lineItems"`
 	Exclusions         *Exclusions  `json:"exclusions"`
+	Invoice            os.File      `json:"invoice"`
 }
 
 // CreateProjectCriteria has the fields to create a project
@@ -123,6 +126,15 @@ type ProjectReport struct {
 	IncurredCost       float64           `json:"incurredCost"`
 	EstimatedCost      float64           `json:"estimatedCost"`
 	LineItems          []*LineItemReport `json:"lineItems"`
+}
+// Invoice ... Represents Invoice for a project.
+type Invoice struct {
+	File       string `json:"data"`
+}
+// Reconcile ... Represents Request correction file
+type Reconcile struct {
+	File        string `json:"data"`
+	Description string `json:"desc"`
 }
 
 // SurveyTopic ... Represents Survey Topic for a project. Required to setup a project
