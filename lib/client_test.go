@@ -121,6 +121,10 @@ func TestQueryString(t *testing.T) {
 			expectedURL: "/projects?title=Samplify+Client+Test&amp;state=PROVISIONED&amp;sort=createdAt:asc,extProjectId:desc",
 			query:       getQueryOptionsThree(),
 		},
+		{
+			expectedURL: "/projects?createdAt=2018/11/01,2019/01/01",
+			query:       getQueryOptionsFour(),
+		},
 	}
 	for _, tt := range tests {
 
@@ -143,8 +147,9 @@ func TestQueryString(t *testing.T) {
 func getQueryOptionsOne() *samplify.QueryOptions {
 	return &samplify.QueryOptions{
 		FilterBy: []*samplify.Filter{
-			&samplify.Filter{Field: samplify.QueryFieldTitle, Value: "Samplify Client Test"},
-			&samplify.Filter{Field: samplify.QueryFieldState, Value: samplify.StateProvisioned},
+			&samplify.Filter{Field: samplify.QueryFieldTitle, Value: samplify.FilterValue{
+				Value: "Samplify Client Test"}},
+			&samplify.Filter{Field: samplify.QueryFieldState, Value: samplify.FilterValue{Value: samplify.StateProvisioned}},
 		},
 	}
 }
@@ -161,12 +166,24 @@ func getQueryOptionsTwo() *samplify.QueryOptions {
 func getQueryOptionsThree() *samplify.QueryOptions {
 	return &samplify.QueryOptions{
 		FilterBy: []*samplify.Filter{
-			&samplify.Filter{Field: samplify.QueryFieldTitle, Value: "Samplify Client Test"},
-			&samplify.Filter{Field: samplify.QueryFieldState, Value: samplify.StateProvisioned},
+			&samplify.Filter{Field: samplify.QueryFieldTitle, Value: samplify.FilterValue{Value: "Samplify Client Test"}},
+			&samplify.Filter{Field: samplify.QueryFieldState, Value: samplify.FilterValue{Value: samplify.StateProvisioned}},
 		},
 		SortBy: []*samplify.Sort{
 			&samplify.Sort{Field: samplify.QueryFieldCreatedAt, Direction: samplify.SortDirectionAsc},
 			&samplify.Sort{Field: samplify.QueryFieldExtProjectID, Direction: samplify.SortDirectionDesc},
+		},
+	}
+}
+
+func getQueryOptionsFour() *samplify.QueryOptions {
+	value := samplify.DateFilterValue{
+		From: "2018/11/01",
+		To:   "2019/01/01",
+	}
+	return &samplify.QueryOptions{
+		FilterBy: []*samplify.Filter{
+			&samplify.Filter{Field: samplify.QueryFieldCreatedAt, Value: value},
 		},
 	}
 }

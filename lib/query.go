@@ -47,7 +47,32 @@ type Sort struct {
 // Filter by top level fields only. Nested fields are not supported for filtering.
 type Filter struct {
 	Field QueryField
+	Value Value
+}
+
+// Value ...
+type Value interface {
+	String() string
+}
+
+// DateFilterValue ...
+type DateFilterValue struct {
+	From string
+	To   string
+}
+
+// FilterValue ...
+type FilterValue struct {
 	Value interface{}
+}
+
+func (filtervalue FilterValue) String() string {
+	return url.QueryEscape(fmt.Sprintf("%s", filtervalue.Value))
+}
+
+func (datefilter DateFilterValue) String() string {
+	value := fmt.Sprintf("%s,%s", datefilter.From, datefilter.To)
+	return value
 }
 
 const maxLimit uint = 1000
@@ -76,7 +101,7 @@ func query2String(options *QueryOptions) string {
 		}
 		if len(options.FilterBy) > 0 {
 			for _, f := range options.FilterBy {
-				query = fmt.Sprintf("%s%s%s=%s", query, sep, f.Field, url.QueryEscape(fmt.Sprintf("%s", f.Value)))
+				query = fmt.Sprintf("%s%s%s=%s", query, sep, f.Field, f.Value.String())
 				sep = "&amp;"
 			}
 		}
