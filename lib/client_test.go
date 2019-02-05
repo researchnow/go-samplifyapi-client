@@ -177,9 +177,11 @@ func getQueryOptionsThree() *samplify.QueryOptions {
 }
 
 func getQueryOptionsFour() *samplify.QueryOptions {
+	fromdate := time.Date(2018, time.November, 1, 0, 0, 0, 0, time.UTC)
+	todate := time.Date(2019, time.January, 1, 0, 0, 0, 0, time.UTC)
 	value := samplify.DateFilterValue{
-		From: "2018/11/01",
-		To:   "2019/01/01",
+		From: &fromdate,
+		To:   &todate,
 	}
 	return &samplify.QueryOptions{
 		FilterBy: []*samplify.Filter{

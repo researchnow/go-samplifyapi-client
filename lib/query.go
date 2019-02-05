@@ -3,6 +3,7 @@ package samplify
 import (
 	"fmt"
 	"net/url"
+	"time"
 )
 
 // QueryField ... Supported fields for filtering and sorting
@@ -57,8 +58,8 @@ type Value interface {
 
 // DateFilterValue ...
 type DateFilterValue struct {
-	From string
-	To   string
+	From *time.Time
+	To   *time.Time
 }
 
 // FilterValue ...
@@ -71,7 +72,15 @@ func (filtervalue FilterValue) String() string {
 }
 
 func (datefilter DateFilterValue) String() string {
-	value := fmt.Sprintf("%s,%s", datefilter.From, datefilter.To)
+	fromdate := ""
+	todate := ""
+	if datefilter.From != nil {
+		fromdate = datefilter.From.Format("2006/01/02")
+	}
+	if datefilter.To != nil {
+		todate = datefilter.To.Format("2006/01/02")
+	}
+	value := fmt.Sprintf("%s,%s", fromdate, todate)
 	return value
 }
 
