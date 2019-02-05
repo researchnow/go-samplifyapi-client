@@ -133,8 +133,8 @@ type Invoice struct {
 }
 // Reconcile ... Represents Request correction file
 type Reconcile struct {
-	File        string `json:"data"`
-	Description string `json:"desc"`
+	URL        string `json:"data"`
+	Description string `json:"description"`
 }
 
 // SurveyTopic ... Represents Survey Topic for a project. Required to setup a project
