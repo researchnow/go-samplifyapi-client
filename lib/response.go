@@ -143,7 +143,9 @@ type ErrorInfo struct {
 
 // Meta ...
 type Meta struct {
-	Links `json:"links"`
+	Links    `json:"links"`
+	Total    int64 `json:"total"`
+	PageSize int64 `json:"pageSize"`
 }
 
 // Links for page navigation

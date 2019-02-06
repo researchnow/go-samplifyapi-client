@@ -115,6 +115,16 @@ func (l *LineItem) IsRebalanceable() bool {
 	return true
 }
 
+// IsCloseable returns false if the line item cannot be updated.
+func (l *LineItem) IsCloseable() bool {
+	if l.State == StateClosed ||
+		l.State == StateCancelled ||
+		l.State == StateInvoiced {
+		return false
+	}
+	return true
+}
+
 // CreateLineItemCriteria has the fields to create a LineItem
 type CreateLineItemCriteria struct {
 	ExtLineItemID       string        `json:"extLineItemId" valid:"required"`
