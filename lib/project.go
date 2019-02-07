@@ -129,11 +129,11 @@ type ProjectReport struct {
 }
 // Invoice ... Represents Invoice for a project.
 type Invoice struct {
-	File       string `json:"data"`
+	File       []byte `json:"data"`
 }
 // Reconcile ... Represents Request correction file
 type Reconcile struct {
-	URL        string `json:"data"`
+	File        []byte `json:"data"`
 	Description string `json:"description"`
 }
 
