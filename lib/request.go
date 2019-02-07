@@ -4,8 +4,10 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
+	"mime/multipart"
 	"net/http"
 	"time"
 )
@@ -64,22 +66,31 @@ func sendRequest(host, method, url, accessToken string, body interface{}, timeou
 	return ar, err
 }
 
-func sendFormData(host, method, url, accessToken string, body []byte, timeout int) (*APIResponse, error) {
-	log.Printf("Method:%v; URL:%v", method, fmt.Sprintf("%s%s", host, url))
-	/*jstr, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}*/
+func sendFormData(host, method, path, accessToken string, file multipart.File, fileName string, message string, timeout int) (*APIResponse, error) {
+	log.Printf("Method:%v; URL:%v", method, fmt.Sprintf("%s%s", host, path))
 	dur := time.Duration(timeout)
 	client := &http.Client{
 		Timeout: time.Second * dur,
 	}
-	req, err := http.NewRequest(method, fmt.Sprintf("%s%s", host, url), bytes.NewBuffer(body))
-	req.Header.Add("Accept", "application/json")
-	req.Header.Add("Content-type", "application/x-www-form-urlencoded")
+	bodyBuf := &bytes.Buffer{}
+	bodyWriter := multipart.NewWriter(bodyBuf)
+	fileWriter, err := bodyWriter.CreateFormFile("file", fileName)
+	if err != nil {
+		fmt.Println("error writing to buffer")
+		return nil, err
+	}
+	_, err = io.Copy(fileWriter, file)
+	if err != nil {
+		return nil, err
+	}
+	bodyWriter.WriteField("message", message)
+	bodyWriter.Close()
+	req, err := http.NewRequest(method, fmt.Sprintf("%s%s", host, path), bodyBuf)
 	if len(accessToken) > 0 {
 		req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", accessToken))
 	}
+	req.Header.Add("Content-Type", bodyWriter.FormDataContentType())
+	//log.Println(bodyBuf)
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
@@ -95,7 +106,7 @@ func sendFormData(host, method, url, accessToken string, body []byte, timeout in
 	}
 	if resp.StatusCode >= http.StatusBadRequest {
 		t := time.Now()
-		errPath := fmt.Sprintf("%s%s", host, url)
+		errPath := fmt.Sprintf("%s%s", host, path)
 		err := &ErrorResponse{
 			Timestamp:  &t,
 			RequestID:  ar.RequestID,

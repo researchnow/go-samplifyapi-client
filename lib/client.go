@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"mime/multipart"
 	"net/http"
 	"time"
 )
@@ -220,10 +221,10 @@ func (c *Client) GetInvoice(extProjectID string, options *QueryOptions) (*APIRes
 	return  c.request("GET", c.Options.APIBaseURL, path, nil)
 }
 // Reconcile ...  Upload the Request correction file
-func (c *Client) UploadReconcile(extProjectID string, formData []byte, options *QueryOptions) (*APIResponse, error) {
+func (c *Client) UploadReconcile(extProjectID string, file multipart.File, fileName string,  message string, options *QueryOptions) (*APIResponse, error) {
 	//res := &APIResponse{}
 	path := fmt.Sprintf("/projects/%s/reconcile", extProjectID)
-	res, err := sendFormData(c.Options.APIBaseURL,"POST", path, c.Auth.AccessToken,formData, *c.Options.Timeout)
+	res, err := sendFormData(c.Options.APIBaseURL,"POST", path, c.Auth.AccessToken, file, fileName, message, *c.Options.Timeout)
 	return res, err
 }
 
