@@ -24,6 +24,10 @@ const (
 // State ...
 type State string
 
+func (s State) String() string {
+	return string(s)
+}
+
 // State values for Projects and LineItems
 const (
 	StateProvisioned State = "PROVISIONED"
@@ -127,10 +131,12 @@ type ProjectReport struct {
 	EstimatedCost      float64           `json:"estimatedCost"`
 	LineItems          []*LineItemReport `json:"lineItems"`
 }
+
 // Invoice ... Represents Invoice for a project.
 type Invoice struct {
-	File       []byte `json:"data"`
+	File []byte `json:"data"`
 }
+
 // Reconcile ... Represents Request correction file
 type Reconcile struct {
 	File        []byte `json:"data"`
