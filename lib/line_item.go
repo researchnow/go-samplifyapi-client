@@ -104,6 +104,16 @@ func (l *LineItem) IsUpdateable() bool {
 	return false
 }
 
+// IsBuyable returns true if the lineitem can be bought or not
+func (l *LineItem) IsBuyable() bool {
+	if l.State == StateProvisioned ||
+		l.State == StateRejected ||
+		l.State == StateRejectedPaused {
+		return true
+	}
+	return false
+}
+
 // IsRebalanceable returns false if the line item cannot be updated.
 func (l *LineItem) IsRebalanceable() bool {
 	if l.State == StateClosed ||

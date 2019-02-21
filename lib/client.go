@@ -214,17 +214,19 @@ func (c *Client) GetFeasibility(extProjectID string, options *QueryOptions) (*Ge
 	err = c.requestAndParseResponse("GET", path, nil, res)
 	return res, err
 }
+
 // GetInvoice ... Get the invoice of the requested project
 func (c *Client) GetInvoice(extProjectID string, options *QueryOptions) (*APIResponse, error) {
 	//log.Println( "InvoiceApiClient: " + extProjectID)
 	path := fmt.Sprintf("/projects/%s/invoices", extProjectID)
-	return  c.request("GET", c.Options.APIBaseURL, path, nil)
+	return c.request("GET", c.Options.APIBaseURL, path, nil)
 }
+
 // Reconcile ...  Upload the Request correction file
-func (c *Client) UploadReconcile(extProjectID string, file multipart.File, fileName string,  message string, options *QueryOptions) (*APIResponse, error) {
+func (c *Client) UploadReconcile(extProjectID string, file multipart.File, fileName string, message string, options *QueryOptions) (*APIResponse, error) {
 	//res := &APIResponse{}
 	path := fmt.Sprintf("/projects/%s/reconcile", extProjectID)
-	res, err := sendFormData(c.Options.APIBaseURL,"POST", path, c.Auth.AccessToken, file, fileName, message, *c.Options.Timeout)
+	res, err := sendFormData(c.Options.APIBaseURL, "POST", path, c.Auth.AccessToken, file, fileName, message, *c.Options.Timeout)
 	return res, err
 }
 
@@ -352,8 +354,6 @@ func (c *Client) GetAuth() (TokenResponse, error) {
 
 func (c *Client) requestAndParseResponse(method, url string, body interface{}, resObj interface{}) error {
 	ar, err := c.request(method, c.Options.APIBaseURL, url, body)
-	log.Println(err)
-	log.Println(ar.Body)
 	if err != nil {
 		if ar != nil {
 			json.Unmarshal(ar.Body, &resObj)
