@@ -4,10 +4,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"log"
 	"mime/multipart"
 	"net/http"
 	"time"
+
+	log "github.com/sirupsen/logrus"
 )
 
 // ClientOptions to use while creating a new Client
@@ -217,7 +218,6 @@ func (c *Client) GetFeasibility(extProjectID string, options *QueryOptions) (*Ge
 
 // GetInvoice ... Get the invoice of the requested project
 func (c *Client) GetInvoice(extProjectID string, options *QueryOptions) (*APIResponse, error) {
-	//log.Println( "InvoiceApiClient: " + extProjectID)
 	path := fmt.Sprintf("/projects/%s/invoices", extProjectID)
 	return c.request("GET", c.Options.APIBaseURL, path, nil)
 }
@@ -385,7 +385,7 @@ func (c *Client) request(method, host, url string, body interface{}) (*APIRespon
 }
 
 func (c *Client) requestAndParseToken() error {
-	log.Printf("Acquiring access token for %v", c.Credentials.ClientID)
+	log.WithFields(log.Fields{"module": "go-samplifyapi-client", "function": "requestAndParseToken", "ClientID": c.Credentials.ClientID}).Info()
 	t := time.Now()
 	ar, err := sendRequest(c.Options.AuthURL, "POST", "/token/password", "", c.Credentials, *c.Options.Timeout)
 	if err != nil {

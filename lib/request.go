@@ -6,10 +6,11 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
 	"mime/multipart"
 	"net/http"
 	"time"
+
+	log "github.com/sirupsen/logrus"
 )
 
 // APIResponse ...
@@ -19,7 +20,7 @@ type APIResponse struct {
 }
 
 func sendRequest(host, method, url, accessToken string, body interface{}, timeout int) (*APIResponse, error) {
-	log.Printf("Method:%v; URL:%v", method, fmt.Sprintf("%s%s", host, url))
+	log.WithFields(log.Fields{"module": "go-samplifyapi-client", "function": "sendRequest", "URL": fmt.Sprintf("%s%s", host, url), "Method": method}).Info()
 	jstr, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
@@ -59,7 +60,7 @@ func sendRequest(host, method, url, accessToken string, body interface{}, timeou
 			Errors:     []*Error{&Error{Path: errPath, Message: resp.Status}},
 		}
 		ar.Body = json.RawMessage(bodyjson)
-		log.Printf("HTTP error:%v; Details:%s", resp.Status, bodyjson)
+		log.WithFields(log.Fields{"module": "go-samplifyapi-client", "function": "sendRequest"}).Info(err)
 		return ar, err
 	}
 	ar.Body = json.RawMessage(bodyjson)
@@ -67,7 +68,7 @@ func sendRequest(host, method, url, accessToken string, body interface{}, timeou
 }
 
 func sendFormData(host, method, path, accessToken string, file multipart.File, fileName string, message string, timeout int) (*APIResponse, error) {
-	log.Printf("Method:%v; URL:%v", method, fmt.Sprintf("%s%s", host, path))
+	log.WithFields(log.Fields{"module": "go-samplifyapi-client", "function": "sendFormData", "URL": fmt.Sprintf("%s%s", host, path), "Method": method}).Info()
 	dur := time.Duration(timeout)
 	client := &http.Client{
 		Timeout: time.Second * dur,
@@ -76,7 +77,7 @@ func sendFormData(host, method, path, accessToken string, file multipart.File, f
 	bodyWriter := multipart.NewWriter(bodyBuf)
 	fileWriter, err := bodyWriter.CreateFormFile("file", fileName)
 	if err != nil {
-		fmt.Println("error writing to buffer")
+		log.WithFields(log.Fields{"module": "go-samplifyapi-client", "function": "sendFormData", "Method": method}).Error(err)
 		return nil, err
 	}
 	_, err = io.Copy(fileWriter, file)
@@ -90,7 +91,6 @@ func sendFormData(host, method, path, accessToken string, file multipart.File, f
 		req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", accessToken))
 	}
 	req.Header.Add("Content-Type", bodyWriter.FormDataContentType())
-	//log.Println(bodyBuf)
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
@@ -116,10 +116,9 @@ func sendFormData(host, method, path, accessToken string, file multipart.File, f
 			Errors:     []*Error{&Error{Path: errPath, Message: resp.Status}},
 		}
 		ar.Body = json.RawMessage(bodyjson)
-		log.Printf("HTTP error:%v; Details:%s", resp.Status, bodyjson)
+		log.WithFields(log.Fields{"module": "go-samplifyapi-client", "function": "sendFormData"}).Error(err)
 		return ar, err
 	}
 	ar.Body = json.RawMessage(bodyjson)
 	return ar, err
 }
-
