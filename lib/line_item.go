@@ -50,7 +50,8 @@ type QuotaGroup struct {
 // QuotaCell ...
 type QuotaCell struct {
 	QuotaNodes []*QuotaNode `json:"quotaNodes"`
-	Perc       float64      `json:"perc"`
+	Perc       *float64     `json:"perc,omitempty" valid:"optional"`
+	Count      *uint32      `json:"count,omitempty" valid:"optional"`
 }
 
 // QuotaNode ...

@@ -9,8 +9,9 @@ import (
 
 // Validation Errors
 var (
-	ErrRequiredFieldEmpty = errors.New("required field is empty")
-	ErrInvalidFieldValue  = errors.New("invalid field value")
+	ErrRequiredFieldEmpty    = errors.New("required field is empty")
+	ErrInvalidFieldValue     = errors.New("invalid field value")
+	ErrInvalidQuotaCellValue = errors.New("invalid quota cell value, perc or count must be specified")
 )
 
 // Validate ...
@@ -127,6 +128,18 @@ func ValidateQuotaPlan(val *QuotaPlan) error {
 		val.Filters == nil &&
 		val.QuotaGroups == nil {
 		return ErrInvalidFieldValue
+	}
+
+	//quota cell must have either percentage or count
+	for _, vq := range val.QuotaGroups {
+		if vq.QuotaCells == nil {
+			return ErrInvalidFieldValue
+		}
+		for _, vc := range vq.QuotaCells {
+			if vc.Perc == nil && vc.Count == nil {
+				return ErrInvalidQuotaCellValue
+			}
+		}
 	}
 	return nil
 }
