@@ -300,6 +300,14 @@ func (c *Client) RejectEvent(event *Event) error {
 	return err
 }
 
+// GetUserInfo gives information about the user that is currently logged in.
+func (c *Client) GetUserInfo() (*UserResponse, error) {
+	res := &UserResponse{}
+	path := fmt.Sprintf("/users/info")
+	err := c.requestAndParseResponse("GET", path, nil, res)
+	return res, err
+}
+
 // RefreshToken ...
 func (c *Client) RefreshToken() error {
 	if c.Auth.RefreshTokenExpired() {
