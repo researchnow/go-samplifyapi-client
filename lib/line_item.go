@@ -94,6 +94,7 @@ type LineItem struct {
 	RequiredCompletes   int64        `json:"requiredCompletes"`
 	QuotaPlan           *QuotaPlan   `json:"quotaPlan"`
 	EndLinks            *EndLinks    `json:"endLinks"`
+	SurveyUrlParams 	[]*URLParameter	`json:"surveyURLParams"`
 }
 
 // IsUpdateable returns false if the line item cannot be updated.
