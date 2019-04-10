@@ -4,16 +4,16 @@ import "time"
 
 // TokenRequest contains parameters to obtain an access token
 type TokenRequest struct {
-	ClientID string `json:"clientId"`
-	Username string `json:"username"`
-	Password string `json:"password"`
+	ClientID string `json:"clientId" conform:"trim"`
+	Username string `json:"username" conform:"trim"`
+	Password string `json:"password" conform:"trim"`
 }
 
 // TokenResponse stores auth tokens
 type TokenResponse struct {
-	AccessToken      string `json:"accessToken"`
+	AccessToken      string `json:"accessToken" conform:"trim"`
 	ExpiresIn        uint   `json:"expiresIn"`
-	RefreshToken     string `json:"refreshToken"`
+	RefreshToken     string `json:"refreshToken" conform:"trim"`
 	RefreshExpiresIn uint   `json:"refreshExpiresIn"`
 	Acquired         *time.Time
 }

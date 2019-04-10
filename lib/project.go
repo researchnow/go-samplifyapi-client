@@ -48,27 +48,27 @@ const (
 
 // Category is a Project's category
 type Category struct {
-	SurveyTopic []string `json:"surveyTopic" valid:"required"`
+	SurveyTopic []string `json:"surveyTopic" valid:"required" conform:"trim"`
 }
 
 // Exclusions ... Project's exclusions
 type Exclusions struct {
 	Type ExclusionType `json:"type" valid:"ExclusionType"`
-	List []string      `json:"list"`
+	List []string      `json:"list" conform:"trim"`
 }
 
 // Author ...
 type Author struct {
-	Name     string `json:"name"`
-	Type     string `json:"type"`
-	Username string `json:"username"`
+	Name     string `json:"name" conform:"trim"`
+	Type     string `json:"type" conform:"trim"`
+	Username string `json:"username" conform:"trim"`
 }
 
 // ProjectHeader ...
 type ProjectHeader struct {
 	Model
-	ExtProjectID string  `json:"extProjectId"`
-	Title        string  `json:"title"`
+	ExtProjectID string  `json:"extProjectId" conform:"trim"`
+	Title        string  `json:"title" conform:"trim"`
 	State        State   `json:"state"`
 	Author       *Author `json:"author"`
 }
@@ -76,7 +76,7 @@ type ProjectHeader struct {
 // Project ...
 type Project struct {
 	ProjectHeader
-	NotificationEmails []string     `json:"notificationEmails"`
+	NotificationEmails []string     `json:"notificationEmails" conform:"trim"`
 	Devices            []DeviceType `json:"devices"`
 	Category           *Category    `json:"category"`
 	LineItems          []*LineItem  `json:"lineItems"`
@@ -86,9 +86,9 @@ type Project struct {
 
 // CreateProjectCriteria has the fields to create a project
 type CreateProjectCriteria struct {
-	ExtProjectID       string                    `json:"extProjectId" valid:"required"`
-	Title              string                    `json:"title" valid:"required"`
-	NotificationEmails []string                  `json:"notificationEmails" valid:"email,required"`
+	ExtProjectID       string                    `json:"extProjectId" valid:"required" conform:"trim"`
+	Title              string                    `json:"title" valid:"required" conform:"trim"`
+	NotificationEmails []string                  `json:"notificationEmails" valid:"email,required" conform:"trim"`
 	Devices            []DeviceType              `json:"devices" valid:"optional,DeviceType"`
 	Category           *Category                 `json:"category" valid:"required"`
 	LineItems          []*CreateLineItemCriteria `json:"lineItems" valid:"required"`
@@ -97,9 +97,9 @@ type CreateProjectCriteria struct {
 
 // UpdateProjectCriteria has the fields to update a project
 type UpdateProjectCriteria struct {
-	ExtProjectID       string                     `json:"extProjectId" valid:"required"`
-	Title              *string                    `json:"title,omitempty" valid:"optional"`
-	NotificationEmails *[]string                  `json:"notificationEmails,omitempty" valid:"email,optional"`
+	ExtProjectID       string                     `json:"extProjectId" valid:"required" conform:"trim"`
+	Title              *string                    `json:"title,omitempty" valid:"optional" conform:"trim"`
+	NotificationEmails *[]string                  `json:"notificationEmails,omitempty" valid:"email,optional" conform:"trim"`
 	Devices            *[]DeviceType              `json:"devices,omitempty" valid:"DeviceType,optional"`
 	Category           *Category                  `json:"category,omitempty" valid:"optional"`
 	LineItems          *[]*UpdateLineItemCriteria `json:"lineItems,omitempty" valid:"optional"`
@@ -108,15 +108,15 @@ type UpdateProjectCriteria struct {
 
 // BuyProjectCriteria ...
 type BuyProjectCriteria struct {
-	ExtLineItemID string `json:"extLineItemId" valid:"required"`
-	SurveyURL     string `json:"surveyURL" valid:"required,surveyURL"`
-	SurveyTestURL string `json:"surveyTestURL" valid:"required"`
+	ExtLineItemID string `json:"extLineItemId" valid:"required" conform:"trim"`
+	SurveyURL     string `json:"surveyURL" valid:"required,surveyURL" conform:"trim"`
+	SurveyTestURL string `json:"surveyTestURL" valid:"required" conform:"trim"`
 }
 
 // ProjectReport ...
 type ProjectReport struct {
-	ExtProjectID       string            `json:"extProjectId"`
-	Title              string            `json:"title"`
+	ExtProjectID       string            `json:"extProjectId" conform:"trim"`
+	Title              string            `json:"title" conform:"trim"`
 	State              State             `json:"state"`
 	Attempts           int64             `json:"attempts"`
 	Completes          int64             `json:"completes"`
@@ -124,7 +124,7 @@ type ProjectReport struct {
 	Overquotas         int64             `json:"overquotas"`
 	Starts             int64             `json:"starts"`
 	Conversion         float64           `json:"conversion"`
-	CurrencyCode       string            `json:"currency"`
+	CurrencyCode       string            `json:"currency" conform:"trim"`
 	RemainingCompletes int64             `json:"remainingCompletes"`
 	ActualMedianLOI    int64             `json:"actualMedianLOI"`
 	IncurredCost       float64           `json:"incurredCost"`
@@ -145,6 +145,6 @@ type Reconcile struct {
 
 // SurveyTopic ... Represents Survey Topic for a project. Required to setup a project
 type SurveyTopic struct {
-	Topic       string `json:"topic"`
-	Description string `json:"description"`
+	Topic       string `json:"topic" conform:"trim"`
+	Description string `json:"description" conform:"trim"`
 }

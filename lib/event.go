@@ -30,8 +30,8 @@ const (
 
 // EventActions ...
 type EventActions struct {
-	AcceptURL string `json:"acceptURL"`
-	RejectURL string `json:"rejectURL"`
+	AcceptURL string `json:"acceptURL" conform:"trim"`
+	RejectURL string `json:"rejectURL" conform:"trim"`
 }
 
 // EventValues ...
@@ -52,17 +52,17 @@ type EventResource struct {
 	EstimatedCost       *EventValues       `json:"estimatedCost"`
 	LengthOfInterview   *EventValues       `json:"lengthOfInterview"`
 	IndicativeIncidence *EventValues       `json:"incidenceRate"`
-	Currency            string             `json:"currency"`
+	Currency            string             `json:"currency" conform:"trim"`
 	Status              *EventStatusValues `json:"status"`
-	Reason              string             `json:"reason"`
+	Reason              string             `json:"reason" conform:"trim"`
 }
 
 // Event ...
 type Event struct {
 	EventID       int64          `json:"eventId"`
 	EventType     EventType      `json:"eventType"`
-	ExtProjectID  string         `json:"extProjectId"`
-	ExtLineItemID string         `json:"extLineItemId"`
+	ExtProjectID  string         `json:"extProjectId" conform:"trim"`
+	ExtLineItemID string         `json:"extLineItemId" conform:"trim"`
 	Resource      *EventResource `json:"resource"`
 	Actions       *EventActions  `json:"actions"`
 	CreatedAt     CustomTime     `json:"createdAt"`

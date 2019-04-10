@@ -59,13 +59,13 @@ type UpdateLineItemStateResponse struct {
 // LineItemListItem ...
 type LineItemListItem struct {
 	Model
-	ExtLineItemID   string      `json:"extLineItemId"`
+	ExtLineItemID   string      `json:"extLineItemId" conform:"trim"`
 	State           State       `json:"state"`
-	StateReason     string      `json:"stateReason"`
+	StateReason     string      `json:"stateReason" conform:"trim"`
 	LaunchedAt      *CustomTime `json:"launchedAt"`
-	Title           string      `json:"title"`
-	CountryISOCode  string      `json:"countryISOCode"`
-	LanguageISOCode string      `json:"languageISOCode"`
+	Title           string      `json:"title" conform:"trim"`
+	CountryISOCode  string      `json:"countryISOCode" conform:"trim"`
+	LanguageISOCode string      `json:"languageISOCode" conform:"trim"`
 }
 
 // GetAllLineItemsResponse ...
@@ -78,7 +78,7 @@ type GetAllLineItemsResponse struct {
 // GetFeasibilityResponse ...
 type GetFeasibilityResponse struct {
 	List []*struct {
-		ExtLineItemID string       `json:"extLineItemId"`
+		ExtLineItemID string       `json:"extLineItemId" conform:"trim"`
 		Feasibility   *Feasibility `json:"feasibility"`
 	} `json:"data"`
 	ResponseStatus ResponseStatus `json:"status"`
@@ -119,14 +119,14 @@ type GetEventResponse struct {
 
 // ResponseStatus is the custom status part in API response. (Optional in some endpoints)
 type ResponseStatus struct {
-	Message string      `json:"message"`
+	Message string      `json:"message" conform:"trim"`
 	Errors  []ErrorInfo `json:"errors"`
 }
 
 // ErrorInfo ... Custom API errors
 type ErrorInfo struct {
-	Code    string `json:"code"`
-	Message string `json:"message"`
+	Code    string `json:"code" conform:"trim"`
+	Message string `json:"message" conform:"trim"`
 }
 
 // Meta ...
@@ -138,11 +138,11 @@ type Meta struct {
 
 // Links for page navigation
 type Links struct {
-	First string `json:"first"`
-	Last  string `json:"last"`
-	Next  string `json:"next"`
-	Prev  string `json:"prev"`
-	Self  string `json:"self"`
+	First string `json:"first" conform:"trim"`
+	Last  string `json:"last" conform:"trim"`
+	Next  string `json:"next" conform:"trim"`
+	Prev  string `json:"prev" conform:"trim"`
+	Self  string `json:"self" conform:"trim"`
 }
 
 // Get ... Reads "message" from API's custom success/error response and interprets the status
