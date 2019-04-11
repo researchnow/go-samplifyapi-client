@@ -1,6 +1,7 @@
 package url
 
 import (
+	"fmt"
 	"net/url"
 )
 
@@ -17,15 +18,15 @@ const (
 type CustomParams map[string]string
 
 // Format returns the formatted TestLink appending the custom paramaters
-func Format(u *url.URL, m CustomParams) (*string, error) {
-	q := u.Query()
-
-	for key, value := range m {
-		q.Set(key, value)
+func Format(u *url.URL, m CustomParams) string {
+	queryString := ""
+	queryValues := u.Query()
+	for key := range queryValues {
+		queryString = fmt.Sprintf("%s&%s=%s", queryString, key, queryValues.Get(key))
 	}
-	u.RawQuery = q.Encode()
-
-	decodedURL := u.String()
-	res, err := url.QueryUnescape(decodedURL)
-	return &res, err
+	for key, value := range m {
+		queryString = fmt.Sprintf("%s&%s=%s", queryString, key, value)
+	}
+	u.RawQuery = queryString
+	return u.String()
 }

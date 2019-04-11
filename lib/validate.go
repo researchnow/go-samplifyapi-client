@@ -146,11 +146,12 @@ func ValidateQuotaPlan(val *QuotaPlan) error {
 
 // ValidateSurveyURL ...
 func ValidateSurveyURL(val string) error {
-	yes := govalidator.IsURL(val)
-	if yes {
-		return nil
-	}
-	return ErrInvalidFieldValue
+	// yes := govalidator.IsURL(val)
+	// if yes {
+	// 	return nil
+	// }
+	// return ErrInvalidFieldValue
+	return nil
 }
 
 // IsCountryCodeOrEmpty ...
