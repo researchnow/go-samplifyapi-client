@@ -3,6 +3,7 @@ package url
 import (
 	"fmt"
 	"net/url"
+	"strings"
 )
 
 const (
@@ -27,6 +28,7 @@ func Format(u *url.URL, m CustomParams) string {
 	for key, value := range m {
 		queryString = fmt.Sprintf("%s&%s=%s", queryString, key, value)
 	}
-	u.RawQuery = queryString
+	query := strings.Trim(queryString, queryString[:1])
+	u.RawQuery = query
 	return u.String()
 }
