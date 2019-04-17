@@ -1,7 +1,7 @@
 package samplify
 
 // Country ...
-type Country struct {
+type Country struct { 
 	ID                 string      `json:"id"`
 	IsoCode            string      `json:"isoCode"`
 	CountryName        string      `json:"countryName"`
