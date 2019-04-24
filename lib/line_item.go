@@ -80,7 +80,7 @@ type LineItemHeader struct {
 }
 
 // LineItem ...
-type LineItem struct { 
+type LineItem struct {
 	LineItemHeader
 	Title               string       `json:"title"`
 	CountryISOCode      string       `json:"countryISOCode"`

@@ -2,7 +2,6 @@ package url_test
 
 import (
 	"net/url"
-	"sort"
 	"testing"
 
 	formatURL "github.com/researchnow/go-samplifyapi-client/lib/url"
@@ -39,26 +38,49 @@ func TestFormat(t *testing.T) {
 			formatURL.CustomParams{"security": "{{K2}}", "tracker": "{{PSID}}", "project": "{{PID}}"},
 			"http://www.google.com?project={{PID}}&security={{K2}}&tracker={{PSID}}",
 		},
+		{
+			"Case 5: No custom parameters",
+			"http://www.google.com",
+			nil,
+			"http://www.google.com?",
+		},
+		{
+			"Case 6: url with parameters",
+			"http://www.google.com?myparam=blah",
+			nil,
+			"http://www.google.com?myparam=blah",
+		},
+		{
+			"Case 7: url with DK parameter",
+			"http://www.google.com/testpath?myparam=<#IdParameter[Value]>",
+			nil,
+			"http://www.google.com/testpath?myparam=<#IdParameter[Value]>",
+		},
+		{
+			"Case 8: url with DK multiple parameters  ",
+			"http://www.google.com/testpath?myparam=<#IdParameter[Value]>&myparam2=<#DubKnowledge[1500/Entity id]>",
+			nil,
+			"http://www.google.com/testpath?myparam=<#IdParameter[Value]>&myparam2=<#DubKnowledge[1500/Entity id]>",
+		},
+		{
+			"Case 9: url with DK multiple parameters & custom paramters ",
+			"http://www.google.com/testpath?myparam=<#IdParameter[Value]>&myparam2=<#DubKnowledge[1500/Entity id]>",
+			formatURL.CustomParams{"k2": "<#Project[Secure Key 2]>", "trackerID": "<#IdParameter[Value]>", "projectID": "<#DubKnowledge[1500/Entity id]>"},
+			"http://www.google.com/testpath?myparam=<#IdParameter[Value]>&myparam2=<#DubKnowledge[1500/Entity id]>&k2=<#Project[Secure Key 2]>&projectID=<#DubKnowledge[1500/Entity id]>&trackerID=<#IdParameter[Value]>",
+		},
+		{
+			"Case 9: url with DK multiple parameters & same custom paramters  ",
+			"http://www.google.com/testpath?psid=<#IdParameter[Value]>&pid=<#DubKnowledge[1500/Entity id]>",
+			formatURL.CustomParams{"k2": "<#Project[Secure Key 2]>", "psid": "<#IdParameter[Value]>", "pid": "<#DubKnowledge[1500/Entity id]>"},
+			"http://www.google.com/testpath?psid=<#IdParameter[Value]>&pid=<#DubKnowledge[1500/Entity id]>&k2=<#Project[Secure Key 2]>&pid=<#DubKnowledge[1500/Entity id]>&psid=<#IdParameter[Value]>",
+		},
 	}
 	for _, table := range tables {
 		url, _ := url.Parse(table.inputURL)
-		actual := formatURL.Format(url, sortMapKeys(table.inputParams))
+		actual := formatURL.Format(url, table.inputParams)
 		if actual != table.output {
 			t.Errorf("%s validation failed got: %v, want %v ", table.name, actual, table.output)
 		}
 	}
 
-}
-
-func sortMapKeys(m formatURL.CustomParams) formatURL.CustomParams {
-	keys := make([]string, 0, len(m))
-	result := formatURL.CustomParams{}
-	for key := range m {
-		keys = append(keys, key)
-	}
-	sort.Strings(keys)
-	for _, key := range keys {
-		result[key] = m[key]
-	}
-	return result
 }
