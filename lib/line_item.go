@@ -70,13 +70,6 @@ type EndLinks struct {
 	SecurityLevel string `json:"securityLevel"`
 }
 
-//SampleSource ...
-type SampleSource struct {
-	ID                 string    `json:"sourceID"`
-	Name               string    `json:"name"`
-	SupportedCountries []Country `json:"supportedCountries"`
-}
-
 // LineItemHeader ...
 type LineItemHeader struct {
 	Model
@@ -158,7 +151,6 @@ type CreateLineItemCriteria struct {
 	DeliveryType        *DeliveryType `json:"deliveryType" valid:"optional,DeliveryType"`
 	RequiredCompletes   int64         `json:"requiredCompletes" valid:"required"`
 	QuotaPlan           *QuotaPlan    `json:"quotaPlan" valid:"optional,quotaPlan"`
-	Source              string        `json:"source" valid:"required"`
 }
 
 // UpdateLineItemCriteria has the fields to update a LineItem
@@ -175,7 +167,6 @@ type UpdateLineItemCriteria struct {
 	DeliveryType        *DeliveryType `json:"deliveryType" valid:"optional,DeliveryType"`
 	RequiredCompletes   *int64        `json:"requiredCompletes,omitempty" valid:"optional"`
 	QuotaPlan           *QuotaPlan    `json:"quotaPlan,omitempty" valid:"optional,quotaPlan"`
-	Source              *string       `json:"source,omitempty" valid:"optional"`
 }
 
 // BuyProjectLineItem ...
