@@ -69,6 +69,7 @@ type ProjectHeader struct {
 	Model
 	ExtProjectID string  `json:"extProjectId"`
 	Title        string  `json:"title"`
+	JobNumber    string  `json:"jobNumber"`
 	State        State   `json:"state"`
 	Author       *Author `json:"author"`
 }
@@ -88,6 +89,7 @@ type Project struct {
 type CreateProjectCriteria struct {
 	ExtProjectID       string                    `json:"extProjectId" valid:"required"`
 	Title              string                    `json:"title" valid:"required"`
+	JobNumber          string                    `json:"jobNumber" valid:"optional"`
 	NotificationEmails []string                  `json:"notificationEmails" valid:"email,required"`
 	Devices            []DeviceType              `json:"devices" valid:"optional,DeviceType"`
 	Category           *Category                 `json:"category" valid:"required"`
@@ -99,6 +101,7 @@ type CreateProjectCriteria struct {
 type UpdateProjectCriteria struct {
 	ExtProjectID       string                     `json:"extProjectId" valid:"required"`
 	Title              *string                    `json:"title,omitempty" valid:"optional"`
+	JobNumber          *string                    `json:"jobNumber" valid:"optional"`
 	NotificationEmails *[]string                  `json:"notificationEmails,omitempty" valid:"email,optional"`
 	Devices            *[]DeviceType              `json:"devices,omitempty" valid:"DeviceType,optional"`
 	Category           *Category                  `json:"category,omitempty" valid:"optional"`
@@ -117,6 +120,7 @@ type BuyProjectCriteria struct {
 type ProjectReport struct {
 	ExtProjectID       string            `json:"extProjectId"`
 	Title              string            `json:"title"`
+	JobNumber          string            `json:"jobNumber"`
 	State              State             `json:"state"`
 	Attempts           int64             `json:"attempts"`
 	Completes          int64             `json:"completes"`
