@@ -17,6 +17,7 @@ const (
 	QueryFieldCreatedAt          QueryField = "createdAt"
 	QueryFieldUpdatedAt          QueryField = "updatedAt"
 	QueryFieldTitle              QueryField = "title"
+	QueryFieldJobNumber          QueryField = "jobNumber"
 	QueryFieldName               QueryField = "name"
 	QueryFieldText               QueryField = "text"
 	QueryFieldType               QueryField = "type"
