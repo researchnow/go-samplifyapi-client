@@ -81,9 +81,9 @@ type LineItemHeader struct {
 
 // SampleSource ...
 type SampleSource struct {
-	Source  string      `json:"sourceID"`
-	Name    string      `json:"name"`
-	Country *[]*Country `json:"country"`
+	ID        string     `json:"id"`
+	Name      string     `json:"name"`
+	Countries []*Country `json:"countries"`
 }
 
 // LineItem ...
