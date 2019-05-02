@@ -79,13 +79,6 @@ type LineItemHeader struct {
 	LaunchedAt    *CustomTime `json:"launchedAt"`
 }
 
-// SampleSource ...
-type SampleSource struct {
-	ID        string     `json:"id"`
-	Name      string     `json:"name"`
-	Countries []*Country `json:"countries"`
-}
-
 // LineItem ...
 type LineItem struct {
 	LineItemHeader
