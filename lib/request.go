@@ -60,7 +60,7 @@ func sendRequest(host, method, url, accessToken string, body interface{}, timeou
 			Errors:     []*Error{&Error{Path: errPath, Message: resp.Status}},
 		}
 		ar.Body = json.RawMessage(bodyjson)
-		log.WithFields(log.Fields{"module": "go-samplifyapi-client", "function": "sendRequest"}).Info(err)
+		log.WithFields(log.Fields{"module": "go-samplifyapi-client", "function": "sendRequest", "respBody": ar.Body}).Info(err)
 		return ar, err
 	}
 	ar.Body = json.RawMessage(bodyjson)
