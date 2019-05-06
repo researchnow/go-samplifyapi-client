@@ -266,6 +266,14 @@ func (c *Client) GetSurveyTopics(options *QueryOptions) (*GetSurveyTopicsRespons
 	return res, err
 }
 
+// GetSources ... Get the list of all the Sample sources
+func (c *Client) GetSources(options *QueryOptions) (*GetSampleSourceResponse, error) {
+	res := &GetSampleSourceResponse{}
+	path := fmt.Sprintf("/sources%s", query2String(options))
+	err := c.requestAndParseResponse("GET", path, nil, res)
+	return res, err
+}
+
 // GetEvents ... Returns the list of all events that have occurred for your company account. Most recent events occur at the top of the list.
 func (c *Client) GetEvents(options *QueryOptions) (*GetEventListResponse, error) {
 	res := &GetEventListResponse{}

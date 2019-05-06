@@ -3,6 +3,7 @@ package samplify
 import (
 	"fmt"
 	"net/url"
+	"strings"
 	"time"
 )
 
@@ -29,6 +30,7 @@ const (
 	QueryFieldCountryISOCode     QueryField = "countryISOCode"
 	QueryFieldLanguageISOCode    QueryField = "languageISOCode"
 	QueryFieldLaunchedAt         QueryField = "launchedAt"
+	QueryFieldSurveyTopic        QueryField = "surveyTopic"
 )
 
 // SortDirection (asc, desc)
@@ -83,6 +85,13 @@ func (datefilter DateFilterValue) String() string {
 	}
 	value := fmt.Sprintf("%s,%s", fromdate, todate)
 	return value
+}
+
+// StringSlice ..
+type StringSlice []string
+
+func (ss StringSlice) String() string {
+	return strings.Join(ss, ",")
 }
 
 const maxLimit uint = 1000
