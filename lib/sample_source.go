@@ -3,16 +3,21 @@ package samplify
 // SampleSource ...
 type SampleSource struct {
 	CountryISOCode  string    `json:"countryISOCode"`
-	LanguageISOCode string    `json:languageISOCode`
-	Sources         []Sources `json:sources`
-	Default         bool      `json:default`
+	LanguageISOCode string    `json:"languageISOCode"`
+	Sources         []Sources `json:"sources"`
 }
 
 // Sources ...
 type Sources struct {
-	ID       int        `json:"id"`
-	Name     string     `json:name`
-	Category []Category `json:category`
+	ID       int                    `json:"id"`
+	Name     string                 `json:"name"`
+	Category []SampleSourceCategory `json:"category"`
+	Default  bool                   `json:"default"`
+}
+
+// SampleSourceCategory is a Sample source's allowed list of surveytopics
+type SampleSourceCategory struct {
+	SurveyTopic []string `json:"surveyTopics" valid:"required"`
 }
 
 // GetSampleSourceResponse ...

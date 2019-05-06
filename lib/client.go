@@ -269,7 +269,7 @@ func (c *Client) GetSurveyTopics(options *QueryOptions) (*GetSurveyTopicsRespons
 // GetSources ... Get the list of all the Sample sources
 func (c *Client) GetSources(options *QueryOptions) (*GetSampleSourceResponse, error) {
 	res := &GetSampleSourceResponse{}
-	path := fmt.Sprintf("/categories/sources%s", query2String(options))
+	path := fmt.Sprintf("/sources%s", query2String(options))
 	err := c.requestAndParseResponse("GET", path, nil, res)
 	return res, err
 }

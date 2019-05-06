@@ -82,20 +82,20 @@ type LineItemHeader struct {
 // LineItem ...
 type LineItem struct {
 	LineItemHeader
-	Title               string          `json:"title"`
-	CountryISOCode      string          `json:"countryISOCode"`
-	LanguageISOCode     string          `json:"languageISOCode"`
-	SurveyURL           string          `json:"surveyURL"`
-	SurveyTestURL       string          `json:"surveyTestURL"`
-	IndicativeIncidence float64         `json:"indicativeIncidence"`
-	DaysInField         int64           `json:"daysInField"`
-	LengthOfInterview   int64           `json:"lengthOfInterview"`
-	DeliveryType        DeliveryType    `json:"deliveryType"`
-	RequiredCompletes   int64           `json:"requiredCompletes"`
-	QuotaPlan           *QuotaPlan      `json:"quotaPlan"`
-	EndLinks            *EndLinks       `json:"endLinks"`
-	SurveyUrlParams     []*URLParameter `json:"surveyURLParams"`
-	Source              string          `json:"sourceID"`
+	Title               string            `json:"title"`
+	CountryISOCode      string            `json:"countryISOCode"`
+	LanguageISOCode     string            `json:"languageISOCode"`
+	SurveyURL           string            `json:"surveyURL"`
+	SurveyTestURL       string            `json:"surveyTestURL"`
+	IndicativeIncidence float64           `json:"indicativeIncidence"`
+	DaysInField         int64             `json:"daysInField"`
+	LengthOfInterview   int64             `json:"lengthOfInterview"`
+	DeliveryType        DeliveryType      `json:"deliveryType"`
+	RequiredCompletes   int64             `json:"requiredCompletes"`
+	QuotaPlan           *QuotaPlan        `json:"quotaPlan"`
+	EndLinks            *EndLinks         `json:"endLinks"`
+	SurveyUrlParams     []*URLParameter   `json:"surveyURLParams"`
+	Sources             []*LineItemSource `json:"sources"`
 }
 
 // IsUpdateable returns false if the line item cannot be updated.
@@ -140,40 +140,40 @@ func (l *LineItem) IsCloseable() bool {
 
 // CreateLineItemCriteria has the fields to create a LineItem
 type CreateLineItemCriteria struct {
-	ExtLineItemID       string          `json:"extLineItemId" valid:"required"`
-	Title               string          `json:"title" valid:"required"`
-	CountryISOCode      string          `json:"countryISOCode" valid:"required,ISO3166Alpha2"`
-	LanguageISOCode     string          `json:"languageISOCode" valid:"required,languageISOCode"`
-	SurveyURL           *string         `json:"surveyURL,omitempty" valid:"optional,surveyURL"`
-	SurveyTestURL       *string         `json:"surveyTestURL,omitempty" valid:"optional"`
-	IndicativeIncidence float64         `json:"indicativeIncidence" valid:"required"`
-	DaysInField         int64           `json:"daysInField" valid:"required"`
-	LengthOfInterview   int64           `json:"lengthOfInterview" valid:"required"`
-	DeliveryType        *DeliveryType   `json:"deliveryType" valid:"optional,DeliveryType"`
-	RequiredCompletes   int64           `json:"requiredCompletes" valid:"required"`
-	QuotaPlan           *QuotaPlan      `json:"quotaPlan" valid:"optional,quotaPlan"`
-	SurveyUrlParams     []*URLParameter `json:"surveyURLParams" valid:"optional"`
-	SurveyTestUrlParams []*URLParameter `json:"surveyTestURLParams" valid:"optional"`
-	Source              string          `json:"sourceID,omitempty" valid:"optional"`
+	ExtLineItemID       string            `json:"extLineItemId" valid:"required"`
+	Title               string            `json:"title" valid:"required"`
+	CountryISOCode      string            `json:"countryISOCode" valid:"required,ISO3166Alpha2"`
+	LanguageISOCode     string            `json:"languageISOCode" valid:"required,languageISOCode"`
+	SurveyURL           *string           `json:"surveyURL,omitempty" valid:"optional,surveyURL"`
+	SurveyTestURL       *string           `json:"surveyTestURL,omitempty" valid:"optional"`
+	IndicativeIncidence float64           `json:"indicativeIncidence" valid:"required"`
+	DaysInField         int64             `json:"daysInField" valid:"required"`
+	LengthOfInterview   int64             `json:"lengthOfInterview" valid:"required"`
+	DeliveryType        *DeliveryType     `json:"deliveryType" valid:"optional,DeliveryType"`
+	RequiredCompletes   int64             `json:"requiredCompletes" valid:"required"`
+	QuotaPlan           *QuotaPlan        `json:"quotaPlan" valid:"optional,quotaPlan"`
+	SurveyUrlParams     []*URLParameter   `json:"surveyURLParams" valid:"optional"`
+	SurveyTestUrlParams []*URLParameter   `json:"surveyTestURLParams" valid:"optional"`
+	Sources             []*LineItemSource `json:"sources,omitempty" valid:"optional"`
 }
 
 // UpdateLineItemCriteria has the fields to update a LineItem
 type UpdateLineItemCriteria struct {
-	ExtLineItemID       string          `json:"extLineItemId"`
-	Title               *string         `json:"title,omitempty" valid:"optional"`
-	CountryISOCode      *string         `json:"countryISOCode,omitempty" valid:"optional,ISO3166Alpha2"`
-	LanguageISOCode     *string         `json:"languageISOCode,omitempty" valid:"optional,languageISOCode"`
-	SurveyURL           *string         `json:"surveyURL,omitempty" valid:"optional,surveyURL"`
-	SurveyTestURL       *string         `json:"surveyTestURL,omitempty" valid:"optional"`
-	IndicativeIncidence *float64        `json:"indicativeIncidence,omitempty" valid:"optional"`
-	DaysInField         *int64          `json:"daysInField,omitempty" valid:"optional"`
-	LengthOfInterview   *int64          `json:"lengthOfInterview,omitempty" valid:"optional"`
-	DeliveryType        *DeliveryType   `json:"deliveryType" valid:"optional,DeliveryType"`
-	RequiredCompletes   *int64          `json:"requiredCompletes,omitempty" valid:"optional"`
-	QuotaPlan           *QuotaPlan      `json:"quotaPlan,omitempty" valid:"optional,quotaPlan"`
-	SurveyUrlParams     []*URLParameter `json:"surveyURLParams" valid:"optional"`
-	SurveyTestUrlParams []*URLParameter `json:"surveyTestURLParams" valid:"optional"`
-	Source              *string         `json:"sourceID,omitempty" valid:"optional"`
+	ExtLineItemID       string             `json:"extLineItemId"`
+	Title               *string            `json:"title,omitempty" valid:"optional"`
+	CountryISOCode      *string            `json:"countryISOCode,omitempty" valid:"optional,ISO3166Alpha2"`
+	LanguageISOCode     *string            `json:"languageISOCode,omitempty" valid:"optional,languageISOCode"`
+	SurveyURL           *string            `json:"surveyURL,omitempty" valid:"optional,surveyURL"`
+	SurveyTestURL       *string            `json:"surveyTestURL,omitempty" valid:"optional"`
+	IndicativeIncidence *float64           `json:"indicativeIncidence,omitempty" valid:"optional"`
+	DaysInField         *int64             `json:"daysInField,omitempty" valid:"optional"`
+	LengthOfInterview   *int64             `json:"lengthOfInterview,omitempty" valid:"optional"`
+	DeliveryType        *DeliveryType      `json:"deliveryType" valid:"optional,DeliveryType"`
+	RequiredCompletes   *int64             `json:"requiredCompletes,omitempty" valid:"optional"`
+	QuotaPlan           *QuotaPlan         `json:"quotaPlan,omitempty" valid:"optional,quotaPlan"`
+	SurveyUrlParams     []*URLParameter    `json:"surveyURLParams" valid:"optional"`
+	SurveyTestUrlParams []*URLParameter    `json:"surveyTestURLParams" valid:"optional"`
+	Sources             *[]*LineItemSource `json:"sources,omitempty" valid:"optional"`
 }
 
 // BuyProjectLineItem ...
@@ -249,4 +249,9 @@ type AttributeOption struct {
 type URLParameter struct {
 	Key    string   `json:"key"`
 	Values []string `json:"values"`
+}
+
+// LineItemSource source associated with the lineitem.
+type LineItemSource struct {
+	ID int64 `json:"id"`
 }
