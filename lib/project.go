@@ -89,7 +89,7 @@ type Project struct {
 type CreateProjectCriteria struct {
 	ExtProjectID       string                    `json:"extProjectId" valid:"required"`
 	Title              string                    `json:"title" valid:"required"`
-	JobNumber          string                    `json:"jobNumber" valid:"optional"`
+	JobNumber          string                    `json:"jobNumber,omitempty" valid:"optional"`
 	NotificationEmails []string                  `json:"notificationEmails" valid:"email,required"`
 	Devices            []DeviceType              `json:"devices" valid:"optional,DeviceType"`
 	Category           *Category                 `json:"category" valid:"required"`
@@ -101,7 +101,7 @@ type CreateProjectCriteria struct {
 type UpdateProjectCriteria struct {
 	ExtProjectID       string                     `json:"extProjectId" valid:"required"`
 	Title              *string                    `json:"title,omitempty" valid:"optional"`
-	JobNumber          *string                    `json:"jobNumber" valid:"optional"`
+	JobNumber          *string                    `json:"jobNumber,omitempty" valid:"optional"`
 	NotificationEmails *[]string                  `json:"notificationEmails,omitempty" valid:"email,optional"`
 	Devices            *[]DeviceType              `json:"devices,omitempty" valid:"DeviceType,optional"`
 	Category           *Category                  `json:"category,omitempty" valid:"optional"`
