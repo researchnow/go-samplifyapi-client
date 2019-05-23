@@ -23,7 +23,6 @@ func sendRequest(host, method, url, accessToken string, body interface{}, timeou
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(string(jstr))
 	dur := time.Duration(timeout)
 	client := &http.Client{
 		Timeout: time.Second * dur,
