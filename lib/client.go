@@ -8,8 +8,6 @@ import (
 	"mime/multipart"
 	"net/http"
 	"time"
-
-	log "github.com/sirupsen/logrus"
 )
 
 // ClientOptions to use while creating a new Client
@@ -300,6 +298,14 @@ func (c *Client) GetSurveyTopics(options *QueryOptions) (*GetSurveyTopicsRespons
 	return res, err
 }
 
+// GetSources ... Get the list of all the Sample sources
+func (c *Client) GetSources(options *QueryOptions) (*GetSampleSourceResponse, error) {
+	res := &GetSampleSourceResponse{}
+	path := fmt.Sprintf("/sources%s", query2String(options))
+	err := c.requestAndParseResponse("GET", path, nil, res)
+	return res, err
+}
+
 // GetEvents ... Returns the list of all events that have occurred for your company account. Most recent events occur at the top of the list.
 func (c *Client) GetEvents(options *QueryOptions) (*GetEventListResponse, error) {
 	res := &GetEventListResponse{}
@@ -433,7 +439,7 @@ func (c *Client) request(method, host, url string, body interface{}) (*APIRespon
 }
 
 func (c *Client) requestAndParseToken() error {
-	log.WithFields(log.Fields{"module": "go-samplifyapi-client", "function": "requestAndParseToken", "ClientID": c.Credentials.ClientID}).Info()
+	// log.WithFields(log.Fields{"module": "go-samplifyapi-client", "function": "requestAndParseToken", "ClientID": c.Credentials.ClientID}).Info()
 	t := time.Now()
 	ar, err := sendRequest(c.Options.AuthURL, "POST", "/token/password", "", c.Credentials, *c.Options.Timeout)
 	if err != nil {

@@ -69,6 +69,7 @@ type ProjectHeader struct {
 	Model
 	ExtProjectID string  `json:"extProjectId"`
 	Title        string  `json:"title" conform:"trim"`
+	JobNumber    string  `json:"jobNumber"`
 	State        State   `json:"state"`
 	Author       *Author `json:"author"`
 }
@@ -89,6 +90,7 @@ type CreateProjectCriteria struct {
 	ExtProjectID       string                    `json:"extProjectId" valid:"required"`
 	Title              string                    `json:"title" valid:"required" conform:"trim"`
 	NotificationEmails []string                  `json:"notificationEmails" valid:"email,required" conform:"trim"`
+	JobNumber          string                    `json:"jobNumber,omitempty" valid:"optional"`
 	Devices            []DeviceType              `json:"devices" valid:"optional,DeviceType"`
 	Category           *Category                 `json:"category" valid:"required"`
 	LineItems          []*CreateLineItemCriteria `json:"lineItems" valid:"required"`
@@ -100,6 +102,7 @@ type UpdateProjectCriteria struct {
 	ExtProjectID       string                     `json:"extProjectId" valid:"required"`
 	Title              *string                    `json:"title,omitempty" valid:"optional" conform:"trim"`
 	NotificationEmails *[]string                  `json:"notificationEmails,omitempty" valid:"email,optional" conform:"trim"`
+	JobNumber          *string                    `json:"jobNumber,omitempty" valid:"optional"`
 	Devices            *[]DeviceType              `json:"devices,omitempty" valid:"DeviceType,optional"`
 	Category           *Category                  `json:"category,omitempty" valid:"optional"`
 	LineItems          *[]*UpdateLineItemCriteria `json:"lineItems,omitempty" valid:"optional"`
@@ -117,6 +120,7 @@ type BuyProjectCriteria struct {
 type ProjectReport struct {
 	ExtProjectID       string            `json:"extProjectId"`
 	Title              string            `json:"title" conform:"trim"`
+	JobNumber          string            `json:"jobNumber"`
 	State              State             `json:"state"`
 	Attempts           int64             `json:"attempts"`
 	Completes          int64             `json:"completes"`

@@ -95,6 +95,7 @@ type LineItem struct {
 	QuotaPlan           *QuotaPlan      `json:"quotaPlan"`
 	EndLinks            *EndLinks       `json:"endLinks"`
 	SurveyUrlParams     []*URLParameter `json:"surveyURLParams"`
+	Sources             []*LineItemSource `json:"sources"`
 }
 
 // IsUpdateable returns false if the line item cannot be updated.
@@ -153,6 +154,7 @@ type CreateLineItemCriteria struct {
 	QuotaPlan           *QuotaPlan      `json:"quotaPlan" valid:"optional,quotaPlan"`
 	SurveyUrlParams     []*URLParameter `json:"surveyURLParams" valid:"optional"`
 	SurveyTestUrlParams []*URLParameter `json:"surveyTestURLParams" valid:"optional"`
+	Sources             []*LineItemSource `json:"sources,omitempty" valid:"optional"`
 }
 
 // UpdateLineItemCriteria has the fields to update a LineItem
@@ -171,6 +173,7 @@ type UpdateLineItemCriteria struct {
 	QuotaPlan           *QuotaPlan      `json:"quotaPlan,omitempty" valid:"optional,quotaPlan"`
 	SurveyUrlParams     []*URLParameter `json:"surveyURLParams" valid:"optional"`
 	SurveyTestUrlParams []*URLParameter `json:"surveyTestURLParams" valid:"optional"`
+	Sources             *[]*LineItemSource `json:"sources,omitempty" valid:"optional"`
 }
 
 // BuyProjectLineItem ...
@@ -246,4 +249,9 @@ type AttributeOption struct {
 type URLParameter struct {
 	Key    string   `json:"key" conform:"trim"`
 	Values []string `json:"values" conform:"trim"`
+}
+
+// LineItemSource source associated with the lineitem.
+type LineItemSource struct {
+	ID int64 `json:"id"`
 }

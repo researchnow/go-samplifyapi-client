@@ -95,6 +95,7 @@ type GetCountriesResponse struct {
 type GetAttributesResponse struct {
 	List           []*Attribute   `json:"data"`
 	ResponseStatus ResponseStatus `json:"status"`
+	Meta           Meta           `json:"meta"`
 }
 
 // GetSurveyTopicsResponse ...
