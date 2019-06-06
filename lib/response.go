@@ -59,7 +59,7 @@ type UpdateLineItemStateResponse struct {
 // LineItemListItem ...
 type LineItemListItem struct {
 	Model
-	ExtLineItemID   string      `json:"extLineItemId" conform:"trim"`
+	ExtLineItemID   string      `json:"extLineItemId"`
 	State           State       `json:"state"`
 	StateReason     string      `json:"stateReason" conform:"trim"`
 	LaunchedAt      *CustomTime `json:"launchedAt"`
@@ -78,7 +78,7 @@ type GetAllLineItemsResponse struct {
 // GetFeasibilityResponse ...
 type GetFeasibilityResponse struct {
 	List []*struct {
-		ExtLineItemID string       `json:"extLineItemId" conform:"trim"`
+		ExtLineItemID string       `json:"extLineItemId"`
 		Feasibility   *Feasibility `json:"feasibility"`
 	} `json:"data"`
 	ResponseStatus ResponseStatus `json:"status"`

@@ -67,7 +67,7 @@ type Author struct {
 // ProjectHeader ...
 type ProjectHeader struct {
 	Model
-	ExtProjectID string  `json:"extProjectId" conform:"trim"`
+	ExtProjectID string  `json:"extProjectId"`
 	Title        string  `json:"title" conform:"trim"`
 	State        State   `json:"state"`
 	Author       *Author `json:"author"`
@@ -86,7 +86,7 @@ type Project struct {
 
 // CreateProjectCriteria has the fields to create a project
 type CreateProjectCriteria struct {
-	ExtProjectID       string                    `json:"extProjectId" valid:"required" conform:"trim"`
+	ExtProjectID       string                    `json:"extProjectId" valid:"required"`
 	Title              string                    `json:"title" valid:"required" conform:"trim"`
 	NotificationEmails []string                  `json:"notificationEmails" valid:"email,required" conform:"trim"`
 	Devices            []DeviceType              `json:"devices" valid:"optional,DeviceType"`
@@ -97,7 +97,7 @@ type CreateProjectCriteria struct {
 
 // UpdateProjectCriteria has the fields to update a project
 type UpdateProjectCriteria struct {
-	ExtProjectID       string                     `json:"extProjectId" valid:"required" conform:"trim"`
+	ExtProjectID       string                     `json:"extProjectId" valid:"required"`
 	Title              *string                    `json:"title,omitempty" valid:"optional" conform:"trim"`
 	NotificationEmails *[]string                  `json:"notificationEmails,omitempty" valid:"email,optional" conform:"trim"`
 	Devices            *[]DeviceType              `json:"devices,omitempty" valid:"DeviceType,optional"`
@@ -108,14 +108,14 @@ type UpdateProjectCriteria struct {
 
 // BuyProjectCriteria ...
 type BuyProjectCriteria struct {
-	ExtLineItemID string `json:"extLineItemId" valid:"required" conform:"trim"`
+	ExtLineItemID string `json:"extLineItemId" valid:"required"`
 	SurveyURL     string `json:"surveyURL" valid:"required,surveyURL" conform:"trim"`
 	SurveyTestURL string `json:"surveyTestURL" valid:"required" conform:"trim"`
 }
 
 // ProjectReport ...
 type ProjectReport struct {
-	ExtProjectID       string            `json:"extProjectId" conform:"trim"`
+	ExtProjectID       string            `json:"extProjectId"`
 	Title              string            `json:"title" conform:"trim"`
 	State              State             `json:"state"`
 	Attempts           int64             `json:"attempts"`

@@ -94,8 +94,8 @@ type QueryOptions struct {
 	Offset        uint
 	Limit         uint
 	Scope         string `conform:"trim"`
-	ExtProjectId  *string `conform:"trim"`
-	ExtLineItemId *string `conform:"trim"`
+	ExtProjectId  *string
+	ExtLineItemId *string
 	EventType     *string `conform:"trim"`
 }
 

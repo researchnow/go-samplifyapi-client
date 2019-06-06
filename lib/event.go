@@ -61,8 +61,8 @@ type EventResource struct {
 type Event struct {
 	EventID       int64          `json:"eventId"`
 	EventType     EventType      `json:"eventType"`
-	ExtProjectID  string         `json:"extProjectId" conform:"trim"`
-	ExtLineItemID string         `json:"extLineItemId" conform:"trim"`
+	ExtProjectID  string         `json:"extProjectId"`
+	ExtLineItemID string         `json:"extLineItemId"`
 	Resource      *EventResource `json:"resource"`
 	Actions       *EventActions  `json:"actions"`
 	CreatedAt     CustomTime     `json:"createdAt"`
