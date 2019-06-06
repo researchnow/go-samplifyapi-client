@@ -10,10 +10,10 @@ type UserResponse struct {
 type User struct {
 	Applications []Application `json:"applications"`
 	CompanyID    int32         `json:"companyId"`
-	CompanyName  string        `json:"companyName"`
-	Email        string        `json:"email"`
-	Username     string        `json:"username"`
-	FullName     string        `json:"fullName"`
+	CompanyName  string        `json:"companyName" conform:"trim"`
+	Email        string        `json:"email" conform:"trim"`
+	Username     string        `json:"username" conform:"trim"`
+	FullName     string        `json:"fullName" conform:"trim"`
 }
 
 // Application to hold the app level information of the user.
@@ -21,5 +21,5 @@ type Application struct {
 	ID      int32  `json:"appId"`
 	Current bool   `json:"current"`
 	Default bool   `json:"default"`
-	Name    string `json:"name"`
+	Name    string `json:"name" conform:"trim"`
 }
