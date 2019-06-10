@@ -82,19 +82,19 @@ type LineItemHeader struct {
 // LineItem ...
 type LineItem struct {
 	LineItemHeader
-	Title               string          `json:"title" conform:"trim"`
-	CountryISOCode      string          `json:"countryISOCode" conform:"trim"`
-	LanguageISOCode     string          `json:"languageISOCode" conform:"trim"`
-	SurveyURL           string          `json:"surveyURL" conform:"trim"`
-	SurveyTestURL       string          `json:"surveyTestURL" conform:"trim"`
-	IndicativeIncidence float64         `json:"indicativeIncidence"`
-	DaysInField         int64           `json:"daysInField"`
-	LengthOfInterview   int64           `json:"lengthOfInterview"`
-	DeliveryType        DeliveryType    `json:"deliveryType"`
-	RequiredCompletes   int64           `json:"requiredCompletes"`
-	QuotaPlan           *QuotaPlan      `json:"quotaPlan"`
-	EndLinks            *EndLinks       `json:"endLinks"`
-	SurveyUrlParams     []*URLParameter `json:"surveyURLParams"`
+	Title               string            `json:"title" conform:"trim"`
+	CountryISOCode      string            `json:"countryISOCode" conform:"trim"`
+	LanguageISOCode     string            `json:"languageISOCode" conform:"trim"`
+	SurveyURL           string            `json:"surveyURL" conform:"trim"`
+	SurveyTestURL       string            `json:"surveyTestURL" conform:"trim"`
+	IndicativeIncidence float64           `json:"indicativeIncidence"`
+	DaysInField         int64             `json:"daysInField"`
+	LengthOfInterview   int64             `json:"lengthOfInterview"`
+	DeliveryType        DeliveryType      `json:"deliveryType"`
+	RequiredCompletes   int64             `json:"requiredCompletes"`
+	QuotaPlan           *QuotaPlan        `json:"quotaPlan"`
+	EndLinks            *EndLinks         `json:"endLinks"`
+	SurveyUrlParams     []*URLParameter   `json:"surveyURLParams"`
 	Sources             []*LineItemSource `json:"sources"`
 }
 
@@ -140,39 +140,39 @@ func (l *LineItem) IsCloseable() bool {
 
 // CreateLineItemCriteria has the fields to create a LineItem
 type CreateLineItemCriteria struct {
-	ExtLineItemID       string          `json:"extLineItemId" valid:"required" conform:"trim"`
-	Title               string          `json:"title" valid:"required" conform:"trim"`
-	CountryISOCode      string          `json:"countryISOCode" valid:"required,ISO3166Alpha2" conform:"trim"`
-	LanguageISOCode     string          `json:"languageISOCode" valid:"required,languageISOCode" conform:"trim"`
-	SurveyURL           *string         `json:"surveyURL,omitempty" valid:"optional,surveyURL" conform:"trim"`
-	SurveyTestURL       *string         `json:"surveyTestURL,omitempty" valid:"optional" conform:"trim"`
-	IndicativeIncidence float64         `json:"indicativeIncidence" valid:"required"`
-	DaysInField         int64           `json:"daysInField" valid:"required"`
-	LengthOfInterview   int64           `json:"lengthOfInterview" valid:"required"`
-	DeliveryType        *DeliveryType   `json:"deliveryType" valid:"optional,DeliveryType"`
-	RequiredCompletes   int64           `json:"requiredCompletes" valid:"required"`
-	QuotaPlan           *QuotaPlan      `json:"quotaPlan" valid:"optional,quotaPlan"`
-	SurveyUrlParams     []*URLParameter `json:"surveyURLParams" valid:"optional"`
-	SurveyTestUrlParams []*URLParameter `json:"surveyTestURLParams" valid:"optional"`
+	ExtLineItemID       string            `json:"extLineItemId" valid:"required" conform:"trim"`
+	Title               string            `json:"title" valid:"required" conform:"trim"`
+	CountryISOCode      string            `json:"countryISOCode" valid:"required,ISO3166Alpha2" conform:"trim"`
+	LanguageISOCode     string            `json:"languageISOCode" valid:"required,languageISOCode" conform:"trim"`
+	SurveyURL           *string           `json:"surveyURL,omitempty" valid:"optional,surveyURL" conform:"trim"`
+	SurveyTestURL       *string           `json:"surveyTestURL,omitempty" valid:"optional" conform:"trim"`
+	IndicativeIncidence float64           `json:"indicativeIncidence" valid:"required"`
+	DaysInField         int64             `json:"daysInField" valid:"required"`
+	LengthOfInterview   int64             `json:"lengthOfInterview" valid:"required"`
+	DeliveryType        *DeliveryType     `json:"deliveryType" valid:"optional,DeliveryType"`
+	RequiredCompletes   int64             `json:"requiredCompletes" valid:"required"`
+	QuotaPlan           *QuotaPlan        `json:"quotaPlan" valid:"optional,quotaPlan"`
+	SurveyUrlParams     []*URLParameter   `json:"surveyURLParams" valid:"optional"`
+	SurveyTestUrlParams []*URLParameter   `json:"surveyTestURLParams" valid:"optional"`
 	Sources             []*LineItemSource `json:"sources,omitempty" valid:"optional"`
 }
 
 // UpdateLineItemCriteria has the fields to update a LineItem
 type UpdateLineItemCriteria struct {
-	ExtLineItemID       string          `json:"extLineItemId" conform:"trim"`
-	Title               *string         `json:"title,omitempty" valid:"optional" conform:"trim"`
-	CountryISOCode      *string         `json:"countryISOCode,omitempty" valid:"optional,ISO3166Alpha2" conform:"trim"`
-	LanguageISOCode     *string         `json:"languageISOCode,omitempty" valid:"optional,languageISOCode" conform:"trim"`
-	SurveyURL           *string         `json:"surveyURL,omitempty" valid:"optional,surveyURL" conform:"trim"`
-	SurveyTestURL       *string         `json:"surveyTestURL,omitempty" valid:"optional" conform:"trim"`
-	IndicativeIncidence *float64        `json:"indicativeIncidence,omitempty" valid:"optional"`
-	DaysInField         *int64          `json:"daysInField,omitempty" valid:"optional"`
-	LengthOfInterview   *int64          `json:"lengthOfInterview,omitempty" valid:"optional"`
-	DeliveryType        *DeliveryType   `json:"deliveryType" valid:"optional,DeliveryType"`
-	RequiredCompletes   *int64          `json:"requiredCompletes,omitempty" valid:"optional"`
-	QuotaPlan           *QuotaPlan      `json:"quotaPlan,omitempty" valid:"optional,quotaPlan"`
-	SurveyUrlParams     []*URLParameter `json:"surveyURLParams" valid:"optional"`
-	SurveyTestUrlParams []*URLParameter `json:"surveyTestURLParams" valid:"optional"`
+	ExtLineItemID       string             `json:"extLineItemId" conform:"trim"`
+	Title               *string            `json:"title,omitempty" valid:"optional" conform:"trim"`
+	CountryISOCode      *string            `json:"countryISOCode,omitempty" valid:"optional,ISO3166Alpha2" conform:"trim"`
+	LanguageISOCode     *string            `json:"languageISOCode,omitempty" valid:"optional,languageISOCode" conform:"trim"`
+	SurveyURL           *string            `json:"surveyURL,omitempty" valid:"optional,surveyURL" conform:"trim"`
+	SurveyTestURL       *string            `json:"surveyTestURL,omitempty" valid:"optional" conform:"trim"`
+	IndicativeIncidence *float64           `json:"indicativeIncidence,omitempty" valid:"optional"`
+	DaysInField         *int64             `json:"daysInField,omitempty" valid:"optional"`
+	LengthOfInterview   *int64             `json:"lengthOfInterview,omitempty" valid:"optional"`
+	DeliveryType        *DeliveryType      `json:"deliveryType" valid:"optional,DeliveryType"`
+	RequiredCompletes   *int64             `json:"requiredCompletes,omitempty" valid:"optional"`
+	QuotaPlan           *QuotaPlan         `json:"quotaPlan,omitempty" valid:"optional,quotaPlan"`
+	SurveyUrlParams     []*URLParameter    `json:"surveyURLParams" valid:"optional"`
+	SurveyTestUrlParams []*URLParameter    `json:"surveyTestURLParams" valid:"optional"`
 	Sources             *[]*LineItemSource `json:"sources,omitempty" valid:"optional"`
 }
 
@@ -194,7 +194,7 @@ type LineItemReport struct {
 	Completes             int64   `json:"completes"`
 	Overquotas            int64   `json:"overquotas"`
 	Screenouts            int64   `json:"screenouts"`
-	Starts                int64   `json:"starts"`
+	Incompletes           int64   `json:"incompletes"`
 	Conversion            float64 `json:"conversion"`
 	CurrencyCode          string  `json:"currency" conform:"trim"`
 	RemainingCompletes    int64   `json:"remainingCompletes"`
@@ -203,6 +203,7 @@ type LineItemReport struct {
 	EstimatedCost         float64 `json:"estimatedCost"`
 	LastAcceptedIncidence float64 `json:"lastAcceptedIncidenceRate"`
 	LastAcceptedLOI       int64   `json:"lastAcceptedLOI"`
+	CompletesRefused      int64   `json:"completesRefused"`
 }
 
 // Feasibility ...

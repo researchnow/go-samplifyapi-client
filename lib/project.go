@@ -126,7 +126,7 @@ type ProjectReport struct {
 	Completes          int64             `json:"completes"`
 	Screenouts         int64             `json:"screenouts"`
 	Overquotas         int64             `json:"overquotas"`
-	Starts             int64             `json:"starts"`
+	Incompletes        int64             `json:"incompletes"`
 	Conversion         float64           `json:"conversion"`
 	CurrencyCode       string            `json:"currency" conform:"trim"`
 	RemainingCompletes int64             `json:"remainingCompletes"`
@@ -134,6 +134,7 @@ type ProjectReport struct {
 	IncurredCost       float64           `json:"incurredCost"`
 	EstimatedCost      float64           `json:"estimatedCost"`
 	LineItems          []*LineItemReport `json:"lineItems"`
+	CompletesRefused   int64             `json:"completesRefused"`
 }
 
 // Invoice ... Represents Invoice for a project.
