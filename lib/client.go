@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/leebenson/conform"
 	"mime/multipart"
 	"net/http"
 	"time"
@@ -28,8 +29,8 @@ const defaulttimeout = 20
 
 // ClientOptions ...
 type ClientOptions struct {
-	APIBaseURL string
-	AuthURL    string
+	APIBaseURL string `conform:"trim"`
+	AuthURL    string `conform:"trim"`
 	Timeout    *int
 }
 
@@ -46,8 +47,12 @@ func (c *Client) CreateProject(project *CreateProjectCriteria) (*ProjectResponse
 	if err != nil {
 		return nil, err
 	}
+	// Trim strings in CreateProjectCriteria
+	conform.Strings(&project)
 	res := &ProjectResponse{}
 	err = c.requestAndParseResponse("POST", "/projects", project, res)
+	// Trim strings in ProjectResponse
+	conform.Strings(&res)
 	return res, err
 }
 
@@ -57,9 +62,13 @@ func (c *Client) UpdateProject(project *UpdateProjectCriteria) (*ProjectResponse
 	if err != nil {
 		return nil, err
 	}
+	// Trim strings in UpdateProjectCriteria
+	conform.Strings(&project)
 	res := &ProjectResponse{}
 	path := fmt.Sprintf("/projects/%s", project.ExtProjectID)
 	err = c.requestAndParseResponse("POST", path, project, res)
+	// Trim strings in ProjectResponse
+	conform.Strings(&res)
 	return res, err
 }
 
@@ -73,9 +82,11 @@ func (c *Client) BuyProject(extProjectID string, buy []*BuyProjectCriteria) (*Bu
 	if err != nil {
 		return nil, err
 	}
+	conform.Strings(&buy)
 	res := &BuyProjectResponse{}
 	path := fmt.Sprintf("/projects/%s/buy", extProjectID)
 	err = c.requestAndParseResponse("POST", path, buy, res)
+	conform.Strings(&res)
 	return res, err
 }
 
@@ -88,15 +99,18 @@ func (c *Client) CloseProject(extProjectID string) (*CloseProjectResponse, error
 	res := &CloseProjectResponse{}
 	path := fmt.Sprintf("/projects/%s/close", extProjectID)
 	err = c.requestAndParseResponse("POST", path, nil, res)
+	conform.Strings(&res)
 	return res, err
 }
 
 // GetAllProjects ...
 func (c *Client) GetAllProjects(options *QueryOptions) (*GetAllProjectsResponse, error) {
 	res := &GetAllProjectsResponse{}
+	conform.Strings(&options)
 	query := query2String(options)
 	path := fmt.Sprintf("/projects%s", query)
 	err := c.requestAndParseResponse("GET", path, nil, res)
+	conform.Strings(&res)
 	return res, err
 }
 
@@ -109,6 +123,7 @@ func (c *Client) GetProjectBy(extProjectID string) (*ProjectResponse, error) {
 	res := &ProjectResponse{}
 	path := fmt.Sprintf("/projects/%s", extProjectID)
 	err = c.requestAndParseResponse("GET", path, nil, res)
+	conform.Strings(&res)
 	return res, err
 }
 
@@ -121,6 +136,7 @@ func (c *Client) GetProjectReport(extProjectID string) (*ProjectReportResponse, 
 	res := &ProjectReportResponse{}
 	path := fmt.Sprintf("/projects/%s/report", extProjectID)
 	err = c.requestAndParseResponse("GET", path, nil, res)
+	conform.Strings(&res)
 	return res, err
 }
 
@@ -134,9 +150,11 @@ func (c *Client) AddLineItem(extProjectID string, lineItem *CreateLineItemCriter
 	if err != nil {
 		return nil, err
 	}
+	conform.Strings(&lineItem)
 	res := &LineItemResponse{}
 	path := fmt.Sprintf("/projects/%s/lineItems", extProjectID)
 	err = c.requestAndParseResponse("POST", path, lineItem, res)
+	conform.Strings(&res)
 	return res, err
 }
 
@@ -152,9 +170,11 @@ func (c *Client) UpdateLineItem(extProjectID, extLineItemID string,
 	if err != nil {
 		return nil, err
 	}
+	conform.Strings(&lineItem)
 	res := &LineItemResponse{}
 	path := fmt.Sprintf("/projects/%s/lineItems/%s", extProjectID, extLineItemID)
 	err = c.requestAndParseResponse("POST", path, lineItem, res)
+	conform.Strings(&res)
 	return res, err
 }
 
@@ -181,9 +201,11 @@ func (c *Client) GetAllLineItems(extProjectID string, options *QueryOptions) (*G
 	if err != nil {
 		return nil, err
 	}
+	conform.Strings(&options)
 	res := &GetAllLineItemsResponse{}
 	path := fmt.Sprintf("/projects/%s/lineItems%s", extProjectID, query2String(options))
 	err = c.requestAndParseResponse("GET", path, nil, res)
+	conform.Strings(&res)
 	return res, err
 }
 
@@ -196,6 +218,7 @@ func (c *Client) GetLineItemBy(extProjectID, extLineItemID string) (*LineItemRes
 	res := &LineItemResponse{}
 	path := fmt.Sprintf("/projects/%s/lineItems/%s", extProjectID, extLineItemID)
 	err = c.requestAndParseResponse("GET", path, nil, res)
+	conform.Strings(&res)
 	return res, err
 }
 
@@ -208,9 +231,11 @@ func (c *Client) GetFeasibility(extProjectID string, options *QueryOptions) (*Ge
 	if err != nil {
 		return nil, err
 	}
+	conform.Strings(&options)
 	res := &GetFeasibilityResponse{}
 	path := fmt.Sprintf("/projects/%s/feasibility%s", extProjectID, query2String(options))
 	err = c.requestAndParseResponse("GET", path, nil, res)
+	conform.Strings(&res)
 	return res, err
 }
 
@@ -222,7 +247,10 @@ func (c *Client) GetInvoice(extProjectID string, options *QueryOptions) (*APIRes
 
 // Reconcile ...  Upload the Request correction file
 func (c *Client) UploadReconcile(extProjectID string, file multipart.File, fileName string, message string, options *QueryOptions) (*APIResponse, error) {
-	//res := &APIResponse{}
+	conform.Strings(&extProjectID)
+	conform.Strings(&fileName)
+	conform.Strings(&message)
+	conform.Strings(&options)
 	path := fmt.Sprintf("/projects/%s/reconcile", extProjectID)
 	res, err := sendFormData(c.Options.APIBaseURL, "POST", path, c.Auth.AccessToken, file, fileName, message, *c.Options.Timeout)
 	return res, err
@@ -231,8 +259,10 @@ func (c *Client) UploadReconcile(extProjectID string, file multipart.File, fileN
 // GetCountries ... Get the list of supported countries and languages in each country.
 func (c *Client) GetCountries(options *QueryOptions) (*GetCountriesResponse, error) {
 	res := &GetCountriesResponse{}
+	conform.Strings(&options)
 	path := fmt.Sprintf("/countries%s", query2String(options))
 	err := c.requestAndParseResponse("GET", path, nil, res)
+	conform.Strings(&res)
 	return res, err
 }
 
@@ -251,16 +281,20 @@ func (c *Client) GetAttributes(countryCode, languageCode string, options *QueryO
 		return nil, err
 	}
 	res := &GetAttributesResponse{}
+	conform.Strings(&options)
 	path := fmt.Sprintf("/attributes/%s/%s%s", countryCode, languageCode, query2String(options))
 	err = c.requestAndParseResponse("GET", path, nil, res)
+	conform.Strings(&res)
 	return res, err
 }
 
 // GetSurveyTopics ... Get the list of supported Survey Topics for a project. This data is required to setup a project.
 func (c *Client) GetSurveyTopics(options *QueryOptions) (*GetSurveyTopicsResponse, error) {
 	res := &GetSurveyTopicsResponse{}
+	conform.Strings(&options)
 	path := fmt.Sprintf("/categories/surveyTopics%s", query2String(options))
 	err := c.requestAndParseResponse("GET", path, nil, res)
+	conform.Strings(&res)
 	return res, err
 }
 
@@ -275,8 +309,10 @@ func (c *Client) GetSources(options *QueryOptions) (*GetSampleSourceResponse, er
 // GetEvents ... Returns the list of all events that have occurred for your company account. Most recent events occur at the top of the list.
 func (c *Client) GetEvents(options *QueryOptions) (*GetEventListResponse, error) {
 	res := &GetEventListResponse{}
+	conform.Strings(&options)
 	path := fmt.Sprintf("/events%s", query2String(options))
 	err := c.requestAndParseResponse("GET", path, nil, res)
+	conform.Strings(&res)
 	return res, err
 }
 
@@ -285,11 +321,13 @@ func (c *Client) GetEventBy(eventID string) (*GetEventResponse, error) {
 	res := &GetEventResponse{}
 	path := fmt.Sprintf("/events/%s", eventID)
 	err := c.requestAndParseResponse("GET", path, nil, res)
+	conform.Strings(&res)
 	return res, err
 }
 
 // AcceptEvent ...
 func (c *Client) AcceptEvent(event *Event) error {
+	conform.Strings(&event)
 	if event.Actions == nil || len(event.Actions.AcceptURL) == 0 {
 		return ErrEventActionNotApplicable
 	}
@@ -299,6 +337,7 @@ func (c *Client) AcceptEvent(event *Event) error {
 
 // RejectEvent ...
 func (c *Client) RejectEvent(event *Event) error {
+	conform.Strings(&event)
 	if event.Actions == nil || len(event.Actions.RejectURL) == 0 {
 		return ErrEventActionNotApplicable
 	}
@@ -311,6 +350,7 @@ func (c *Client) GetUserInfo() (*UserResponse, error) {
 	res := &UserResponse{}
 	path := fmt.Sprintf("/users/info")
 	err := c.requestAndParseResponse("GET", path, nil, res)
+	conform.Strings(&res)
 	return res, err
 }
 

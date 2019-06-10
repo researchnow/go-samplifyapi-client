@@ -103,10 +103,10 @@ type QueryOptions struct {
 	SortBy        []*Sort
 	Offset        uint
 	Limit         uint
-	Scope         string
+	Scope         string `conform:"trim"`
 	ExtProjectId  *string
 	ExtLineItemId *string
-	EventType     *string
+	EventType     *string `conform:"trim"`
 }
 
 func query2String(options *QueryOptions) string {
