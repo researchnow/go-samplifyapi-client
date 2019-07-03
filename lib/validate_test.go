@@ -60,6 +60,16 @@ func TestValidateSurveyURL(t *testing.T) {
 			"http://www.google.com?a=123",
 			nil,
 		},
+		{
+			"11",
+			" ",
+			ErrURLMinLength,
+		},
+		{
+			"12",
+			"       ",
+			ErrURLHost,
+		},
 	}
 	for _, table := range tables {
 		e := ValidateSurveyURL(table.inputURL)
