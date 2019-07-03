@@ -17,7 +17,7 @@ type FeasibilityStatus string
 const (
 	FeasibilityStatusReady        FeasibilityStatus = "READY"
 	FeasibilityStatusProcessing   FeasibilityStatus = "PROCESSING"
-	FeasibilityStatusNotSupported FeasibilityStatus = "NOT SUPPORTED"
+	FeasibilityStatusNotSupported FeasibilityStatus = "NOT_SUPPORTED"
 	FeasibilityStatusFailed       FeasibilityStatus = "FAILED"
 )
 
