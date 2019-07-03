@@ -202,7 +202,7 @@ func ValidateSurveyURL(baseURL string) error {
 		return ErrURLHost
 	}
 
-	if u.Fragment != "" {
+	if u.Fragment != "" || strings.Contains(baseURL, "#") {
 		return ErrURLFragment
 	}
 
