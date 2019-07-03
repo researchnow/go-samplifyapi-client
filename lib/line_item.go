@@ -15,8 +15,10 @@ type FeasibilityStatus string
 
 // FeasibilityStatus values
 const (
-	FeasibilityStatusReady      FeasibilityStatus = "READY"
-	FeasibilityStatusProcessing FeasibilityStatus = "PROCESSING"
+	FeasibilityStatusReady        FeasibilityStatus = "READY"
+	FeasibilityStatusProcessing   FeasibilityStatus = "PROCESSING"
+	FeasibilityStatusNotSupported FeasibilityStatus = "NOT SUPPORTED"
+	FeasibilityStatusFailed       FeasibilityStatus = "FAILED"
 )
 
 // DeliveryType ...
