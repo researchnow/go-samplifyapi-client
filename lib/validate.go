@@ -2,6 +2,7 @@ package samplify
 
 import (
 	"errors"
+	"fmt"
 	"net/url"
 	"reflect"
 	"strconv"
@@ -165,7 +166,27 @@ func ValidateQuotaPlan(val *QuotaPlan) error {
 }
 
 // ValidateSurveyURL ...
-func ValidateSurveyURL(baseURL string) error {
+func ValidateSurveyURL(val string) error {
+	// yes := govalidator.IsURL(val)
+	// if yes {
+	// 	return nil
+	// }
+	// return ErrInvalidFieldValue
+	return nil
+}
+
+// AppendURLScheme appends URL scheme
+func AppendURLScheme(baseURL string) string {
+	// support no indicated urlscheme but with colon for port number
+	// http:// is appended so url.Parse will succeed
+	if strings.Contains(baseURL, ":") && !strings.Contains(baseURL, "://") {
+		return fmt.Sprintf("http://%s", baseURL)
+	}
+	return baseURL
+}
+
+// ValidateSurveyLink ...
+func ValidateSurveyLink(baseURL string) error {
 	if baseURL == "" {
 		return ErrURLBlank
 	}
@@ -183,13 +204,7 @@ func ValidateSurveyURL(baseURL string) error {
 		return ErrURLPrefix
 	}
 
-	strTemp := baseURL
-	if strings.Contains(baseURL, ":") && !strings.Contains(baseURL, "://") {
-		// support no indicated urlscheme but with colon for port number
-		// http:// is appended so url.Parse will succeed, strTemp used so it does not impact validator.IsURL()
-		strTemp = "http://" + baseURL
-	}
-	u, err := url.Parse(strTemp)
+	u, err := url.Parse(AppendURLScheme(baseURL))
 	if err != nil {
 		return err
 	}

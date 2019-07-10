@@ -1,86 +1,82 @@
-package samplify
+package samplify_test
 
 import (
 	"testing"
+
+	samplify "github.com/researchnow/go-samplifyapi-client/lib"
 )
 
-func TestValidateSurveyURL(t *testing.T) {
+func TestValidateSurveyLink(t *testing.T) {
 	tables := []struct {
 		id        string
 		inputURL  string
 		outputERR error
 	}{
 		{
-			"1",
+			"Case 1 : Happy case",
 			"http://www.google.com",
 			nil,
 		},
 		{
-			"2",
+			"Case 2 : Happy case",
 			"www.google.com",
 			nil,
 		},
 		{
-			"3",
+			"Case 3 : Balnk URL",
 			"",
-			ErrURLBlank,
+			samplify.ErrURLBlank,
 		},
 		{
-			"4",
+			"Case 4 : URL with minimum length",
 			"ac",
-			ErrURLMinLength,
+			samplify.ErrURLMinLength,
 		},
 		{
-			"5",
+			"Case 5 : URL has a prefix `.`",
 			".google.com",
-			ErrURLPrefix,
+			samplify.ErrURLPrefix,
 		},
 		{
-			"6",
+			"Case 6 : URL host has a prefix `.`",
 			"http://.google.com",
-			ErrURLHostPrefix,
+			samplify.ErrURLHostPrefix,
 		},
 		{
-			"7",
+			"Case 7 : URL host is not present",
 			"fhjksdhfjsfhjsf",
-			ErrURLHost,
+			samplify.ErrURLHost,
 		},
 		{
-			"8",
+			"Case 8 : URL has a fragment `#`",
 			"http://www.abc.com#",
-			ErrURLFragment,
+			samplify.ErrURLFragment,
 		},
 		{
-			"9",
+			"Case 9 : URL is inavalid with special charcter `<`",
 			"http://www.goo<gle.com",
-			ErrURLInvalid,
+			samplify.ErrURLInvalid,
 		},
 		{
-			"10",
+			"Case 10 : Valid URL with params",
 			"http://www.google.com?a=123",
 			nil,
 		},
 		{
-			"11",
+			"Case 11 : URL is just a void space ` `",
 			" ",
-			ErrURLMinLength,
+			samplify.ErrURLMinLength,
 		},
 		{
-			"12",
+			"Case 12 : URL is just a collection of void spaces",
 			"       ",
-			ErrURLHost,
+			samplify.ErrURLHost,
 		},
 	}
 	for _, table := range tables {
-		e := ValidateSurveyURL(table.inputURL)
+		e := samplify.ValidateSurveyLink(table.inputURL)
 		if e != table.outputERR {
-			if e == nil {
-				t.Errorf("%s validation failed got: nil, want `%s` ", table.id, table.outputERR.Error())
-			} else if table.outputERR == nil {
-				t.Errorf("%s validation failed got: `%s`, want nil ", table.id, e.Error())
-			} else {
-				t.Errorf("%s validation failed got: `%s`, want `%s` ", table.id, e.Error(), table.outputERR.Error())
-			}
+			t.Errorf("%s validation failed got: `%v`, want `%v` ", table.id, e, table.outputERR)
 		}
 	}
 
