@@ -2,9 +2,20 @@ package samplify
 
 import (
 	"errors"
+	"fmt"
+	"net/url"
 	"reflect"
+	"strconv"
+	"strings"
+	"unicode/utf8"
 
 	"github.com/asaskevich/govalidator"
+)
+
+// Constants ...
+const (
+	URLMaxLength = 2083
+	URLMinLength = 3
 )
 
 // Validation Errors
@@ -12,6 +23,16 @@ var (
 	ErrRequiredFieldEmpty    = errors.New("required field is empty")
 	ErrInvalidFieldValue     = errors.New("invalid field value")
 	ErrInvalidQuotaCellValue = errors.New("invalid quota cell value, perc or count must be specified")
+
+	// URL validation errros
+	ErrURLBlank      = errors.New("the URL cannot be blank")
+	ErrURLMaxLength  = errors.New("the URL length cannot exceed " + strconv.Itoa(URLMaxLength) + " characters")
+	ErrURLMinLength  = errors.New("the URL length cannot be less than " + strconv.Itoa(URLMinLength) + " characters")
+	ErrURLPrefix     = errors.New("the URL cannot have a prefix '.'")
+	ErrURLHostPrefix = errors.New("the URL host cannot have a prefix '.'")
+	ErrURLHost       = errors.New("the URL host is not present")
+	ErrURLFragment   = errors.New("the URL has a fragment(#) which is not supported")
+	ErrURLInvalid    = errors.New("the URL is invalid")
 )
 
 // Validate ...
@@ -151,6 +172,58 @@ func ValidateSurveyURL(val string) error {
 	// 	return nil
 	// }
 	// return ErrInvalidFieldValue
+	return nil
+}
+
+// AppendURLScheme appends URL scheme
+func AppendURLScheme(baseURL string) string {
+	// support no indicated urlscheme but with colon for port number
+	// http:// is appended so url.Parse will succeed
+	if strings.Contains(baseURL, ":") && !strings.Contains(baseURL, "://") {
+		return fmt.Sprintf("http://%s", baseURL)
+	}
+	return baseURL
+}
+
+// ValidateSurveyLink ...
+func ValidateSurveyLink(baseURL string) error {
+	if baseURL == "" {
+		return ErrURLBlank
+	}
+
+	c := utf8.RuneCountInString(baseURL)
+	if c >= URLMaxLength {
+		return ErrURLMaxLength
+	}
+
+	if c <= URLMinLength {
+		return ErrURLMinLength
+	}
+
+	if strings.HasPrefix(baseURL, ".") {
+		return ErrURLPrefix
+	}
+
+	u, err := url.Parse(AppendURLScheme(baseURL))
+	if err != nil {
+		return err
+	}
+
+	if strings.HasPrefix(u.Host, ".") {
+		return ErrURLHostPrefix
+	}
+
+	if u.Host == "" && (u.Path != "" && !strings.Contains(u.Path, ".")) {
+		return ErrURLHost
+	}
+
+	if u.Fragment != "" || strings.Contains(baseURL, "#") {
+		return ErrURLFragment
+	}
+
+	if !govalidator.IsURL(baseURL) {
+		return ErrURLInvalid
+	}
 	return nil
 }
 
