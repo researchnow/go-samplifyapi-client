@@ -126,13 +126,13 @@ type ResponseStatus struct {
 
 // ErrorInfo ... Custom API errors
 type ErrorInfo struct {
-	Code     string       `json:"code" conform:"trim"`
-	Message  string       `json:"message" conform:"trim"`
-	Resource ResourceType `json:"resourceType"`
+	Code     string   `json:"code" conform:"trim"`
+	Message  string   `json:"message" conform:"trim"`
+	Resource Resource `json:"resource"`
 }
 
-// ResourceType ...
-type ResourceType struct {
+// Resource ...
+type Resource struct {
 	ID   string `json:"id"`
 	Type string `json:"type"`
 }
