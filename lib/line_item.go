@@ -240,7 +240,17 @@ type Attribute struct {
 	Options            []*AttributeOption `json:"options"`
 	Format             *string            `json:"format,omitempty" conform:"trim"`
 	LocalizedText      *string            `json:"localizedText,omitempty" conform:"trim"`
+	State              AttributeState     `json:"state"`
 }
+
+// AttributeState defines the state of an attribute
+type AttributeState string
+
+const (
+	Active     AttributeState = "ACTIVE"
+	Deprecated AttributeState = "DEPRECATED"
+	Inactive   AttributeState = "INACTIVE"
+)
 
 // AttributeOption ...
 type AttributeOption struct {
