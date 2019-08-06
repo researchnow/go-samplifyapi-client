@@ -247,9 +247,9 @@ type Attribute struct {
 type AttributeState string
 
 const (
-	Active     AttributeState = "ACTIVE"
-	Deprecated AttributeState = "DEPRECATED"
-	Inactive   AttributeState = "INACTIVE"
+	ActiveState     AttributeState = "ACTIVE"
+	DeprecatedState AttributeState = "DEPRECATED"
+	InactiveState   AttributeState = "INACTIVE"
 )
 
 // AttributeOption ...
