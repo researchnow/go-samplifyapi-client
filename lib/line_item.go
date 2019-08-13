@@ -103,7 +103,7 @@ type LineItem struct {
 // IsUpdateable returns false if the line item cannot be updated.
 func (l *LineItem) IsUpdateable() bool {
 	if l.State == StateProvisioned ||
-		l.State == StateAwaitingApproval {
+		l.State == StateRejected {
 		return true
 	}
 	return false
