@@ -1,5 +1,10 @@
 package samplify
 
+const (
+	// TierStandard is the constant defined for Standard Tier in Attribute
+	TierStandard = "Standard"
+)
+
 // Action ...
 type Action string
 
@@ -153,7 +158,7 @@ type CreateLineItemCriteria struct {
 	LengthOfInterview   int64             `json:"lengthOfInterview" valid:"required"`
 	DeliveryType        *DeliveryType     `json:"deliveryType" valid:"optional,DeliveryType"`
 	RequiredCompletes   int64             `json:"requiredCompletes" valid:"required"`
-	QuotaPlan           *QuotaPlan        `json:"quotaPlan" valid:"optional,quotaPlan"`
+	QuotaPlan           *QuotaPlan        `json:"quotaPlan,omitempty" valid:"optional,quotaPlan"`
 	SurveyUrlParams     []*URLParameter   `json:"surveyURLParams" valid:"optional"`
 	SurveyTestUrlParams []*URLParameter   `json:"surveyTestURLParams" valid:"optional"`
 	Sources             []*LineItemSource `json:"sources,omitempty" valid:"optional"`
@@ -241,6 +246,21 @@ type Attribute struct {
 	Format             *string            `json:"format,omitempty" conform:"trim"`
 	LocalizedText      *string            `json:"localizedText,omitempty" conform:"trim"`
 	State              AttributeState     `json:"state"`
+	Tier               string             `json:"tier"`
+	AttributeCategory  AttributeCategory  `json:"category"`
+}
+
+// AttributeCategory ...
+type AttributeCategory struct {
+	MainCategory AttrCategory `json:"mainCategory"`
+	SubCategory  AttrCategory `json:"subCategory"`
+}
+
+// AttrCategory ...
+type AttrCategory struct {
+	ID            string  `json:"id" conform:"trim"`
+	Text          string  `json:"text" conform:"trim"`
+	LocalizedText *string `json:"localizedText,omitempty" conform:"trim"`
 }
 
 // AttributeState defines the state of an attribute
@@ -262,6 +282,7 @@ type AttributeOption struct {
 	LocalizedText *string `json:"localizedText,omitempty" conform:"trim"`
 }
 
+// URLParameter ...
 type URLParameter struct {
 	Key    string   `json:"key" conform:"trim"`
 	Values []string `json:"values" conform:"trim"`
