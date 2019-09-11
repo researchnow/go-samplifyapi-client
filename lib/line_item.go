@@ -248,6 +248,7 @@ type Attribute struct {
 	State              AttributeState     `json:"state"`
 	Tier               string             `json:"tier"`
 	AttributeCategory  AttributeCategory  `json:"category"`
+	Exclusions         []*string          `json:"exclusions,omitempty"`
 }
 
 // AttributeCategory ...
