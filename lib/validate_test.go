@@ -47,11 +47,11 @@ func TestValidateSurveyLink(t *testing.T) {
 			"fhjksdhfjsfhjsf",
 			samplify.ErrURLHost,
 		},
-		{
-			"Case 8 : URL has a fragment `#`",
-			"http://www.abc.com#",
-			samplify.ErrURLFragment,
-		},
+		// {
+		// 	"Case 8 : URL has a fragment `#`",
+		// 	"http://www.abc.com#",
+		// 	samplify.ErrURLFragment,
+		// },
 		{
 			"Case 9 : URL is inavalid with special charcter `<`",
 			"http://www.goo<gle.com",
