@@ -24,15 +24,27 @@ func Format(u *url.URL, m CustomParams) string {
 	u.ForceQuery = true
 	urlstring := URLString(u)
 
+	if urlstring == "" {
+		return urlstring
+	}
+
 	keys := sortMapKeys(m)
 	// there are some url params in the url itself.
-	if urlstring[len(urlstring)-1:] != "?" {
+
+	index := strings.Index(urlstring, "?")
+
+	if urlstring[len(urlstring)-1:] != "?" && index < 0 {
+		urlstring = fmt.Sprintf("%s?", urlstring)
+	}
+
+	if index > -1 {
 		urlstring = fmt.Sprintf("%s&", urlstring)
 	}
 
 	for _, key := range keys {
 		urlstring = fmt.Sprintf("%s%s=%s&", urlstring, key, m[key])
 	}
+
 	urlstring = strings.Trim(urlstring, "&")
 	return urlstring
 }
@@ -110,7 +122,7 @@ func URLString(u *url.URL) string {
 		}
 		buf.WriteString(path)
 	}
-	if u.ForceQuery || u.RawQuery != "" {
+	if u.RawQuery != "" {
 		buf.WriteByte('?')
 		buf.WriteString(u.RawQuery)
 	}

@@ -217,9 +217,9 @@ func ValidateSurveyLink(baseURL string) error {
 		return ErrURLHost
 	}
 
-	if u.Fragment != "" || strings.Contains(baseURL, "#") {
-		return ErrURLFragment
-	}
+	// if u.Fragment != "" || strings.Contains(baseURL, "#") {
+	// 	return ErrURLFragment
+	// }
 
 	if !govalidator.IsURL(baseURL) {
 		return ErrURLInvalid
