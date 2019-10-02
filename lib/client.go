@@ -4,10 +4,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/leebenson/conform"
 	"mime/multipart"
 	"net/http"
 	"time"
+
+	"github.com/leebenson/conform"
 )
 
 // ClientOptions to use while creating a new Client
@@ -235,7 +236,7 @@ func (c *Client) GetFeasibility(extProjectID string, options *QueryOptions) (*Ge
 	res := &GetFeasibilityResponse{}
 	path := fmt.Sprintf("/projects/%s/feasibility%s", extProjectID, query2String(options))
 	err = c.requestAndParseResponse("GET", path, nil, res)
-	conform.Strings(&res)
+
 	return res, err
 }
 

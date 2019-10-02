@@ -221,7 +221,6 @@ type Feasibility struct {
 	Feasible         bool              `json:"feasible"`
 	TotalCount       int64             `json:"totalCount"`
 	ValueCounts      []*ValueCount     `json:"valueCounts"`
-	Quote            Quote             `json:"quote"`
 }
 
 // Quote holds the information for premium pricing
