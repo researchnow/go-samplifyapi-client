@@ -231,24 +231,24 @@ type Quote struct {
 	EstimatedCost float64         `json:"estimatedCost"`
 }
 
-// DetailedQuote ...
-type DetailedQuote struct {
-	CostPerUnit   float64           `json:"costPerUnit"`
-	EstimatedCost float64           `json:"estimatedCost"`
-	Title         string            `json:"title"`
-	Type          DetailedQuoteType `json:"type"`
-	Units         int64             `json:"units"`
-}
-
-// DetailedQuoteType ...
-type DetailedQuoteType string
+// QuoteType ...
+type QuoteType string
 
 const (
 	// TypeBase ...
-	TypeBase DetailedQuoteType = "BASE"
+	TypeBase QuoteType = "BASE"
 	// TypePremium ...
-	TypePremium DetailedQuoteType = "PREMIUM"
+	TypePremium QuoteType = "PREMIUM"
 )
+
+// DetailedQuote ...
+type DetailedQuote struct {
+	CostPerUnit   float64   `json:"costPerUnit"`
+	EstimatedCost float64   `json:"estimatedCost"`
+	Title         string    `json:"title"`
+	Type          QuoteType `json:"type"`
+	Units         int64     `json:"units"`
+}
 
 // ValueCount ...
 type ValueCount struct {
