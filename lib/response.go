@@ -80,6 +80,7 @@ type GetFeasibilityResponse struct {
 	List []*struct {
 		ExtLineItemID string       `json:"extLineItemId"`
 		Feasibility   *Feasibility `json:"feasibility"`
+		Quote         Quote        `json:"quote"`
 	} `json:"data"`
 	ResponseStatus ResponseStatus `json:"status"`
 }
