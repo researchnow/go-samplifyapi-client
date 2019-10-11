@@ -223,6 +223,33 @@ type Feasibility struct {
 	ValueCounts      []*ValueCount     `json:"valueCounts"`
 }
 
+// Quote holds the information for premium pricing
+type Quote struct {
+	CostPerUnit   float64         `json:"costPerUnit"`
+	Currency      string          `json:"currency"`
+	DetailedQuote []DetailedQuote `json:"detailedQuote"`
+	EstimatedCost float64         `json:"estimatedCost"`
+}
+
+// QuoteType ...
+type QuoteType string
+
+const (
+	// TypeBase ...
+	TypeBase QuoteType = "BASE"
+	// TypePremium ...
+	TypePremium QuoteType = "PREMIUM"
+)
+
+// DetailedQuote ...
+type DetailedQuote struct {
+	CostPerUnit   float64   `json:"costPerUnit"`
+	EstimatedCost float64   `json:"estimatedCost"`
+	Title         string    `json:"title"`
+	Type          QuoteType `json:"type"`
+	Units         int64     `json:"units"`
+}
+
 // ValueCount ...
 type ValueCount struct {
 	QuotaCells []*FeasibilityQuotaCell `json:"quotaCells"`
