@@ -7,8 +7,6 @@ import (
 	"mime/multipart"
 	"net/http"
 	"time"
-
-	"github.com/leebenson/conform"
 )
 
 // ErrIncorrectEnvironemt ...
