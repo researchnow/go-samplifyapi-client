@@ -4,21 +4,29 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/leebenson/conform"
 	"mime/multipart"
 	"net/http"
 	"time"
+
+	"github.com/leebenson/conform"
 )
+
+// ErrIncorrectEnvironemt ...
+var ErrIncorrectEnvironemt = errors.New("one of dev/uat/prod only are allowed")
 
 // ClientOptions to use while creating a new Client
 var (
+	DevClientOptions = &ClientOptions{
+		APIBaseURL: "https://api.dev.pe.dynata.com/sample/v1",
+		AuthURL:    "https://api.dev.pe.dynata.com/auth/v1",
+	}
 	UATClientOptions = &ClientOptions{
-		APIBaseURL: "https://api.uat.pe.researchnow.com/sample/v1",
-		AuthURL:    "https://api.uat.pe.researchnow.com/auth/v1",
+		APIBaseURL: "https://api.uat.pe.dynata.com/sample/v1",
+		AuthURL:    "https://api.uat.pe.dynata.com/auth/v1",
 	}
 	ProdClientOptions = &ClientOptions{
-		APIBaseURL: "https://api.researchnow.com/sample/v1",
-		AuthURL:    "https://api.researchnow.com/auth/v1",
+		APIBaseURL: "https://api.dynata.com/sample/v1",
+		AuthURL:    "https://api.dynata.com/auth/v1",
 	}
 )
 
@@ -38,7 +46,7 @@ type ClientOptions struct {
 type Client struct {
 	Credentials TokenRequest
 	Auth        TokenResponse
-	Options     ClientOptions
+	Options     *ClientOptions
 }
 
 // CreateProject ...
@@ -473,18 +481,55 @@ func NewClient(clientID, username, passsword string, options *ClientOptions) *Cl
 	if options == nil {
 		options = UATClientOptions
 	}
-	if options != nil {
-		if options.Timeout == nil {
-			timeout := defaulttimeout
-			options.Timeout = &timeout
-		}
+
+	if options != nil && options.Timeout == nil {
+		timeout := defaulttimeout
+		options.Timeout = &timeout
 	}
+
 	return &Client{
 		Credentials: TokenRequest{
 			ClientID: clientID,
 			Username: username,
 			Password: passsword,
 		},
-		Options: *options,
+		Options: options,
 	}
+}
+
+// SetOptions ...
+func (c *Client) SetOptions(env string, timeout int) error {
+	switch env {
+	case "dev":
+		c.Options = DevClientOptions
+	case "uat":
+		c.Options = UATClientOptions
+	case "prod":
+		c.Options = ProdClientOptions
+	}
+
+	if c.Options == nil {
+		return ErrIncorrectEnvironemt
+	}
+
+	if timeout == 0 {
+		timeout = defaulttimeout
+	}
+
+	c.Options.Timeout = &timeout
+
+	return nil
+}
+
+// NewClientFromEnv returns an API client.
+func NewClientFromEnv(clientID, username, passsword string, env string, timeout int) (*Client, error) {
+	client := &Client{
+		Credentials: TokenRequest{
+			ClientID: clientID,
+			Username: username,
+			Password: passsword,
+		},
+	}
+	err := client.SetOptions(env, timeout)
+	return client, err
 }
