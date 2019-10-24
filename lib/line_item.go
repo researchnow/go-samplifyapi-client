@@ -33,10 +33,10 @@ type RejectionType string
 
 // All rejection resolution information together.
 type RejectionResolution struct{
-	reasonTitle Reason
-	reasonDescription string
-	comments []string
-	rejectionType RejectionType
+	ReasonTitle       Reason
+	ReasonDescription string
+	Comments          []string
+	RejectionType     RejectionType
 }
 
 // Action ...
