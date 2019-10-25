@@ -23,8 +23,8 @@ var (
 		AuthURL:    "https://api.uat.pe.dynata.com/auth/v1",
 	}
 	ProdClientOptions = &ClientOptions{
-		APIBaseURL: "https://api.dynata.com/sample/v1",
-		AuthURL:    "https://api.dynata.com/auth/v1",
+		APIBaseURL: "https://api.researchnow.com/sample/v1",
+		AuthURL:    "https://api.researchnow.com/auth/v1",
 	}
 )
 

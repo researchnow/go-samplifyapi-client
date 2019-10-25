@@ -34,7 +34,22 @@ const (
 	DeliveryTypeSlow     DeliveryType = "SLOW"
 	DeliveryTypeBalanced DeliveryType = "BALANCED"
 	DeliveryTypeFast     DeliveryType = "FAST"
+	DeliveryTypeBurst    DeliveryType = "BURST"
 )
+
+// Operator operator for the filters.
+type Operator string
+
+const (
+	// OperatorInclude to include all the respondents that match the given options
+	OperatorInclude Operator = "include"
+	// OperatorExclude to exclude all the respondents that match the given options
+	OperatorExclude Operator = "exclude"
+)
+
+func (o Operator) String() string {
+	return string(o)
+}
 
 //QuotaPlan ...
 type QuotaPlan struct {
@@ -44,8 +59,9 @@ type QuotaPlan struct {
 
 // QuotaFilters ...
 type QuotaFilters struct {
-	AttributeID string   `json:"attributeId"`
-	Options     []string `json:"options"`
+	AttributeID string   `json:"attributeId,omitempty"`
+	Options     []string `json:"options,omitempty"`
+	Operator    Operator `json:"operator,omitempty"`
 }
 
 // QuotaGroup ...
@@ -101,7 +117,7 @@ type LineItem struct {
 	RequiredCompletes   int64             `json:"requiredCompletes"`
 	QuotaPlan           *QuotaPlan        `json:"quotaPlan"`
 	EndLinks            *EndLinks         `json:"endLinks"`
-	SurveyUrlParams     []*URLParameter   `json:"surveyURLParams"`
+	SurveyURLParams     []*URLParameter   `json:"surveyURLParams"`
 	Sources             []*LineItemSource `json:"sources"`
 }
 
@@ -159,8 +175,8 @@ type CreateLineItemCriteria struct {
 	DeliveryType        *DeliveryType     `json:"deliveryType" valid:"optional,DeliveryType"`
 	RequiredCompletes   int64             `json:"requiredCompletes" valid:"required"`
 	QuotaPlan           *QuotaPlan        `json:"quotaPlan,omitempty" valid:"optional,quotaPlan"`
-	SurveyUrlParams     []*URLParameter   `json:"surveyURLParams" valid:"optional"`
-	SurveyTestUrlParams []*URLParameter   `json:"surveyTestURLParams" valid:"optional"`
+	SurveyURLParams     []*URLParameter   `json:"surveyURLParams" valid:"optional"`
+	SurveyTestURLParams []*URLParameter   `json:"surveyTestURLParams" valid:"optional"`
 	Sources             []*LineItemSource `json:"sources,omitempty" valid:"optional"`
 }
 
@@ -178,8 +194,8 @@ type UpdateLineItemCriteria struct {
 	DeliveryType        *DeliveryType      `json:"deliveryType" valid:"optional,DeliveryType"`
 	RequiredCompletes   *int64             `json:"requiredCompletes,omitempty" valid:"optional"`
 	QuotaPlan           *QuotaPlan         `json:"quotaPlan,omitempty" valid:"optional,quotaPlan"`
-	SurveyUrlParams     []*URLParameter    `json:"surveyURLParams" valid:"optional"`
-	SurveyTestUrlParams []*URLParameter    `json:"surveyTestURLParams" valid:"optional"`
+	SurveyURLParams     []*URLParameter    `json:"surveyURLParams" valid:"optional"`
+	SurveyTestURLParams []*URLParameter    `json:"surveyTestURLParams" valid:"optional"`
 	Sources             *[]*LineItemSource `json:"sources,omitempty" valid:"optional"`
 }
 
