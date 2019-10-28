@@ -1,5 +1,9 @@
 package samplify
 
+import (
+	"strings"
+)
+
 const (
 	// TierStandard is the constant defined for Standard Tier in Attribute
 	TierStandard = "Standard"
@@ -47,8 +51,9 @@ const (
 	OperatorExclude Operator = "exclude"
 )
 
-func (o Operator) String() string {
-	return string(o)
+// ToUpper converts the operator to upper case.
+func (o Operator) ToUpper() string {
+	return strings.ToUpper(string(o))
 }
 
 //QuotaPlan ...
@@ -59,9 +64,9 @@ type QuotaPlan struct {
 
 // QuotaFilters ...
 type QuotaFilters struct {
-	AttributeID string   `json:"attributeId,omitempty"`
-	Options     []string `json:"options,omitempty"`
-	Operator    Operator `json:"operator,omitempty"`
+	AttributeID string    `json:"attributeId,omitempty"`
+	Options     []string  `json:"options,omitempty"`
+	Operator    *Operator `json:"operator"`
 }
 
 // QuotaGroup ...
