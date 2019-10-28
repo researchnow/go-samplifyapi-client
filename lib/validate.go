@@ -3,6 +3,7 @@ package samplify
 import (
 	"errors"
 	"fmt"
+
 	"net/url"
 	"reflect"
 	"strconv"
@@ -10,6 +11,9 @@ import (
 	"unicode/utf8"
 
 	"github.com/asaskevich/govalidator"
+	//	"github.com/prometheus/common/log"
+
+	"gopkg.in/go-playground/validator.v9"
 )
 
 // Constants ...
@@ -163,6 +167,31 @@ func ValidateQuotaPlan(val *QuotaPlan) error {
 		}
 	}
 	return nil
+}
+
+// ValidateFields ...
+func ValidateFields(obj interface{}) []ValidateError {
+	result := make([]ValidateError, 0)
+
+	if obj == nil {
+		return result
+	}
+
+	v := validator.New()
+	validateError := v.Struct(obj)
+
+	if validateError == nil {
+		return result
+	}
+
+	var fieldError ValidateError
+	for _, e := range validateError.(validator.ValidationErrors) {
+		fieldError = &FieldError{
+			Err: e,
+		}
+		result = append(result, fieldError)
+	}
+	return result
 }
 
 // ValidateSurveyURL ...

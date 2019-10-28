@@ -81,3 +81,73 @@ func TestValidateSurveyLink(t *testing.T) {
 	}
 
 }
+
+// func TestValidInput(t *testing.T) {
+// 	inputField := samplify.FieldError{
+// 		Err : 
+// 	}
+// 	indicativeIncidence1 := 120.00
+// 	days1 := int32(0)
+// 	indicativeIncidence2 := 67.00
+// 	days2 := int32(12)
+// 	tables := []struct {
+// 		name        string
+// 		input       interface{}
+// 		outputField []string
+// 		outputCode  []string
+// 		outputError []string
+// 		// output []samplify.ValidateError
+// 	}{
+// 		{
+// 			"Case 1: Happy Path",
+// 			resolver.UpdateLineItemArgs{
+// 				Input: resolver.UpdateLineItemInput{
+// 					IndicativeIncidence: &indicativeIncidence1,
+// 					DaysInField:         &days1,
+// 				},
+// 			},
+// 			[]string{"IndicativeIncidence", "DaysInField"},
+// 			[]string{"INVALID_FIELD", "INVALID_FIELD"},
+// 			[]string{"invalid value for IndicativeIncidence allowed max 100", "invalid value for DaysInField allowed min 1"},
+// 			// []types.Error{
+// 			// 	types.Error{
+// 			// 		ID:      "IndicativeIncidence",
+// 			// 		Code:    types.InvalidIndicativeIncidence,
+// 			// 		Message: resolver.ErrInvalidIncidenceRate.Error(),
+// 			// 	},
+// 			// 	types.Error{
+// 			// 		ID:      "DaysInField",
+// 			// 		Code:    types.InvalidDaysInField,
+// 			// 		Message: resolver.ErrInvalidDaysInField.Error(),
+// 			// 	},
+// 			// },
+// 		},
+// 		// {
+// 		// 	"Case 2: When fields are valid",
+// 		// 	resolver.UpdateLineItemArgs{
+// 		// 		Input: resolver.UpdateLineItemInput{
+// 		// 			IndicativeIncidence: &indicativeIncidence2,
+// 		// 			DaysInField:         &days2,
+// 		// 		},
+// 		// 	},
+// 		// 	[]types.Error{},
+// 		// },
+// 		// {
+// 		// 	"Case 3: When input is nil",
+// 		// 	nil,
+// 		// 	[]types.Error{},
+// 		// },
+// 	}
+// 	for _, table := range tables {
+// 		result := samplify.(table.input)
+// 		if !reflect.DeepEqual(result, table.output) {
+// 			t.Errorf("%s validation failed got: %v, want %v ", table.name, result, table.output)
+// 		}
+// 		if !reflect.DeepEqual(result, table.output) {
+// 			t.Errorf("%s validation failed got: %v, want %v ", table.name, result, table.output)
+// 		}
+// 		if !reflect.DeepEqual(result, table.output) {
+// 			t.Errorf("%s validation failed got: %v, want %v ", table.name, result, table.output)
+// 		}
+// 	}
+// }
