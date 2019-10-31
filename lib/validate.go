@@ -133,16 +133,6 @@ func ValidateExclusionType(val ExclusionType) error {
 	return nil
 }
 
-// ValidateDeliveryType ...
-func ValidateDeliveryType(val DeliveryType) error {
-	if val != DeliveryTypeSlow &&
-		val != DeliveryTypeBalanced &&
-		val != DeliveryTypeFast {
-		return ErrInvalidFieldValue
-	}
-	return nil
-}
-
 // ValidateQuotaPlan ...
 func ValidateQuotaPlan(val *QuotaPlan) error {
 	if val != nil &&
