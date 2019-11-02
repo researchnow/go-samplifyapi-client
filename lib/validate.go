@@ -312,21 +312,7 @@ func init() {
 		}
 		return true
 	}))
-	govalidator.CustomTypeTagMap.Set("DeliveryType", govalidator.CustomTypeValidator(func(i interface{}, o interface{}) bool {
-		var err error
-		switch v := i.(type) {
-		case DeliveryType:
-			err = ValidateDeliveryType(v)
-		case *DeliveryType:
-			err = ValidateDeliveryType(*v)
-		default:
-			return false
-		}
-		if err != nil {
-			return false
-		}
-		return true
-	}))
+
 	govalidator.CustomTypeTagMap.Set("quotaPlan", govalidator.CustomTypeValidator(func(i interface{}, o interface{}) bool {
 		var err error
 		switch v := i.(type) {
