@@ -17,6 +17,11 @@ type APIResponse struct {
 	RequestID string
 }
 
+// SendRequest exposing sendrequest to enable custom requests
+func SendRequest(host, method, url, accessToken string, body interface{}, timeout int) (*APIResponse, error) {
+	return sendRequest(host, method, url, accessToken, body, timeout)
+}
+
 func sendRequest(host, method, url, accessToken string, body interface{}, timeout int) (*APIResponse, error) {
 	// log.WithFields(log.Fields{"module": "go-samplifyapi-client", "function": "sendRequest", "URL": fmt.Sprintf("%s%s", host, url), "Method": method}).Info()
 	jstr, err := json.Marshal(body)
