@@ -33,10 +33,10 @@ type RejectionType string
 
 // All rejection resolution information together.
 type RejectionResolution struct{
-	ReasonTitle       Reason
-	ReasonDescription string
-	Comments          []string
-	RejectionType     RejectionType
+	ReasonTitle       Reason `valid:"required"`
+	ReasonDescription string `valid:"optional" conform:"trim"`
+	Comment           string `valid:"required" conform:"trim"`
+	RejectionType     RejectionType `valid:"required"`
 }
 
 // Action ...
