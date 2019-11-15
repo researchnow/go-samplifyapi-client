@@ -119,6 +119,20 @@ type GetEventResponse struct {
 	ResponseStatus ResponseStatus `json:"status"`
 }
 
+// DetailedProjectReportResponse ...
+type DetailedProjectReportResponse struct {
+	Report         DetailedProjectReport `json:"data"`
+	ResponseStatus ResponseStatus        `json:"status"`
+	Meta           Meta                  `json:"meta"`
+}
+
+// DetailedLineItemReportResponse ...
+type DetailedLineItemReportResponse struct {
+	Report         DetailedLineItemReport `json:"data"`
+	ResponseStatus ResponseStatus         `json:"status"`
+	Meta           Meta                   `json:"meta"`
+}
+
 // ResponseStatus is the custom status part in API response. (Optional in some endpoints)
 type ResponseStatus struct {
 	Message string      `json:"message"`
