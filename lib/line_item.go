@@ -85,6 +85,15 @@ const (
 	OperatorExclude Operator = "exclude"
 )
 
+// CostType ...
+type CostType string
+
+// CostType for the different types of cost
+const (
+	CostTypeBase    CostType = "BASE"
+	CostTypePremium CostType = "PREMIUM"
+)
+
 // ToUpper converts the operator to upper case.
 func (o Operator) ToUpper() string {
 	return strings.ToUpper(string(o))
@@ -375,4 +384,52 @@ type URLParameter struct {
 // LineItemSource source associated with the lineitem.
 type LineItemSource struct {
 	ID int64 `json:"id"`
+}
+
+// DetailedLineItemReport ...
+type DetailedLineItemReport struct {
+	ExtLineItemID   string                      `json:"extLineItemId"`
+	Title           string                      `json:"title"`
+	State           State                       `json:"state"`
+	StateReason     string                      `json:"stateReason"`
+	CountryISOCode  *string                     `json:"countryISOCode"`
+	LanguageISOCode *string                     `json:"languageISOCode"`
+	Sources         []*LineItemSource           `json:"sources"`
+	Cost            Cost                        `json:"cost"`
+	Stats           DetailedStats               `json:"stats"`
+	QuotaGroups     []*DetailedQuotaGroupReport `json:"quotagroups"`
+}
+
+// DetailedQuotaGroupReport ...
+type DetailedQuotaGroupReport struct {
+	QuotaGroupID string                     `json:"quotaGroupId"`
+	Stats        DetailedStats              `json:"stats"`
+	QuotaCells   []*DetailedQuotaCellReport `json:"quotaCells"`
+}
+
+// DetailedQuotaCellReport ...
+type DetailedQuotaCellReport struct {
+	QuotaCellID string        `json:"quotaCellId"`
+	QuotaNodes  []*QuotaNode  `json:"quotaNodes"`
+	Stats       DetailedStats `json:"stats"`
+}
+
+// Cost ...
+type Cost struct {
+	CostPerUnit   float64         `json:"costPerUnit"`
+	Currency      string          `json:"currency"`
+	EstimatedCost float64         `json:"estimatedCost"`
+	IncurredCost  float64         `json:"incurredCost"`
+	DetailedCost  []*DetailedCost `json:"detailedCost"`
+}
+
+// DetailedCost ...
+type DetailedCost struct {
+	Title          string   `json:"title"`
+	Type           CostType `json:"type"`
+	CostPerUnit    float64  `json:"costPerUnit"`
+	EstimatedCost  float64  `json:"estimatedCost"`
+	IncurredCost   float64  `json:"incurredCost"`
+	DeliveredUnits int64    `json:"deliveredUnits"`
+	RequestedUnits int64    `json:"requestedUnits"`
 }
