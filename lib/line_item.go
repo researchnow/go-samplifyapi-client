@@ -9,40 +9,6 @@ const (
 	TierStandard = "Standard"
 )
 
-// Common reasons for rejection.
-const (
-	WRONG_LANGUAGE Reason = "Wrong Language"
-	INCORRECT_DEVICE_TYPE Reason = "Incorrect Device Type"
-	TARGETING_UNDER_18 Reason = "Targeting under 18"
-	INCORRECT_CATEGORY Reason = "Incorrect Category"
-	SENSITIVE_CONTENT Reason = "Sensitive Content"
-	ADULT_CONTENT Reason = "Adult Content"
-	EXPLICIT_CONTENT Reason = "Explicit Content"
-	PII_COLLECTION Reason = "PII Collection"
-	SWEEPTAKES_INCENTIVES Reason = "Sweepstakes/Incentives"
-	DOWNLOADS_WEBSITE Reason = "Downloads/Website"
-	TESTING Reason = "Testing"
-	RESEARCH_ON_RESEARCH Reason = "Research on Research"
-	INCORRECT_EXIT_LINKS Reason = "Incorrect Exit Links"
-)
-
-// Type for the rejection.
-const(
-	PRE RejectionType = "Pre"
-	POST RejectionType = "Post"
-)
-
-type Reason string
-type RejectionType string
-
-// All rejection resolution information together.
-type RejectionResolution struct{
-	ReasonTitle       Reason `valid:"required"`
-	ReasonDescription string `valid:"optional" conform:"trim"`
-	Comment           string `valid:"required" conform:"trim"`
-	RejectionType     RejectionType `valid:"required"`
-}
-
 // Action ...
 type Action string
 
@@ -167,7 +133,6 @@ type LineItem struct {
 	EndLinks            *EndLinks         `json:"endLinks"`
 	SurveyURLParams     []*URLParameter   `json:"surveyURLParams"`
 	Sources             []*LineItemSource `json:"sources"`
-	RejectionResolution RejectionResolution   `json:"rejection"`
 }
 
 // IsUpdateable returns false if the line item cannot be updated.

@@ -28,6 +28,26 @@ const (
 	EventStatusClosed           EventStatus = "CLOSED"
 )
 
+// Type for the rejection.
+const(
+	PRE RejectionType = "Pre"
+	POST RejectionType = "Post"
+)
+
+type Reason struct{
+	Code        string `json:"code" valid:"required"`
+	Description string `json:"description" valid:"optional" conform:"trim"`
+}
+type RejectionType string
+
+// All rejection details information together.
+type RejectionDetails struct{
+	Comments           string `json:"comments" valid:"required" conform:"trim"`
+	Reasons           []Reason `json:"reasons" valid:"required"`
+	RejectionType     RejectionType `valid:"required"`
+}
+
+
 // EventActions ...
 type EventActions struct {
 	AcceptURL string `json:"acceptURL"`
@@ -67,4 +87,5 @@ type Event struct {
 	Actions       *EventActions  `json:"actions"`
 	CreatedAt     CustomTime     `json:"createdAt"`
 	ParentEventID *int64         `json:"parentEventId,omitempty"`
+	RejectionDetails RejectionDetails   `json:"details"`
 }
