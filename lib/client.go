@@ -313,6 +313,30 @@ func (c *Client) RejectEvent(event *Event) error {
 	return err
 }
 
+// GetDetailedProjectReport returns a project's detailed report based on observed data from actual panelists.
+func (c *Client) GetDetailedProjectReport(extProjectID string) (*DetailedProjectReportResponse, error) {
+	err := ValidateNotEmpty(extProjectID)
+	if err != nil {
+		return nil, err
+	}
+	res := &DetailedProjectReportResponse{}
+	path := fmt.Sprintf("/projects/%s/detailedReport", extProjectID)
+	err = c.requestAndParseResponse("GET", path, nil, res)
+	return res, err
+}
+
+// GetDetailedLineItemReport returns a lineitems's report with quota cell level stats based on observed data from actual panelists.
+func (c *Client) GetDetailedLineItemReport(extProjectID, extLineItemID string) (*DetailedLineItemReportResponse, error) {
+	err := ValidateNotEmpty(extProjectID)
+	if err != nil {
+		return nil, err
+	}
+	res := &DetailedLineItemReportResponse{}
+	path := fmt.Sprintf("/projects/%s/lineItems/%s/detailedReport", extProjectID, extLineItemID)
+	err = c.requestAndParseResponse("GET", path, nil, res)
+	return res, err
+}
+
 // GetUserInfo gives information about the user that is currently logged in.
 func (c *Client) GetUserInfo() (*UserResponse, error) {
 	res := &UserResponse{}

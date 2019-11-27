@@ -137,6 +137,36 @@ type ProjectReport struct {
 	CompletesRefused   int64             `json:"completesRefused"`
 }
 
+// DetailedProjectReport ...
+type DetailedProjectReport struct {
+	ExtProjectID string                    `json:"extProjectId"`
+	Title        string                    `json:"title"`
+	State        State                     `json:"state"`
+	Stats        DetailedStats             `json:"stats"`
+	LineItems    []*DetailedLineItemReport `json:"lineItems"`
+}
+
+// DetailedStats ...
+type DetailedStats struct {
+	Attempts                   int64   `json:"attempts"`
+	Completes                  int64   `json:"completes"`
+	CompletesRefused           int64   `json:"completesRefused"`
+	CompletesRefusedPercentage float64 `json:"completesRefusedPercentage"`
+	Screenouts                 int64   `json:"screenouts"`
+	ScreenoutsPercentage       float64 `json:"screenoutsPercentage"`
+	Overquotas                 int64   `json:"overquotas"`
+	OverquotasPercentage       float64 `json:"overquotasPercentage"`
+	Incompletes                int64   `json:"incompletes"`
+	IncompletesPercentage      float64 `json:"incompletesPercentage"`
+	IncidenceRate              float64 `json:"incidenceRate"`
+	// LastAcceptedIncidenceRate, LastAcceptedLOI and  ActualMedianLOI are applicable for lineitem stats, not applicable for quota group level or quota cell level or project level stats.
+	LastAcceptedIncidenceRate float64 `json:"lastAcceptedIncidenceRate,omitempty"`
+	LastAcceptedLOI           float64 `json:"lastAcceptedLOI,omitempty"`
+	RemainingCompletes        int64   `json:"remainingCompletes"`
+	ActualMedianLOI           int64   `json:"actualMedianLOI,omitempty"`
+	Conversion                float64 `json:"conversion"`
+}
+
 // Invoice ... Represents Invoice for a project.
 type Invoice struct {
 	File []byte `json:"data"`
