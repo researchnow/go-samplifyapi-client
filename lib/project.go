@@ -159,11 +159,12 @@ type DetailedStats struct {
 	Incompletes                int64   `json:"incompletes"`
 	IncompletesPercentage      float64 `json:"incompletesPercentage"`
 	IncidenceRate              float64 `json:"incidenceRate"`
-	LastAcceptedIncidenceRate  float64 `json:"lastAcceptedIncidenceRate"`
-	LastAcceptedLOI            float64 `json:"lastAcceptedLOI"`
-	Conversion                 float64 `json:"conversion"`
-	RemainingCompletes         int64   `json:"remainingCompletes"`
-	ActualMedianLOI            int64   `json:"actualMedianLOI"`
+	// LastAcceptedIncidenceRate, LastAcceptedLOI and  ActualMedianLOI are applicable for lineitem stats, not applicable for quota group level or quota cell level or project level stats.
+	LastAcceptedIncidenceRate float64 `json:"lastAcceptedIncidenceRate,omitempty"`
+	LastAcceptedLOI           float64 `json:"lastAcceptedLOI,omitempty"`
+	RemainingCompletes        int64   `json:"remainingCompletes"`
+	ActualMedianLOI           int64   `json:"actualMedianLOI,omitempty"`
+	Conversion                float64 `json:"conversion"`
 }
 
 // Invoice ... Represents Invoice for a project.

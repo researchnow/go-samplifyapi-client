@@ -353,16 +353,17 @@ type LineItemSource struct {
 
 // DetailedLineItemReport ...
 type DetailedLineItemReport struct {
-	ExtLineItemID   string                      `json:"extLineItemId"`
-	Title           string                      `json:"title"`
-	State           State                       `json:"state"`
-	StateReason     string                      `json:"stateReason"`
-	CountryISOCode  *string                     `json:"countryISOCode"`
-	LanguageISOCode *string                     `json:"languageISOCode"`
-	Sources         []*LineItemSource           `json:"sources"`
-	Cost            Cost                        `json:"cost"`
-	Stats           DetailedStats               `json:"stats"`
-	QuotaGroups     []*DetailedQuotaGroupReport `json:"quotagroups"`
+	ExtLineItemID   string            `json:"extLineItemId"`
+	Title           string            `json:"title"`
+	State           State             `json:"state"`
+	StateReason     string            `json:"stateReason"`
+	CountryISOCode  *string           `json:"countryISOCode"`
+	LanguageISOCode *string           `json:"languageISOCode"`
+	Sources         []*LineItemSource `json:"sources"`
+	Cost            Cost              `json:"cost"`
+	Stats           DetailedStats     `json:"stats"`
+	// QuotaGroups is applicable only for detailed lineitem report, not applicable for lineitems in detailed project report
+	QuotaGroups []*DetailedQuotaGroupReport `json:"quotaGroups,omitempty"`
 }
 
 // DetailedQuotaGroupReport ...
@@ -381,11 +382,12 @@ type DetailedQuotaCellReport struct {
 
 // Cost ...
 type Cost struct {
-	CostPerUnit   float64         `json:"costPerUnit"`
+	// CostPerUnit and DetailedCost are only applicable at lineitem level, not applicable at project level
+	CostPerUnit   float64         `json:"costPerUnit,omitempty"`
 	Currency      string          `json:"currency"`
 	EstimatedCost float64         `json:"estimatedCost"`
 	IncurredCost  float64         `json:"incurredCost"`
-	DetailedCost  []*DetailedCost `json:"detailedCost"`
+	DetailedCost  []*DetailedCost `json:"detailedCost,omitempty"`
 }
 
 // DetailedCost ...
