@@ -107,27 +107,42 @@ func TestValidateQuotaPlan(t *testing.T) {
 			nil,
 		},
 		{
-			"Case 4: Error path, Empty quota cells",
+			"Case 4: Happy path, everything is valid with only filters and empty quotagroups",
+			`{ "filters": [{ "attributeId": "13", "options": [ "18-99" ] }], "quotaGroups": [] }`,
+			nil,
+		},
+		{
+			"Case 5: Happy path, everything is valid with only quotagroups and empty filters",
+			`{ "filters": [], "quotaGroups": [{ "name": "group 1", "quotaCells": [{ "quotaNodes": [{ "attributeId": "11", "options": [ "1" ] }], "count": 50 }, { "quotaNodes": [{ "attributeId": "11", "options": [ "2" ] }],"count": 50} ] }] }`,
+			nil,
+		},
+		{
+			"Case 6: Happy path, everything is valid with empty quotagroups and empty filters",
+			`{ "filters": [], "quotaGroups": [] }`,
+			nil,
+		},
+		{
+			"Case 7: Error path, Empty quota cells",
 			`{ "filters": [{ "attributeId": "13", "options": [ "18-99" ] }], "quotaGroups": [{ "name": "group 1", "quotaCells": [] }] }`,
 			samplify.ErrMissingQuotaCells,
 		},
 		{
-			"Case 5: Error path, nil quota cells",
+			"Case 8: Error path, nil quota cells",
 			`{ "filters": [{ "attributeId": "13", "options": [ "18-99" ] }], "quotaGroups": [{ "name": "group 1" }] }`,
 			samplify.ErrMissingQuotaCells,
 		},
 		{
-			"Case 6: Error path, nil perc and count",
+			"Case 9: Error path, nil perc and count",
 			`{ "filters": [{ "attributeId": "13", "options": [ "18-99" ] }], "quotaGroups": [{ "name": "group 1", "quotaCells": [{ "quotaNodes": [{ "attributeId": "11", "options": [ "1" ] }], "perc": 50 }, { "quotaNodes": [{ "attributeId": "11", "options": [ "2" ] }] } ] }] }`,
 			samplify.ErrAllocationNotProvided,
 		},
 		{
-			"Case 7: Error path, when both perc and count are provided",
+			"Case 10: Error path, when both perc and count are provided",
 			`{ "filters": [{ "attributeId": "13", "options": [ "18-99" ] }], "quotaGroups": [{ "name": "group 1", "quotaCells": [{ "quotaNodes": [{ "attributeId": "11", "options": [ "1" ] }], "perc": 50, "count": 50 }, { "quotaNodes": [{ "attributeId": "11", "options": [ "2" ] }],"perc": 50, "count": 50 } ] }] }`,
 			samplify.ErrAmbigiuosAllocation,
 		},
 		{
-			"Case 8: Error path, mismatched cells allocation type perc in one cell and count in other",
+			"Case 11: Error path, mismatched cells allocation type perc in one cell and count in other",
 			`{ "filters": [{ "attributeId": "13", "options": [ "18-99" ] }], "quotaGroups": [{ "name": "group 1", "quotaCells": [{ "quotaNodes": [{ "attributeId": "11", "options": [ "1" ] }], "count": 50 }, { "quotaNodes": [{ "attributeId": "11", "options": [ "2" ] }],"perc": 50} ] }] }`,
 			samplify.ErrInconsistentAllocationType,
 		},
