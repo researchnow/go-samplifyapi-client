@@ -20,9 +20,12 @@ const (
 
 // Validation Errors
 var (
-	ErrRequiredFieldEmpty    = errors.New("required field is empty")
-	ErrInvalidFieldValue     = errors.New("invalid field value")
-	ErrInvalidQuotaCellValue = errors.New("invalid quota cell value, perc or count must be specified")
+	ErrRequiredFieldEmpty         = errors.New("required field is empty")
+	ErrInvalidFieldValue          = errors.New("invalid field value")
+	ErrInvalidQuotaCellValue      = errors.New("invalid quota cell value, perc or count must be specified")
+	ErrAllocationNotProvided      = errors.New("allocation is not specified for the cell")
+	ErrAmbigiuosAllocation        = errors.New("either percentage or count must be present in the quotacell")
+	ErrInconsistentAllocationType = errors.New("allocation type with in the quota group should be consistent")
 
 	// URL validation errros
 	ErrURLBlank      = errors.New("the URL cannot be blank")
@@ -135,20 +138,28 @@ func ValidateExclusionType(val ExclusionType) error {
 
 // ValidateQuotaPlan ...
 func ValidateQuotaPlan(val *QuotaPlan) error {
-	if val != nil &&
-		val.Filters == nil &&
-		val.QuotaGroups == nil {
-		return ErrInvalidFieldValue
+	if val == nil {
+		return nil
 	}
 
 	//quota cell must have either percentage or count
 	for _, vq := range val.QuotaGroups {
-		if vq.QuotaCells == nil {
+		if vq.QuotaCells == nil || len(vq.QuotaCells) == 0 {
 			return ErrInvalidFieldValue
 		}
-		for _, vc := range vq.QuotaCells {
+		var allocType Allocation
+		for i, vc := range vq.QuotaCells {
 			if vc.Perc == nil && vc.Count == nil {
-				return ErrInvalidQuotaCellValue
+				return ErrAllocationNotProvided
+			}
+			if vc.Perc != nil && vc.Count != nil {
+				return ErrAmbigiuosAllocation
+			}
+			if i == 0 {
+				allocType = vc.AllocationType()
+			}
+			if vc.AllocationType() != allocType {
+				return ErrInconsistentAllocationType
 			}
 		}
 	}

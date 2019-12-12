@@ -400,3 +400,22 @@ type DetailedCost struct {
 	DeliveredUnits int64    `json:"deliveredUnits"`
 	RequestedUnits int64    `json:"requestedUnits"`
 }
+
+// Allocation enum for allocation type.
+type Allocation string
+
+const (
+	// AllocationPercentage percentage allocation
+	AllocationPercentage Allocation = "perc"
+	// AllocationCount count allocation
+	AllocationCount Allocation = "count"
+)
+
+// AllocationType retuns the type of allocation in the quota cell.
+func (c *QuotaCell) AllocationType() Allocation {
+	if c.Count != nil {
+		return AllocationCount
+	}
+	// what if both are not present
+	return AllocationPercentage
+}
