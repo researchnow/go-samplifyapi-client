@@ -26,6 +26,7 @@ var (
 	ErrAllocationNotProvided      = errors.New("allocation is not specified for the cell")
 	ErrAmbigiuosAllocation        = errors.New("either percentage or count must be present in the quotacell")
 	ErrInconsistentAllocationType = errors.New("allocation type with in the quota group should be consistent")
+	ErrMissingQuotaCells          = errors.New("atleast one quota cell should be provided")
 
 	// URL validation errros
 	ErrURLBlank      = errors.New("the URL cannot be blank")
@@ -145,7 +146,7 @@ func ValidateQuotaPlan(val *QuotaPlan) error {
 	//quota cell must have either percentage or count
 	for _, vq := range val.QuotaGroups {
 		if vq.QuotaCells == nil || len(vq.QuotaCells) == 0 {
-			return ErrInvalidFieldValue
+			return ErrMissingQuotaCells
 		}
 		var allocType Allocation
 		for i, vc := range vq.QuotaCells {

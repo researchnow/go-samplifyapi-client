@@ -109,12 +109,12 @@ func TestValidateQuotaPlan(t *testing.T) {
 		{
 			"Case 4: Error path, Empty quota cells",
 			`{ "filters": [{ "attributeId": "13", "options": [ "18-99" ] }], "quotaGroups": [{ "name": "group 1", "quotaCells": [] }] }`,
-			samplify.ErrInvalidFieldValue,
+			samplify.ErrMissingQuotaCells,
 		},
 		{
 			"Case 5: Error path, nil quota cells",
 			`{ "filters": [{ "attributeId": "13", "options": [ "18-99" ] }], "quotaGroups": [{ "name": "group 1" }] }`,
-			samplify.ErrInvalidFieldValue,
+			samplify.ErrMissingQuotaCells,
 		},
 		{
 			"Case 6: Error path, nil perc and count",
