@@ -57,6 +57,18 @@ type EventResource struct {
 	Reason              string             `json:"reason"`
 }
 
+// EventReason ...
+type EventReason struct {
+	Code        string `json:"code"`
+	Description string `json:"description"`
+}
+
+// EventDetails ...
+type EventDetails struct {
+	Comments string         `json:"comments"`
+	Reasons  []*EventReason `json:"reasons"`
+}
+
 // Event ...
 type Event struct {
 	EventID       int64          `json:"eventId"`
@@ -65,6 +77,7 @@ type Event struct {
 	ExtLineItemID string         `json:"extLineItemId"`
 	Resource      *EventResource `json:"resource"`
 	Actions       *EventActions  `json:"actions"`
+	Details       *EventDetails  `json:"details"`
 	CreatedAt     CustomTime     `json:"createdAt"`
 	ParentEventID *int64         `json:"parentEventId,omitempty"`
 }

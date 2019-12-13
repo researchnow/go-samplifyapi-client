@@ -186,7 +186,7 @@ type CreateLineItemCriteria struct {
 	IndicativeIncidence float64           `json:"indicativeIncidence" valid:"required"`
 	DaysInField         int64             `json:"daysInField" valid:"required"`
 	LengthOfInterview   int64             `json:"lengthOfInterview" valid:"required"`
-	DeliveryType        *DeliveryType     `json:"deliveryType" valid:"optional,DeliveryType"`
+	DeliveryType        *DeliveryType     `json:"deliveryType" valid:"optional"`
 	RequiredCompletes   int64             `json:"requiredCompletes" valid:"required"`
 	QuotaPlan           *QuotaPlan        `json:"quotaPlan,omitempty" valid:"optional,quotaPlan"`
 	SurveyURLParams     []*URLParameter   `json:"surveyURLParams" valid:"optional"`
@@ -205,7 +205,7 @@ type UpdateLineItemCriteria struct {
 	IndicativeIncidence *float64           `json:"indicativeIncidence,omitempty" valid:"optional"`
 	DaysInField         *int64             `json:"daysInField,omitempty" valid:"optional"`
 	LengthOfInterview   *int64             `json:"lengthOfInterview,omitempty" valid:"optional"`
-	DeliveryType        *DeliveryType      `json:"deliveryType" valid:"optional,DeliveryType"`
+	DeliveryType        *DeliveryType      `json:"deliveryType" valid:"optional"`
 	RequiredCompletes   *int64             `json:"requiredCompletes,omitempty" valid:"optional"`
 	QuotaPlan           *QuotaPlan         `json:"quotaPlan,omitempty" valid:"optional,quotaPlan"`
 	SurveyURLParams     []*URLParameter    `json:"surveyURLParams" valid:"optional"`
@@ -399,4 +399,23 @@ type DetailedCost struct {
 	IncurredCost   float64  `json:"incurredCost"`
 	DeliveredUnits int64    `json:"deliveredUnits"`
 	RequestedUnits int64    `json:"requestedUnits"`
+}
+
+// Allocation enum for allocation type.
+type Allocation string
+
+const (
+	// AllocationPercentage percentage allocation
+	AllocationPercentage Allocation = "perc"
+	// AllocationCount count allocation
+	AllocationCount Allocation = "count"
+)
+
+// AllocationType retuns the type of allocation in the quota cell.
+func (c *QuotaCell) AllocationType() Allocation {
+	if c.Count != nil {
+		return AllocationCount
+	}
+	// what if both are not present
+	return AllocationPercentage
 }
