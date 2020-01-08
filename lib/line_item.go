@@ -35,10 +35,11 @@ type DeliveryType string
 
 // DeliveryType values
 const (
-	DeliveryTypeSlow     DeliveryType = "SLOW"
-	DeliveryTypeBalanced DeliveryType = "BALANCED"
-	DeliveryTypeFast     DeliveryType = "FAST"
-	DeliveryTypeBurst    DeliveryType = "BURST"
+	DeliveryTypeSlow      DeliveryType = "SLOW"
+	DeliveryTypeBalanced  DeliveryType = "BALANCED"
+	DeliveryTypeFast      DeliveryType = "FAST"
+	DeliveryTypeBurst     DeliveryType = "BURST"
+	DeliveryTypeUnlimited DeliveryType = "UNLIMITED"
 )
 
 // Operator operator for the filters.
