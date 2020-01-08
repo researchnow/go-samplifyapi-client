@@ -74,6 +74,23 @@ type ProjectHeader struct {
 	Author       *Author `json:"author"`
 }
 
+// Billing ...
+type Billing struct {
+	ID   string      `json:"billingID"`
+	Type BillingType `json:"type"`
+	Date CustomTime  `json:"billingDate"`
+}
+
+// BillingType determines whether the invoiced project is monthly or single project
+type BillingType string
+
+const (
+	// BillingTypeMonthly determines that the projects are being billed Monthly
+	BillingTypeMonthly BillingType = "AGGREGATED_MONTHLY"
+	// BillingTypePerProject determines the project is billed per project
+	BillingTypePerProject BillingType = "PER_PROJECT"
+)
+
 // Project ...
 type Project struct {
 	ProjectHeader
@@ -140,9 +157,11 @@ type ProjectReport struct {
 // DetailedProjectReport ...
 type DetailedProjectReport struct {
 	ExtProjectID string                    `json:"extProjectId"`
+	JobNumber    string                    `json:"jobNumber"`
 	Title        string                    `json:"title"`
 	State        State                     `json:"state"`
 	Stats        DetailedStats             `json:"stats"`
+	Cost         Cost                      `json:"cost"`
 	LineItems    []*DetailedLineItemReport `json:"lineItems"`
 }
 
