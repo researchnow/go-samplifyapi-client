@@ -1,6 +1,8 @@
 package samplify
 
-import "os"
+import (
+	"os"
+)
 
 // DeviceType ...
 type DeviceType string
@@ -23,9 +25,14 @@ const (
 
 // State ...
 type State string
+// PeriodType ...
+type PeriodType string
 
 func (s State) String() string {
 	return string(s)
+}
+func (p PeriodType) String() string {
+	return string(p)
 }
 
 // State values for Projects and LineItems
@@ -45,6 +52,13 @@ const (
 	StateAwaitingClientApproval State = "AWAITING_CLIENT_APPROVAL"
 	StateRejectedPaused         State = "REJECTED_PAUSED"
 )
+// PeriodType values for Exclusions
+const (
+	PeriodTypeThisWeek 			PeriodType = "THIS_WEEK"
+	PeriodTypeThisMonth    		PeriodType = "THIS_MONTH"
+	PeriodTypeLastThreeMonths   PeriodType = "LAST_3_MONTHS"
+	PeriodTypeCustom      		PeriodType = "CUSTOM"
+)
 
 // Category is a Project's category
 type Category struct {
@@ -53,8 +67,11 @@ type Category struct {
 
 // Exclusions ... Project's exclusions
 type Exclusions struct {
-	Type ExclusionType `json:"type" valid:"ExclusionType"`
-	List []string      `json:"list"`
+	Type ExclusionType     `json:"type" valid:"ExclusionType"`
+	List []string          `json:"list"`
+	PeriodType PeriodType  `json:"periodType" valid:"PeriodType"`
+	StartDate *string      `json:"startDate" valid:"optional`
+	EndDate *string        `json:"endDate" valid:optional`
 }
 
 // Author ...
