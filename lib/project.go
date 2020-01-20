@@ -1,6 +1,8 @@
 package samplify
 
-import "os"
+import (
+	"os"
+)
 
 // DeviceType ...
 type DeviceType string
@@ -12,13 +14,8 @@ const (
 	DeviceTypeTablet  DeviceType = "tablet"
 )
 
-// ExclusionType ...
-type ExclusionType string
-
-// ExclusionType values
-const (
-	ExclusionTypeProject ExclusionType = "PROJECT"
-	ExclusionTypeTag     ExclusionType = "TAG"
+const(
+	TimeLayout = "2006-01-02"
 )
 
 // State ...
@@ -49,12 +46,6 @@ const (
 // Category is a Project's category
 type Category struct {
 	SurveyTopic []string `json:"surveyTopic" valid:"required"`
-}
-
-// Exclusions ... Project's exclusions
-type Exclusions struct {
-	Type ExclusionType `json:"type" valid:"ExclusionType"`
-	List []string      `json:"list"`
 }
 
 // Author ...

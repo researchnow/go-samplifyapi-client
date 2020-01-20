@@ -130,11 +130,16 @@ func ValidateDeviceType(val DeviceType) error {
 
 // ValidateExclusionType ...
 func ValidateExclusionType(val ExclusionType) error {
-	if val != ExclusionTypeProject &&
+	for _, et := range ExclusionTypes{
+		if val == et {
+			return nil
+		}
+	}
+	/*if val != ExclusionTypeProject &&
 		val != ExclusionTypeTag {
 		return ErrInvalidFieldValue
-	}
-	return nil
+	}*/
+	return ErrInvalidFieldValue
 }
 
 // ValidateQuotaPlan ...
