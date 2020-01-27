@@ -135,10 +135,6 @@ func ValidateExclusionType(val ExclusionType) error {
 			return nil
 		}
 	}
-	/*if val != ExclusionTypeProject &&
-		val != ExclusionTypeTag {
-		return ErrInvalidFieldValue
-	}*/
 	return ErrInvalidFieldValue
 }
 
