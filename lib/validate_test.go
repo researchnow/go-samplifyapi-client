@@ -2,12 +2,14 @@ package samplify_test
 
 import (
 	"encoding/json"
+	"fmt"
 	"testing"
 
 	samplify "github.com/researchnow/go-samplifyapi-client/lib"
 )
 
 func TestValidateSurveyLink(t *testing.T) {
+	fmt.Println("hi")
 	tables := []struct {
 		id        string
 		inputURL  string

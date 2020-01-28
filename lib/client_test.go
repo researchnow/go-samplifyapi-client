@@ -129,7 +129,13 @@ func TestQueryString(t *testing.T) {
 			expectedURL: "/projects?createdAt=2018/11/01,2019/01/01",
 			query:       getQueryOptionsFour(),
 		},
+		{
+			expectedURL: "/projects?startDate=2019-06-12&amp;endDate=2019-06-19&amp;extProjectId=test-project-id",
+			query:       getQueryOptionsInvoicesSummary(),
+		},
 	}
+
+	//fmt.Println(getQueryOptionsFour())
 	for _, tt := range tests {
 
 		ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -142,6 +148,7 @@ func TestQueryString(t *testing.T) {
 		client.Auth = getAuth()
 		client.GetAllProjects(tt.query)
 		ts.Close()
+
 		if url != tt.expectedURL {
 			t.FailNow()
 		}
@@ -192,6 +199,30 @@ func getQueryOptionsFour() *samplify.QueryOptions {
 			&samplify.Filter{Field: samplify.QueryFieldCreatedAt, Value: value},
 		},
 	}
+}
+
+func getQueryOptionsInvoicesSummary() *samplify.QueryOptions {
+	f1 := samplify.Filter{
+		Field: samplify.QueryFieldStartDate,
+		Value: samplify.FilterValue{Value: "2019-06-12"},
+	}
+	f2 := samplify.Filter{
+		Field: samplify.QueryFieldEndDate,
+		Value: samplify.FilterValue{Value: "2019-06-19"},
+	}
+
+	filters := []*samplify.Filter{
+		&f1, &f2,
+	}
+
+	projectID := "test-project-id"
+
+	option := samplify.QueryOptions{
+		FilterBy:      filters,
+		ExtProjectId:  &projectID,
+	}
+
+	return &option
 }
 
 func getAuth() samplify.TokenResponse {
