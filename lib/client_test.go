@@ -135,7 +135,6 @@ func TestQueryString(t *testing.T) {
 		},
 	}
 
-	//fmt.Println(getQueryOptionsFour())
 	for _, tt := range tests {
 
 		ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -201,6 +200,7 @@ func getQueryOptionsFour() *samplify.QueryOptions {
 	}
 }
 
+/* Test query for field of: `QueryFieldStartDate` and `QueryFieldEndDate`*/
 func getQueryOptionsInvoicesSummary() *samplify.QueryOptions {
 	f1 := samplify.Filter{
 		Field: samplify.QueryFieldStartDate,
