@@ -9,7 +9,6 @@ import (
 )
 
 func TestValidateSurveyLink(t *testing.T) {
-	fmt.Println("hi")
 	tables := []struct {
 		id        string
 		inputURL  string
