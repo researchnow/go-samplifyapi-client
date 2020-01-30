@@ -41,23 +41,30 @@ type Exclusions struct {
 	EndDate   *string  `json:"endDate"`
 }
 
-func (e Exclusions) Compute() (*string, *string){
+func (e *Exclusions) ComputeDates(){
 	now := time.Now()
 	current := now.Format(TimeLayout)
 	switch e.Type {
 	case ExclusionTypeThisMonth:
 		startDate := BeginningOfMonth(now).Format(TimeLayout)
-		return &startDate, &current
+		e.StartDate = &startDate
+		e.EndDate = &current
+		return
 	case ExclusionTypeLastMonth:
 		startDate := DaysBeforeAfterMonth(now, -30).Format(TimeLayout)
-		return &startDate, &current
+		e.StartDate = &startDate
+		e.EndDate = &current
+		return
 	case ExclusionTypeLastThreeMonth:
 		startDate := DaysBeforeAfterMonth(now, -90).Format(TimeLayout)
-		return &startDate, &current
-	case ExclusionTypeCustom:
-		return e.StartDate,e.EndDate
+		e.StartDate = &startDate
+		e.EndDate = &current
+		return
+	case ExclusionTypeProject:
+		e.StartDate = nil
+		e.EndDate = nil
+		return
 	}
-	return nil, nil
 }
 
 func BeginningOfMonth(t time.Time) time.Time {
@@ -71,7 +78,7 @@ func EndOfMonth(t time.Time) time.Time {
 	return BeginningOfMonth(t).AddDate(0, 1, 0).Add(-time.Second)
 }
 
-func (e Exclusions) Validate() error {
+func (e *Exclusions) ValidateDates() error {
 	switch e.Type {
 	case ExclusionTypeCustom:
 		if e.StartDate == nil{
@@ -87,6 +94,21 @@ func (e Exclusions) Validate() error {
 		}
 		if start.After(end) || end.Before(start){
 			return fmt.Errorf("invalid date ranges: %s and %s", *e.StartDate, *e.EndDate)
+		}
+	}
+	return nil
+}
+
+func (e *Exclusions) AddProjects(extProjectIDs []string) error{
+	m := make(map[string]bool)
+
+	for _, item := range e.List {
+		m[item] = true
+	}
+
+	for _, item := range extProjectIDs {
+		if _, ok := m[item]; !ok {
+			e.List = append(e.List, item)
 		}
 	}
 	return nil
