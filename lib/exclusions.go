@@ -6,7 +6,6 @@ import (
 	"time"
 )
 
-
 // ExclusionType ...
 type ExclusionType string
 
@@ -21,12 +20,12 @@ var ExclusionTypes = []ExclusionType{
 
 // ExclusionType values
 const (
-	ExclusionTypeProject 		ExclusionType = "PROJECT"
-	ExclusionTypeTag 			ExclusionType = "TAG"
-	ExclusionTypeThisMonth     	ExclusionType = "THIS_MONTH"
-	ExclusionTypeLastMonth     	ExclusionType = "LAST_MONTH"
+	ExclusionTypeProject        ExclusionType = "PROJECT"
+	ExclusionTypeTag            ExclusionType = "TAG"
+	ExclusionTypeThisMonth      ExclusionType = "THIS_MONTH"
+	ExclusionTypeLastMonth      ExclusionType = "LAST_MONTH"
 	ExclusionTypeLastThreeMonth ExclusionType = "LAST_THREE_MONTHS"
-	ExclusionTypeCustom     	ExclusionType = "CUSTOM"
+	ExclusionTypeCustom         ExclusionType = "CUSTOM_TIME_PERIOD"
 )
 
 func (p ExclusionType) String() string {
@@ -35,13 +34,13 @@ func (p ExclusionType) String() string {
 
 // Exclusions ... Project's exclusions
 type Exclusions struct {
-	Type ExclusionType `json:"type" valid:"ExclusionType"`
-	List []string      `json:"list"`
-	StartDate *string  `json:"startDate"`
-	EndDate   *string  `json:"endDate"`
+	Type      ExclusionType `json:"type" valid:"ExclusionType"`
+	List      []string      `json:"list"`
+	StartDate *string       `json:"startDate"`
+	EndDate   *string       `json:"endDate"`
 }
 
-func (e *Exclusions) ComputeDates(){
+func (e *Exclusions) ComputeDates() {
 	now := time.Now()
 	current := now.Format(TimeLayout)
 	switch e.Type {
@@ -81,7 +80,7 @@ func EndOfMonth(t time.Time) time.Time {
 func (e *Exclusions) ValidateDates() error {
 	switch e.Type {
 	case ExclusionTypeCustom:
-		if e.StartDate == nil{
+		if e.StartDate == nil {
 			return errors.New("exclusion start date cannot be empty")
 		}
 		if e.EndDate == nil {
@@ -92,14 +91,15 @@ func (e *Exclusions) ValidateDates() error {
 		if err != nil{
 			return err
 		}
-		if start.After(end) || end.Before(start){
+
+		if start.After(end) || end.Before(start) {
 			return fmt.Errorf("invalid date ranges: %s and %s", *e.StartDate, *e.EndDate)
 		}
 	}
 	return nil
 }
 
-func (e *Exclusions) AddProjects(extProjectIDs []string) error{
+func (e *Exclusions) AddProjects(extProjectIDs []string) error {
 	m := make(map[string]bool)
 
 	for _, item := range e.List {
