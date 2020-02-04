@@ -72,8 +72,8 @@ type ProjectHeader struct {
 	JobNumber    string   `json:"jobNumber"`
 	State        State    `json:"state"`
 	Author       *Author  `json:"author"`
-	CreatedAt    string   `json:"createdAt"`
-	UpdatedAt    string   `json:"updatedAt"`
+	ClosedAt     string   `json:"closedAt"`
+	LaunchedAt    string  `json:"launchedAt"`
 	Billing      *Billing `json:"billing"`
 }
 
