@@ -67,11 +67,14 @@ type Author struct {
 // ProjectHeader ...
 type ProjectHeader struct {
 	Model
-	ExtProjectID string  `json:"extProjectId"`
-	Title        string  `json:"title"`
-	JobNumber    string  `json:"jobNumber"`
-	State        State   `json:"state"`
-	Author       *Author `json:"author"`
+	ExtProjectID string   `json:"extProjectId"`
+	Title        string   `json:"title"`
+	JobNumber    string   `json:"jobNumber"`
+	State        State    `json:"state"`
+	Author       *Author  `json:"author"`
+	CreatedAt    string   `json:"createdAt"`
+	UpdatedAt    string   `json:"updatedAt"`
+	Billing      *Billing `json:"billing"`
 }
 
 // Billing ...
