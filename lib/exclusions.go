@@ -87,11 +87,13 @@ func (e *Exclusions) ValidateDates() error {
 			return errors.New("exclusion end date cannot be empty")
 		}
 		start, err := time.Parse(TimeLayout, *e.StartDate)
-		end, err := time.Parse(TimeLayout, *e.EndDate)
-		if err != nil{
+		if err != nil {
 			return err
 		}
-
+		end, err := time.Parse(TimeLayout, *e.EndDate)
+		if err != nil {
+			return err
+		}
 		if start.After(end) || end.Before(start) {
 			return fmt.Errorf("invalid date ranges: %s and %s", *e.StartDate, *e.EndDate)
 		}
