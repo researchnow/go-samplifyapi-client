@@ -31,6 +31,8 @@ const (
 	QueryFieldLanguageISOCode    QueryField = "languageISOCode"
 	QueryFieldLaunchedAt         QueryField = "launchedAt"
 	QueryFieldSurveyTopic        QueryField = "surveyTopic"
+	QueryFieldStartDate 		 QueryField = "startDate"
+	QueryFieldEndDate 			 QueryField = "endDate"
 )
 
 // SortDirection (asc, desc)
