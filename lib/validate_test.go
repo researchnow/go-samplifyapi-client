@@ -2,6 +2,7 @@ package samplify_test
 
 import (
 	"encoding/json"
+	"fmt"
 	"testing"
 
 	samplify "github.com/researchnow/go-samplifyapi-client/lib"

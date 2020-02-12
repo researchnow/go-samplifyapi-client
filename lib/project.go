@@ -74,7 +74,7 @@ type ProjectHeader struct {
 	Author       *Author     `json:"author"`
 	Billing      *Billing    `json:"billing"`
 	LaunchedAt   *CustomTime `json:"launchedAt"`
-	ClosedAt     *CustomTime `json:"closedAt"` 
+	ClosedAt     *CustomTime `json:"closedAt"`
 }
 
 // Billing ...
