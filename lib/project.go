@@ -81,7 +81,7 @@ type ProjectHeader struct {
 type Billing struct {
 	ID   string      `json:"billingID"`
 	Type BillingType `json:"type"`
-	Date CustomTime  `json:"billingDate"`
+	Date *CustomTime `json:"billingDate"`
 }
 
 // BillingType determines whether the invoiced project is monthly or single project
