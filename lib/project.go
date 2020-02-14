@@ -205,3 +205,14 @@ type SurveyTopic struct {
 	Topic       string `json:"topic"`
 	Description string `json:"description"`
 }
+
+// IsUserSubscribed tells you if an given user (email) is subscribed to the project.
+func (p *Project) IsUserSubscribed(email string) bool {
+	for _, eid := range p.NotificationEmails {
+		if eid == email {
+			return true
+		}
+	}
+
+	return false
+}
