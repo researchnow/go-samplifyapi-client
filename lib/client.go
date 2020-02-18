@@ -47,12 +47,6 @@ type Client struct {
 	Options     *ClientOptions
 }
 
-// GetInvoicesSummary ...
-func (c *Client) GetInvoicesSummary(options *QueryOptions) (*APIResponse, error){
-	path := fmt.Sprintf("/projects/invoices/summary%s", query2String(options))
-	return c.request("GET", c.Options.APIBaseURL, path, nil)
-}
-
 // CreateProject ...
 func (c *Client) CreateProject(project *CreateProjectCriteria) (*ProjectResponse, error) {
 	err := Validate(project)
@@ -231,6 +225,12 @@ func (c *Client) GetFeasibility(extProjectID string, options *QueryOptions) (*Ge
 // GetInvoice ... Get the invoice of the requested project
 func (c *Client) GetInvoice(extProjectID string, options *QueryOptions) (*APIResponse, error) {
 	path := fmt.Sprintf("/projects/%s/invoices", extProjectID)
+	return c.request("GET", c.Options.APIBaseURL, path, nil)
+}
+
+// GetInvoicesSummary ...
+func (c *Client) GetInvoicesSummary(options *QueryOptions) (*APIResponse, error) {
+	path := fmt.Sprintf("/projects/invoices/summary%s", query2String(options))
 	return c.request("GET", c.Options.APIBaseURL, path, nil)
 }
 
