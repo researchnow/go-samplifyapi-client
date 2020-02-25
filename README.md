@@ -1,7 +1,7 @@
 # Samplify API client
 
 A golang client library to connect with researchnow/ssi demand api
-<br /><a href="https://developers.researchnow.com/samplifyapi-docs" target="_blank">See complete API reference here</a>
+<br /><a href="https://developers.dynata.com/demand-api-reference/" target="_blank">See complete API reference here</a>
 
 ### Prerequisites
 
