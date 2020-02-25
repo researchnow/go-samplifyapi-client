@@ -67,21 +67,21 @@ type Author struct {
 // ProjectHeader ...
 type ProjectHeader struct {
 	Model
-	ExtProjectID string   `json:"extProjectId"`
-	Title        string   `json:"title"`
-	JobNumber    string   `json:"jobNumber"`
-	State        State    `json:"state"`
-	Author       *Author  `json:"author"`
-	ClosedAt     string   `json:"closedAt"`
-	LaunchedAt    string  `json:"launchedAt"`
-	Billing      *Billing `json:"billing"`
+	ExtProjectID string      `json:"extProjectId"`
+	Title        string      `json:"title"`
+	JobNumber    string      `json:"jobNumber"`
+	State        State       `json:"state"`
+	Author       *Author     `json:"author"`
+	Billing      *Billing    `json:"billing"`
+	LaunchedAt   *CustomTime `json:"launchedAt"`
+	ClosedAt     *CustomTime `json:"closedAt"`
 }
 
 // Billing ...
 type Billing struct {
 	ID   string      `json:"billingID"`
 	Type BillingType `json:"type"`
-	Date CustomTime  `json:"billingDate"`
+	Date *CustomTime `json:"billingDate"`
 }
 
 // BillingType determines whether the invoiced project is monthly or single project
