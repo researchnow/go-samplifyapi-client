@@ -28,7 +28,7 @@ var (
 	ErrInconsistentAllocationType = errors.New("allocation type with in the quota group should be consistent")
 	ErrMissingQuotaCells          = errors.New("atleast one quota cell should be provided")
 
-	// URL validation errros
+	// URL validation errors
 	ErrURLBlank      = errors.New("the URL cannot be blank")
 	ErrURLMaxLength  = errors.New("the URL length cannot exceed " + strconv.Itoa(URLMaxLength) + " characters")
 	ErrURLMinLength  = errors.New("the URL length cannot be less than " + strconv.Itoa(URLMinLength) + " characters")

@@ -134,6 +134,7 @@ type LineItem struct {
 	EndLinks            *EndLinks         `json:"endLinks"`
 	SurveyURLParams     []*URLParameter   `json:"surveyURLParams"`
 	Sources             []*LineItemSource `json:"sources"`
+	SurveyTestingNotes  string            `json:"surveyTestingNotes"`
 }
 
 // IsUpdateable returns false if the line item cannot be updated.
@@ -193,6 +194,7 @@ type CreateLineItemCriteria struct {
 	SurveyURLParams     []*URLParameter   `json:"surveyURLParams" valid:"optional"`
 	SurveyTestURLParams []*URLParameter   `json:"surveyTestURLParams" valid:"optional"`
 	Sources             []*LineItemSource `json:"sources,omitempty" valid:"optional"`
+	SurveyTestingNotes  *string           `json:"surveyTestingNotes,omitempty" valid:"optional"`
 }
 
 // UpdateLineItemCriteria has the fields to update a LineItem
@@ -212,6 +214,7 @@ type UpdateLineItemCriteria struct {
 	SurveyURLParams     []*URLParameter    `json:"surveyURLParams" valid:"optional"`
 	SurveyTestURLParams []*URLParameter    `json:"surveyTestURLParams" valid:"optional"`
 	Sources             *[]*LineItemSource `json:"sources,omitempty" valid:"optional"`
+	SurveyTestingNotes  *string           `json:"surveyTestingNotes,omitempty" valid:"optional"`
 }
 
 // BuyProjectLineItem ...
