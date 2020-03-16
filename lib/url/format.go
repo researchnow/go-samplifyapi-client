@@ -84,7 +84,7 @@ func sortMapKeys(m CustomParams) []string {
 //	   the form host/path does not add its own /.
 //	- if u.RawQuery is empty, ?query is omitted.
 //	- if u.Fragment is empty, #fragment is omitted.
-func URLString(u *url.URL) string {
+func String(u *url.URL) string {
 	var buf strings.Builder
 	if u.Scheme != "" {
 		buf.WriteString(u.Scheme)
