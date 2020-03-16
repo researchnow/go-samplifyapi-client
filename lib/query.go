@@ -107,8 +107,8 @@ type QueryOptions struct {
 	Offset        uint
 	Limit         uint
 	Scope         string `conform:"trim"`
-	ExtProjectId  *string
-	ExtLineItemId *string
+	ExtProjectID  *string
+	ExtLineItemID *string
 	EventType     *string `conform:"trim"`
 }
 
@@ -148,11 +148,11 @@ func query2String(options *QueryOptions) string {
 			}
 			query = fmt.Sprintf("%s%slimit=%d", query, sep, options.Limit)
 		}
-		if options.ExtProjectId != nil {
-			query = fmt.Sprintf("%s%sextProjectId=%s", query, sep, *options.ExtProjectId)
+		if options.ExtProjectID != nil {
+			query = fmt.Sprintf("%s%sextProjectId=%s", query, sep, *options.ExtProjectID)
 		}
-		if options.ExtLineItemId != nil {
-			query = fmt.Sprintf("%s%sextLineItemId=%s", query, sep, *options.ExtLineItemId)
+		if options.ExtLineItemID != nil {
+			query = fmt.Sprintf("%s%sextLineItemId=%s", query, sep, *options.ExtLineItemID)
 		}
 		if options.EventType != nil {
 			query = fmt.Sprintf("%s%seventType=%s", query, sep, *options.EventType)

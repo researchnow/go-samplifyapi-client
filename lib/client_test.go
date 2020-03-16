@@ -219,7 +219,7 @@ func getQueryOptionsInvoicesSummary() *samplify.QueryOptions {
 
 	option := samplify.QueryOptions{
 		FilterBy:      filters,
-		ExtProjectId:  &projectID,
+		ExtProjectID:  &projectID,
 	}
 
 	return &option
