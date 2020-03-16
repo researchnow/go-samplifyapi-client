@@ -1,5 +1,7 @@
 # Samplify API client
 
+![Go](https://github.com/dynata/zazu/workflows/Go/badge.svg)
+
 A golang client library to connect with researchnow/ssi demand api
 <br /><a href="https://developers.dynata.com/demand-api-reference/" target="_blank">See complete API reference here</a>
 
