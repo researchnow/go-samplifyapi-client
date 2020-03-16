@@ -22,7 +22,7 @@ type CustomParams map[string]string
 // Format returns the formatted TestLink appending the custom paramaters
 func Format(u *url.URL, m CustomParams) string {
 	u.ForceQuery = true
-	urlstring := URLString(u)
+	urlstring := String(u)
 
 	if urlstring == "" {
 		return urlstring
@@ -63,7 +63,7 @@ func sortMapKeys(m CustomParams) []string {
 // **** Copied this from the default url package to ensure the messed up
 // <#IdParameter[Value]> stuff works. so, the encode on the host and the fragment are removed.
 
-// URLString reassembles the URL into a valid URL string.
+// String reassembles the URL into a valid URL string.
 // The general form of the result is one of:
 //
 //	scheme:opaque?query#fragment
