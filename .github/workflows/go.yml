@@ -30,4 +30,4 @@ jobs:
         /home/runner/go/bin/golint ./...
 
     - name: Test
-      run: go run cmd/test/main.go
+      run: go test ./lib
