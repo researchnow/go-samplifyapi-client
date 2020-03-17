@@ -250,6 +250,8 @@ func getLineItemCriteria() *samplify.CreateLineItemCriteria {
 	surveyTestURL := "www.mysurvey.com/test/survey"
 	percs := []float64{30.0, 70.0}
 
+	surveyTestingNotesVal := "survey-testing-notes"
+
 	return &samplify.CreateLineItemCriteria{
 		ExtLineItemID:       "lineItem001",
 		Title:               "US College",
@@ -261,6 +263,7 @@ func getLineItemCriteria() *samplify.CreateLineItemCriteria {
 		DaysInField:         20,
 		LengthOfInterview:   10,
 		RequiredCompletes:   200,
+		SurveyTestingNotes:  &surveyTestingNotesVal,
 		QuotaPlan: &samplify.QuotaPlan{
 			Filters: []*samplify.QuotaFilters{
 				&samplify.QuotaFilters{AttributeID: "4091", Options: []string{"3", "4"}},
