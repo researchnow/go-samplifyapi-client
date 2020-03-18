@@ -2,9 +2,8 @@ package samplify_test
 
 import (
 	"encoding/json"
-	"testing"
-
 	samplify "github.com/researchnow/go-samplifyapi-client/lib"
+	"testing"
 )
 
 func TestValidateSurveyLink(t *testing.T) {
