@@ -63,6 +63,7 @@ func TestClientFunctions(t *testing.T) {
 		"/events/1",
 		"/projects/test-report-id/detailedReport",
 		"/projects/test-report-id/lineItems/test-lineitem-id/detailedReport",
+		"/studyMetadata",
 	}
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		urls = append(urls, r.URL.String())
@@ -93,6 +94,7 @@ func TestClientFunctions(t *testing.T) {
 	client.GetEventBy("1")
 	client.GetDetailedProjectReport("test-report-id")
 	client.GetDetailedLineItemReport("test-report-id", "test-lineitem-id")
+	client.GetStudyMetadata()
 	ts.Close()
 
 	if len(urls) != len(tests) {
@@ -218,8 +220,8 @@ func getQueryOptionsInvoicesSummary() *samplify.QueryOptions {
 	projectID := "test-project-id"
 
 	option := samplify.QueryOptions{
-		FilterBy:      filters,
-		ExtProjectId:  &projectID,
+		FilterBy:     filters,
+		ExtProjectId: &projectID,
 	}
 
 	return &option
