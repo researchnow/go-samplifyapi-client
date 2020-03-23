@@ -30,18 +30,6 @@ const (
 	FeasibilityStatusFailed       FeasibilityStatus = "FAILED"
 )
 
-// DeliveryType ...
-type DeliveryType string
-
-// DeliveryType values
-const (
-	DeliveryTypeSlow      DeliveryType = "SLOW"
-	DeliveryTypeBalanced  DeliveryType = "BALANCED"
-	DeliveryTypeFast      DeliveryType = "FAST"
-	DeliveryTypeBurst     DeliveryType = "BURST"
-	DeliveryTypeUnlimited DeliveryType = "UNLIMITED"
-)
-
 // Operator operator for the filters.
 type Operator string
 
@@ -128,7 +116,7 @@ type LineItem struct {
 	IndicativeIncidence float64           `json:"indicativeIncidence"`
 	DaysInField         int64             `json:"daysInField"`
 	LengthOfInterview   int64             `json:"lengthOfInterview"`
-	DeliveryType        DeliveryType      `json:"deliveryType"`
+	DeliveryType        *string           `json:"deliveryType"`
 	RequiredCompletes   int64             `json:"requiredCompletes"`
 	QuotaPlan           *QuotaPlan        `json:"quotaPlan"`
 	EndLinks            *EndLinks         `json:"endLinks"`
@@ -188,7 +176,7 @@ type CreateLineItemCriteria struct {
 	IndicativeIncidence float64           `json:"indicativeIncidence" valid:"required"`
 	DaysInField         int64             `json:"daysInField" valid:"required"`
 	LengthOfInterview   int64             `json:"lengthOfInterview" valid:"required"`
-	DeliveryType        *DeliveryType     `json:"deliveryType" valid:"optional"`
+	DeliveryType        *string           `json:"deliveryType" valid:"optional"`
 	RequiredCompletes   int64             `json:"requiredCompletes" valid:"required"`
 	QuotaPlan           *QuotaPlan        `json:"quotaPlan,omitempty" valid:"optional,quotaPlan"`
 	SurveyURLParams     []*URLParameter   `json:"surveyURLParams" valid:"optional"`
@@ -208,13 +196,13 @@ type UpdateLineItemCriteria struct {
 	IndicativeIncidence *float64           `json:"indicativeIncidence,omitempty" valid:"optional"`
 	DaysInField         *int64             `json:"daysInField,omitempty" valid:"optional"`
 	LengthOfInterview   *int64             `json:"lengthOfInterview,omitempty" valid:"optional"`
-	DeliveryType        *DeliveryType      `json:"deliveryType" valid:"optional"`
+	DeliveryType        *string            `json:"deliveryType" valid:"optional"`
 	RequiredCompletes   *int64             `json:"requiredCompletes,omitempty" valid:"optional"`
 	QuotaPlan           *QuotaPlan         `json:"quotaPlan,omitempty" valid:"optional,quotaPlan"`
 	SurveyURLParams     []*URLParameter    `json:"surveyURLParams" valid:"optional"`
 	SurveyTestURLParams []*URLParameter    `json:"surveyTestURLParams" valid:"optional"`
 	Sources             *[]*LineItemSource `json:"sources,omitempty" valid:"optional"`
-	SurveyTestingNotes  *string           `json:"surveyTestingNotes,omitempty" valid:"optional"`
+	SurveyTestingNotes  *string            `json:"surveyTestingNotes,omitempty" valid:"optional"`
 }
 
 // BuyProjectLineItem ...

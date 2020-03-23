@@ -48,7 +48,7 @@ type Client struct {
 }
 
 // GetInvoicesSummary ...
-func (c *Client) GetInvoicesSummary(options *QueryOptions) (*APIResponse, error){
+func (c *Client) GetInvoicesSummary(options *QueryOptions) (*APIResponse, error) {
 	path := fmt.Sprintf("/projects/invoices/summary%s", query2String(options))
 	return c.request("GET", c.Options.APIBaseURL, path, nil)
 }
@@ -347,6 +347,14 @@ func (c *Client) GetDetailedLineItemReport(extProjectID, extLineItemID string) (
 func (c *Client) GetUserInfo() (*UserResponse, error) {
 	res := &UserResponse{}
 	path := fmt.Sprintf("/users/info")
+	err := c.requestAndParseResponse("GET", path, nil, res)
+	return res, err
+}
+
+// GetStudyMetadata returns study metadata property info
+func (c *Client) GetStudyMetadata() (*StudyMetadataResponse, error) {
+	res := &StudyMetadataResponse{}
+	path := "/studyMetadata"
 	err := c.requestAndParseResponse("GET", path, nil, res)
 	return res, err
 }
