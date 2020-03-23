@@ -48,9 +48,9 @@ const (
 
 // Category is a Project's category
 type Category struct {
-	SurveyTopic   []string  `json:"surveyTopic" valid:"required"`
-	StudyType     *[]string `json:"studyType" valid:"optional"`
-	StudyFeatures *[]string `json:"studyFeatures" valid:"optional"`
+	SurveyTopic       []string  `json:"surveyTopic" valid:"required"`
+	StudyType         *[]string `json:"studyType" valid:"optional"`
+	StudyRequirements *[]string `json:"StudyRequirements" valid:"optional"`
 }
 
 // Exclusions ... Project's exclusions
