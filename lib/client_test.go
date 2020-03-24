@@ -63,6 +63,7 @@ func TestClientFunctions(t *testing.T) {
 		"/events/1",
 		"/projects/test-report-id/detailedReport",
 		"/projects/test-report-id/lineItems/test-lineitem-id/detailedReport",
+		"/studyMetadata",
 	}
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		urls = append(urls, r.URL.String())
@@ -93,6 +94,7 @@ func TestClientFunctions(t *testing.T) {
 	client.GetEventBy("1")
 	client.GetDetailedProjectReport("test-report-id")
 	client.GetDetailedLineItemReport("test-report-id", "test-lineitem-id")
+	client.GetStudyMetadata()
 	ts.Close()
 
 	if len(urls) != len(tests) {
@@ -218,8 +220,8 @@ func getQueryOptionsInvoicesSummary() *samplify.QueryOptions {
 	projectID := "test-project-id"
 
 	option := samplify.QueryOptions{
-		FilterBy:      filters,
-		ExtProjectId:  &projectID,
+		FilterBy:     filters,
+		ExtProjectId: &projectID,
 	}
 
 	return &option
@@ -250,6 +252,8 @@ func getLineItemCriteria() *samplify.CreateLineItemCriteria {
 	surveyTestURL := "www.mysurvey.com/test/survey"
 	percs := []float64{30.0, 70.0}
 
+	surveyTestingNotesVal := "survey-testing-notes"
+
 	return &samplify.CreateLineItemCriteria{
 		ExtLineItemID:       "lineItem001",
 		Title:               "US College",
@@ -261,6 +265,7 @@ func getLineItemCriteria() *samplify.CreateLineItemCriteria {
 		DaysInField:         20,
 		LengthOfInterview:   10,
 		RequiredCompletes:   200,
+		SurveyTestingNotes:  &surveyTestingNotesVal,
 		QuotaPlan: &samplify.QuotaPlan{
 			Filters: []*samplify.QuotaFilters{
 				&samplify.QuotaFilters{AttributeID: "4091", Options: []string{"3", "4"}},

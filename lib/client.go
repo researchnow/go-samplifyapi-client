@@ -47,6 +47,12 @@ type Client struct {
 	Options     *ClientOptions
 }
 
+// GetInvoicesSummary ...
+func (c *Client) GetInvoicesSummary(options *QueryOptions) (*APIResponse, error) {
+	path := fmt.Sprintf("/projects/invoices/summary%s", query2String(options))
+	return c.request("GET", c.Options.APIBaseURL, path, nil)
+}
+
 // CreateProject ...
 func (c *Client) CreateProject(project *CreateProjectCriteria) (*ProjectResponse, error) {
 	err := Validate(project)
@@ -228,12 +234,6 @@ func (c *Client) GetInvoice(extProjectID string, options *QueryOptions) (*APIRes
 	return c.request("GET", c.Options.APIBaseURL, path, nil)
 }
 
-// GetInvoicesSummary ...
-func (c *Client) GetInvoicesSummary(options *QueryOptions) (*APIResponse, error) {
-	path := fmt.Sprintf("/projects/invoices/summary%s", query2String(options))
-	return c.request("GET", c.Options.APIBaseURL, path, nil)
-}
-
 // UploadReconcile ...  Upload the Request correction file
 func (c *Client) UploadReconcile(extProjectID string, file multipart.File, fileName string, message string, options *QueryOptions) (*APIResponse, error) {
 	path := fmt.Sprintf("/projects/%s/reconcile", extProjectID)
@@ -347,6 +347,14 @@ func (c *Client) GetDetailedLineItemReport(extProjectID, extLineItemID string) (
 func (c *Client) GetUserInfo() (*UserResponse, error) {
 	res := &UserResponse{}
 	path := fmt.Sprintf("/users/info")
+	err := c.requestAndParseResponse("GET", path, nil, res)
+	return res, err
+}
+
+// GetStudyMetadata returns study metadata property info
+func (c *Client) GetStudyMetadata() (*StudyMetadataResponse, error) {
+	res := &StudyMetadataResponse{}
+	path := "/studyMetadata"
 	err := c.requestAndParseResponse("GET", path, nil, res)
 	return res, err
 }
