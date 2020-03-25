@@ -359,6 +359,52 @@ func (c *Client) GetStudyMetadata() (*StudyMetadataResponse, error) {
 	return res, err
 }
 
+// CreateTemplate ...
+func (c *Client) CreateTemplate(template *TemplateCriteria) (*TemplateResponse, error) {
+	err := Validate(template)
+	if err != nil {
+		return nil, err
+	}
+	res := &TemplateResponse{}
+	err = c.requestAndParseResponse("POST", "/templates", template, res)
+	return res, err
+}
+
+// UpdateTemplate ...
+func (c *Client) UpdateTemplate(id int, template *TemplateCriteria) (*TemplateResponse, error) {
+	err := Validate(template)
+	if err != nil {
+		return nil, err
+	}
+	res := &TemplateResponse{}
+	path := fmt.Sprintf("/templates/%d", id)
+	err = c.requestAndParseResponse("POST", path, template, res)
+	return res, err
+}
+
+// GetTemplate ...
+func (c *Client) GetTemplate(id int) (*TemplateResponse, error) {
+	res := &TemplateResponse{}
+	path := fmt.Sprintf("/templates/%d", id)
+	err := c.requestAndParseResponse("GET", path, nil, res)
+	return res, err
+}
+
+// GetTemplateList ...
+func (c *Client) GetTemplateList() (*TemplatesResponse, error) {
+	res := &TemplatesResponse{}
+	err := c.requestAndParseResponse("GET", "/templates/list", nil, res)
+	return res, err
+}
+
+// DeleteTemplate ...
+func (c *Client) DeleteTemplate(id int) (*AppError, error) {
+	res := &AppError{}
+	path := fmt.Sprintf("/templates/%d", id)
+	err := c.requestAndParseResponse("DELETE", path, nil, res)
+	return res, err
+}
+
 // RefreshToken ...
 func (c *Client) RefreshToken() error {
 	if c.Auth.RefreshTokenExpired() {
