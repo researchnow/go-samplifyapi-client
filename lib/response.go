@@ -133,6 +133,13 @@ type DetailedLineItemReportResponse struct {
 	Meta           Meta                   `json:"meta"`
 }
 
+// StudyMetadataResponse ...
+type StudyMetadataResponse struct {
+	StudyMetadata  StudyMetadata  `json:"data"`
+	ResponseStatus ResponseStatus `json:"status"`
+	Meta           Meta           `json:"meta"`
+}
+
 // ResponseStatus is the custom status part in API response. (Optional in some endpoints)
 type ResponseStatus struct {
 	Message string      `json:"message"`
