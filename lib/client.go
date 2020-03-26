@@ -393,7 +393,7 @@ func (c *Client) GetTemplate(id int) (*TemplateResponse, error) {
 // GetTemplateList ...
 func (c *Client) GetTemplateList() (*TemplatesResponse, error) {
 	res := &TemplatesResponse{}
-	err := c.requestAndParseResponse("GET", "/templates/list", nil, res)
+	err := c.requestAndParseResponse("GET", "/templates", nil, res)
 	return res, err
 }
 
