@@ -366,7 +366,7 @@ func (c *Client) CreateTemplate(template *TemplateCriteria) (*TemplateResponse, 
 		return nil, err
 	}
 	res := &TemplateResponse{}
-	err = c.requestAndParseResponse("POST", "/templates", template, res)
+	err = c.requestAndParseResponse("POST", "/templates/quotaPlan", template, res)
 	return res, err
 }
 
@@ -377,30 +377,23 @@ func (c *Client) UpdateTemplate(id int, template *TemplateCriteria) (*TemplateRe
 		return nil, err
 	}
 	res := &TemplateResponse{}
-	path := fmt.Sprintf("/templates/%d", id)
+	path := fmt.Sprintf("/templates/quotaPlan/%d", id)
 	err = c.requestAndParseResponse("POST", path, template, res)
 	return res, err
 }
 
-// GetTemplate ...
-func (c *Client) GetTemplate(id int) (*TemplateResponse, error) {
-	res := &TemplateResponse{}
-	path := fmt.Sprintf("/templates/%d", id)
-	err := c.requestAndParseResponse("GET", path, nil, res)
-	return res, err
-}
-
 // GetTemplateList ...
-func (c *Client) GetTemplateList() (*TemplatesResponse, error) {
+func (c *Client) GetTemplateList(country string, lang string) (*TemplatesResponse, error) {
 	res := &TemplatesResponse{}
-	err := c.requestAndParseResponse("GET", "/templates", nil, res)
+	path := fmt.Sprintf("/templates/quotaPlan/%s/%s", country, lang)
+	err := c.requestAndParseResponse("GET", path, nil, res)
 	return res, err
 }
 
 // DeleteTemplate ...
 func (c *Client) DeleteTemplate(id int) (*AppError, error) {
 	res := &AppError{}
-	path := fmt.Sprintf("/templates/%d", id)
+	path := fmt.Sprintf("/templates/quotaPlan/%d", id)
 	err := c.requestAndParseResponse("DELETE", path, nil, res)
 	return res, err
 }
