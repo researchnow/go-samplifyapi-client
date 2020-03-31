@@ -383,9 +383,10 @@ func (c *Client) UpdateTemplate(id int, template *TemplateCriteria) (*TemplateRe
 }
 
 // GetTemplateList ...
-func (c *Client) GetTemplateList(country string, lang string) (*TemplatesResponse, error) {
+func (c *Client) GetTemplateList(country string, lang string, options *QueryOptions) (*TemplatesResponse, error) {
 	res := &TemplatesResponse{}
-	path := fmt.Sprintf("/templates/quotaPlan/%s/%s", country, lang)
+	query := query2String(options)
+	path := fmt.Sprintf("/templates/quotaPlan/%s/%s%s", country, lang, query)
 	err := c.requestAndParseResponse("GET", path, nil, res)
 	return res, err
 }
