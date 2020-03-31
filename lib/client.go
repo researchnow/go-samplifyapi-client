@@ -382,14 +382,6 @@ func (c *Client) UpdateTemplate(id int, template *TemplateCriteria) (*TemplateRe
 	return res, err
 }
 
-// GetTemplate ...
-func (c *Client) GetTemplate(id int) (*TemplateResponse, error) {
-	res := &TemplateResponse{}
-	path := fmt.Sprintf("/templates/quotaPlan/%d", id)
-	err := c.requestAndParseResponse("GET", path, nil, res)
-	return res, err
-}
-
 // GetTemplateList ...
 func (c *Client) GetTemplateList(country string, lang string) (*TemplatesResponse, error) {
 	res := &TemplatesResponse{}
