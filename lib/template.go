@@ -14,7 +14,7 @@ type TemplateCriteria struct {
 	LanguageISOCode string     `json:"languageISOCode"`
 	Name            string     `json:"name"`
 	QuotaPlan       *QuotaPlan `json:"quotaPlan"`
-	Tags            *string    `json:"tags,omitempty"`
+	Tags            []string   `json:"tags"`
 }
 
 // ErrorType user type.
@@ -54,7 +54,7 @@ type TemplateData struct {
 	LanguageISOCode *string    `json:"languageISOCode,omitempty"`
 	Name            string     `json:"name"`
 	State           string     `json:"state"`
-	Tags            *string    `json:"tags,omitempty"`
+	Tags            []string   `json:"tags"`
 	UpdatedAt       *string    `json:"updatedAt,omitempty"`
 	QuotaPlan       *QuotaPlan `json:"quotaPlan"`
 }
