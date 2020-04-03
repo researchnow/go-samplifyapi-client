@@ -20,7 +20,7 @@ const (
 	ActionLaunched        Action          = "launch"
 	ActionPaused          Action          = "pause"
 	ActionClosed          Action          = "close"
-	QcellStatusTypeLaunch QCellStatusType = "LAUNCHED"
+	QCellStatusTypeLaunch QCellStatusType = "LAUNCHED"
 	QCellStatusTypePause  QCellStatusType = "PAUSED"
 )
 
