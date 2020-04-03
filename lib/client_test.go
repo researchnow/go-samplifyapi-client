@@ -64,6 +64,8 @@ func TestClientFunctions(t *testing.T) {
 		"/projects/test-report-id/detailedReport",
 		"/projects/test-report-id/lineItems/test-lineitem-id/detailedReport",
 		"/studyMetadata",
+		"/projects/test-prj-id/lineItems/test-lineitem-id/quotaCells/1/pause",
+		"/projects/test-prj-id/lineItems/test-lineitem-id/quotaCells/2/launch",
 	}
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		urls = append(urls, r.URL.String())
@@ -95,6 +97,8 @@ func TestClientFunctions(t *testing.T) {
 	client.GetDetailedProjectReport("test-report-id")
 	client.GetDetailedLineItemReport("test-report-id", "test-lineitem-id")
 	client.GetStudyMetadata()
+	client.SetQuotaCellStatus("test-prj-id", "test-lineitem-id", "1", "pause")
+	client.SetQuotaCellStatus("test-prj-id", "test-lineitem-id", "2", "launch")
 	ts.Close()
 
 	if len(urls) != len(tests) {

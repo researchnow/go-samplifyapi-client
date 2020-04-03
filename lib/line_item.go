@@ -12,11 +12,16 @@ const (
 // Action ...
 type Action string
 
+// QCellStatusType ...
+type QCellStatusType string
+
 // Action values for changing LineItem state
 const (
-	ActionLaunched Action = "launch"
-	ActionPaused   Action = "pause"
-	ActionClosed   Action = "close"
+	ActionLaunched        Action          = "launch"
+	ActionPaused          Action          = "pause"
+	ActionClosed          Action          = "close"
+	QcellStatusTypeLaunch QCellStatusType = "LAUNCHED"
+	QCellStatusTypePause  QCellStatusType = "PAUSED"
 )
 
 // FeasibilityStatus ...
@@ -69,15 +74,18 @@ type QuotaFilters struct {
 
 // QuotaGroup ...
 type QuotaGroup struct {
-	Name       *string      `json:"name"`
-	QuotaCells []*QuotaCell `json:"quotaCells"`
+	QuotaGroupID *string      `json:"quotaGroupId,omitempty" valid:"optional"`
+	Name         *string      `json:"name"`
+	QuotaCells   []*QuotaCell `json:"quotaCells"`
 }
 
 // QuotaCell ...
 type QuotaCell struct {
-	QuotaNodes []*QuotaNode `json:"quotaNodes"`
-	Perc       *float64     `json:"perc,omitempty" valid:"optional"`
-	Count      *uint32      `json:"count,omitempty" valid:"optional"`
+	QuotaCellID *string          `json:"quotaCellId,omitempty" valid:"optional"`
+	QuotaNodes  []*QuotaNode     `json:"quotaNodes"`
+	Perc        *float64         `json:"perc,omitempty" valid:"optional"`
+	Count       *uint32          `json:"count,omitempty" valid:"optional"`
+	Status      *QCellStatusType `json:"status,omitempty" valid:"optional"`
 }
 
 // QuotaNode ...
@@ -127,21 +135,15 @@ type LineItem struct {
 
 // IsUpdateable returns false if the line item cannot be updated.
 func (l *LineItem) IsUpdateable() bool {
-	if l.State == StateProvisioned ||
-		l.State == StateRejected {
-		return true
-	}
-	return false
+	return l.State == StateProvisioned ||
+		l.State == StateRejected
 }
 
 // IsBuyable returns true if the lineitem can be bought or not
 func (l *LineItem) IsBuyable() bool {
-	if l.State == StateProvisioned ||
+	return l.State == StateProvisioned ||
 		l.State == StateRejected ||
-		l.State == StateRejectedPaused {
-		return true
-	}
-	return false
+		l.State == StateRejectedPaused
 }
 
 // IsRebalanceable returns false if the line item cannot be updated.
