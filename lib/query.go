@@ -151,6 +151,7 @@ func query2String(options *QueryOptions) string {
 		}
 		if options.ExtProjectId != nil {
 			query = fmt.Sprintf("%s%sextProjectId=%s", query, sep, *options.ExtProjectId)
+			sep = "&amp;"
 		}
 		if options.ExtLineItemId != nil {
 			query = fmt.Sprintf("%s%sextLineItemId=%s", query, sep, *options.ExtLineItemId)
