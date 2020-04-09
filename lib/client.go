@@ -359,6 +359,46 @@ func (c *Client) GetStudyMetadata() (*StudyMetadataResponse, error) {
 	return res, err
 }
 
+// CreateTemplate ...
+func (c *Client) CreateTemplate(template *TemplateCriteria) (*TemplateResponse, error) {
+	err := Validate(template)
+	if err != nil {
+		return nil, err
+	}
+	res := &TemplateResponse{}
+	err = c.requestAndParseResponse("POST", "/templates/quotaPlan", template, res)
+	return res, err
+}
+
+// UpdateTemplate ...
+func (c *Client) UpdateTemplate(id int, template *TemplateCriteria) (*TemplateResponse, error) {
+	err := Validate(template)
+	if err != nil {
+		return nil, err
+	}
+	res := &TemplateResponse{}
+	path := fmt.Sprintf("/templates/quotaPlan/%d", id)
+	err = c.requestAndParseResponse("POST", path, template, res)
+	return res, err
+}
+
+// GetTemplateList ...
+func (c *Client) GetTemplateList(country string, lang string, options *QueryOptions) (*TemplatesResponse, error) {
+	res := &TemplatesResponse{}
+	query := query2String(options)
+	path := fmt.Sprintf("/templates/quotaPlan/%s/%s%s", country, lang, query)
+	err := c.requestAndParseResponse("GET", path, nil, res)
+	return res, err
+}
+
+// DeleteTemplate ...
+func (c *Client) DeleteTemplate(id int) (*AppError, error) {
+	res := &AppError{}
+	path := fmt.Sprintf("/templates/quotaPlan/%d", id)
+	err := c.requestAndParseResponse("DELETE", path, nil, res)
+	return res, err
+}
+
 // RefreshToken ...
 func (c *Client) RefreshToken() error {
 	if c.Auth.RefreshTokenExpired() {
