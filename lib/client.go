@@ -188,6 +188,23 @@ func (c *Client) UpdateLineItemState(extProjectID, extLineItemID string, action 
 	return res, err
 }
 
+// SetQuotaCellStatus ... Changes the state of the line item based on provided action.
+func (c *Client) SetQuotaCellStatus(extProjectID, extLineItemID string, quotaCellID string, action Action) (
+	*QuotaCellResponse, error) {
+	err := ValidateNotEmpty(extProjectID, extLineItemID, quotaCellID)
+	if err != nil {
+		return nil, err
+	}
+	err = ValidateAction(action)
+	if err != nil {
+		return nil, err
+	}
+	res := &QuotaCellResponse{}
+	path := fmt.Sprintf("/projects/%s/lineItems/%s/quotaCells/%s/%s", extProjectID, extLineItemID, quotaCellID, action)
+	err = c.requestAndParseResponse("POST", path, nil, res)
+	return res, err
+}
+
 // GetAllLineItems ...
 func (c *Client) GetAllLineItems(extProjectID string, options *QueryOptions) (*GetAllLineItemsResponse, error) {
 	err := ValidateNotEmpty(extProjectID)
