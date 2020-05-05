@@ -17,14 +17,17 @@ var (
 	DevClientOptions = &ClientOptions{
 		APIBaseURL: "https://api.dev.pe.dynata.com/sample/v1",
 		AuthURL:    "https://api.dev.pe.dynata.com/auth/v1",
+		StatusURL:  "https://api.dev.pe.dynata.com/status",
 	}
 	UATClientOptions = &ClientOptions{
 		APIBaseURL: "https://api.uat.pe.dynata.com/sample/v1",
 		AuthURL:    "https://api.uat.pe.dynata.com/auth/v1",
+		StatusURL:  "https://api.uat.pe.dynata.com/status",
 	}
 	ProdClientOptions = &ClientOptions{
 		APIBaseURL: "https://api.researchnow.com/sample/v1",
 		AuthURL:    "https://api.researchnow.com/auth/v1",
+		StatusURL:  "https://api.researchnow.com/status",
 	}
 )
 
@@ -37,6 +40,7 @@ const defaulttimeout = 20
 type ClientOptions struct {
 	APIBaseURL string `conform:"trim"`
 	AuthURL    string `conform:"trim"`
+	StatusURL  string `conform:"trim"`
 	Timeout    *int
 }
 
