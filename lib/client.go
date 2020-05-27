@@ -18,16 +18,19 @@ var (
 		APIBaseURL: "https://api.dev.pe.dynata.com/sample/v1",
 		AuthURL:    "https://api.dev.pe.dynata.com/auth/v1",
 		StatusURL:  "https://api.dev.pe.dynata.com/status",
+		GatewayURL: "https://api.dev.pe.dynata.com/status/gateway",
 	}
 	UATClientOptions = &ClientOptions{
 		APIBaseURL: "https://api.uat.pe.dynata.com/sample/v1",
 		AuthURL:    "https://api.uat.pe.dynata.com/auth/v1",
 		StatusURL:  "https://api.uat.pe.dynata.com/status",
+		GatewayURL: "https://api.uat.pe.dynata.com/status/gateway",
 	}
 	ProdClientOptions = &ClientOptions{
 		APIBaseURL: "https://api.researchnow.com/sample/v1",
 		AuthURL:    "https://api.researchnow.com/auth/v1",
 		StatusURL:  "https://api.researchnow.com/status",
+		GatewayURL: "https://api.researchnow.com/status/gateway",
 	}
 )
 
@@ -41,6 +44,7 @@ type ClientOptions struct {
 	APIBaseURL string `conform:"trim"`
 	AuthURL    string `conform:"trim"`
 	StatusURL  string `conform:"trim"`
+	GatewayURL string `conform:"trim"`
 	Timeout    *int
 }
 
