@@ -113,6 +113,11 @@ type LineItemHeader struct {
 	LaunchedAt    *CustomTime `json:"launchedAt"`
 }
 
+type Schedule struct {
+	StartTime string `json:"startTime"`
+	EndTime   string `json:"endTime"`
+}
+
 // LineItem ...
 type LineItem struct {
 	LineItemHeader
@@ -123,6 +128,7 @@ type LineItem struct {
 	SurveyTestURL       string            `json:"surveyTestURL"`
 	IndicativeIncidence float64           `json:"indicativeIncidence"`
 	DaysInField         int64             `json:"daysInField"`
+	FieldSchedule       *Schedule         `json:"fieldSchedule"`
 	LengthOfInterview   int64             `json:"lengthOfInterview"`
 	DeliveryType        *string           `json:"deliveryType"`
 	RequiredCompletes   int64             `json:"requiredCompletes"`
@@ -177,6 +183,7 @@ type CreateLineItemCriteria struct {
 	SurveyTestURL       *string           `json:"surveyTestURL,omitempty" valid:"optional"`
 	IndicativeIncidence float64           `json:"indicativeIncidence" valid:"required"`
 	DaysInField         int64             `json:"daysInField" valid:"required"`
+	FieldSchedule       *Schedule         `json:"fieldSchedule" valid:"required"`
 	LengthOfInterview   int64             `json:"lengthOfInterview" valid:"required"`
 	DeliveryType        *string           `json:"deliveryType" valid:"optional"`
 	RequiredCompletes   int64             `json:"requiredCompletes" valid:"required"`
@@ -197,6 +204,7 @@ type UpdateLineItemCriteria struct {
 	SurveyTestURL       *string            `json:"surveyTestURL,omitempty" valid:"optional"`
 	IndicativeIncidence *float64           `json:"indicativeIncidence,omitempty" valid:"optional"`
 	DaysInField         *int64             `json:"daysInField,omitempty" valid:"optional"`
+	FieldSchedule       *Schedule         `json:"fieldSchedule" valid:"optional"`
 	LengthOfInterview   *int64             `json:"lengthOfInterview,omitempty" valid:"optional"`
 	DeliveryType        *string            `json:"deliveryType" valid:"optional"`
 	RequiredCompletes   *int64             `json:"requiredCompletes,omitempty" valid:"optional"`
