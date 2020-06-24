@@ -182,8 +182,8 @@ type CreateLineItemCriteria struct {
 	SurveyURL           *string           `json:"surveyURL,omitempty" valid:"optional,surveyURL"`
 	SurveyTestURL       *string           `json:"surveyTestURL,omitempty" valid:"optional"`
 	IndicativeIncidence float64           `json:"indicativeIncidence" valid:"required"`
-	DaysInField         int64             `json:"daysInField" valid:"required"`
-	FieldSchedule       *Schedule         `json:"fieldSchedule" valid:"required"`
+	DaysInField         int64             `json:"daysInField" valid:"optional"`
+	FieldSchedule       *Schedule         `json:"fieldSchedule" valid:"optional"`
 	LengthOfInterview   int64             `json:"lengthOfInterview" valid:"required"`
 	DeliveryType        *string           `json:"deliveryType" valid:"optional"`
 	RequiredCompletes   int64             `json:"requiredCompletes" valid:"required"`
