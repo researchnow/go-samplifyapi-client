@@ -84,7 +84,7 @@ func TestClientFunctions(t *testing.T) {
 	client.GetProjectBy("test-prj-id")
 	client.GetProjectReport("test-report-id")
 	client.AddLineItem("test", getLineItemCriteria())
-	client.UpdateLineItem("test-prj-id", "test-lineitem-id", &samplify.UpdateLineItemCriteria{})
+	client.UpdateLineItem("test-prj-id", "test-lineitem-id", getUpdateLineItemCriteria())
 	client.UpdateLineItemState("test-prj-id", "test-lineitem-id", samplify.ActionPaused)
 	client.GetAllLineItems("test-prj-id", nil)
 	client.GetLineItemBy("test-prj-id", "test-lineitem-id")
@@ -294,6 +294,11 @@ func getLineItemCriteria() *samplify.CreateLineItemCriteria {
 			},
 		},
 	}
+}
+
+func getUpdateLineItemCriteria() *samplify.UpdateLineItemCriteria {
+	var dif = int64(10)
+	return &samplify.UpdateLineItemCriteria{DaysInField: &dif}
 }
 
 func getBuyProjectCriteria() []*samplify.BuyProjectCriteria {
