@@ -26,7 +26,8 @@ var (
 	ErrAllocationNotProvided      = errors.New("allocation is not specified for the cell")
 	ErrAmbigiuosAllocation        = errors.New("either percentage or count must be present in the quotacell")
 	ErrInconsistentAllocationType = errors.New("allocation type with in the quota group should be consistent")
-	ErrMissingQuotaCells          = errors.New("atleast one quota cell should be provided")
+	ErrMissingQuotaCells          = errors.New("at least one quota cell should be provided")
+	ErrInvalidScheduleEmpty       = errors.New("both days in field and scheduled times cannot be empty")
 
 	// URL validation errors
 	ErrURLBlank      = errors.New("the URL cannot be blank")
@@ -116,6 +117,13 @@ func ValidateLanguageISOCode(val string) error {
 		return nil
 	}
 	return ErrInvalidFieldValue
+}
+
+func ValidateSchedule(daysInField *int64, fieldSchedule *Schedule) error {
+	if (daysInField == nil || *daysInField == 0) && fieldSchedule == nil {
+		return ErrInvalidScheduleEmpty
+	}
+	return nil
 }
 
 // ValidateDeviceType ...
@@ -246,7 +254,7 @@ func IsLanguageCodeOrEmpty(languageCode string) error {
 }
 
 func init() {
-	govalidator.CustomTypeTagMap.Set("languageISOCode", govalidator.CustomTypeValidator(func(i interface{}, o interface{}) bool {
+	govalidator.CustomTypeTagMap.Set("languageISOCode", func(i interface{}, o interface{}) bool {
 		var err error
 		switch v := i.(type) {
 		case string:
@@ -274,8 +282,8 @@ func init() {
 			return false
 		}
 		return true
-	}))
-	govalidator.CustomTypeTagMap.Set("DeviceType", govalidator.CustomTypeValidator(func(i interface{}, o interface{}) bool {
+	})
+	govalidator.CustomTypeTagMap.Set("DeviceType", func(i interface{}, o interface{}) bool {
 		var err error
 		switch v := i.(type) {
 		case DeviceType:
@@ -303,8 +311,8 @@ func init() {
 			return false
 		}
 		return true
-	}))
-	govalidator.CustomTypeTagMap.Set("ExclusionType", govalidator.CustomTypeValidator(func(i interface{}, o interface{}) bool {
+	})
+	govalidator.CustomTypeTagMap.Set("ExclusionType", func(i interface{}, o interface{}) bool {
 		var err error
 		switch v := i.(type) {
 		case ExclusionType:
@@ -323,9 +331,9 @@ func init() {
 			return false
 		}
 		return true
-	}))
+	})
 
-	govalidator.CustomTypeTagMap.Set("quotaPlan", govalidator.CustomTypeValidator(func(i interface{}, o interface{}) bool {
+	govalidator.CustomTypeTagMap.Set("quotaPlan", func(i interface{}, o interface{}) bool {
 		var err error
 		switch v := i.(type) {
 		case QuotaPlan:
@@ -339,8 +347,8 @@ func init() {
 			return false
 		}
 		return true
-	}))
-	govalidator.CustomTypeTagMap.Set("surveyURL", govalidator.CustomTypeValidator(func(i interface{}, o interface{}) bool {
+	})
+	govalidator.CustomTypeTagMap.Set("surveyURL", func(i interface{}, o interface{}) bool {
 		var err error
 		switch v := i.(type) {
 		case string:
@@ -354,5 +362,5 @@ func init() {
 			return false
 		}
 		return true
-	}))
+	})
 }

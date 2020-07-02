@@ -204,7 +204,7 @@ type UpdateLineItemCriteria struct {
 	SurveyTestURL       *string            `json:"surveyTestURL,omitempty" valid:"optional"`
 	IndicativeIncidence *float64           `json:"indicativeIncidence,omitempty" valid:"optional"`
 	DaysInField         *int64             `json:"daysInField,omitempty" valid:"optional"`
-	FieldSchedule       *Schedule         `json:"fieldSchedule" valid:"optional"`
+	FieldSchedule       *Schedule          `json:"fieldSchedule" valid:"optional"`
 	LengthOfInterview   *int64             `json:"lengthOfInterview,omitempty" valid:"optional"`
 	DeliveryType        *string            `json:"deliveryType" valid:"optional"`
 	RequiredCompletes   *int64             `json:"requiredCompletes,omitempty" valid:"optional"`
