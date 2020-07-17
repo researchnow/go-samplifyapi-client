@@ -155,6 +155,10 @@ func (c *Client) AddLineItem(extProjectID string, lineItem *CreateLineItemCriter
 	if err != nil {
 		return nil, err
 	}
+	err = ValidateSchedule(&lineItem.DaysInField, lineItem.FieldSchedule)
+	if err != nil {
+		return nil, err
+	}
 	res := &LineItemResponse{}
 	path := fmt.Sprintf("/projects/%s/lineItems", extProjectID)
 	err = c.requestAndParseResponse("POST", path, lineItem, res)
@@ -170,6 +174,10 @@ func (c *Client) UpdateLineItem(extProjectID, extLineItemID string,
 		return nil, err
 	}
 	err = Validate(lineItem)
+	if err != nil {
+		return nil, err
+	}
+	err = ValidateSchedule(lineItem.DaysInField, lineItem.FieldSchedule)
 	if err != nil {
 		return nil, err
 	}
