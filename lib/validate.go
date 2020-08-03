@@ -14,7 +14,7 @@ import (
 
 // Constants ...
 const (
-	URLMaxLength = 2083
+	URLMaxLength = 2000
 	URLMinLength = 3
 )
 
