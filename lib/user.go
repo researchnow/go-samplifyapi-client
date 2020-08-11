@@ -6,20 +6,42 @@ type UserResponse struct {
 	ResponseStatus ResponseStatus `json:"status"`
 }
 
-// User to hold any information related to the user.
-type User struct {
-	Applications []Application `json:"applications"`
-	CompanyID    int32         `json:"companyId"`
-	CompanyName  string        `json:"companyName"`
-	Email        string        `json:"email"`
-	Username     string        `json:"username"`
-	FullName     string        `json:"fullName"`
+// CompanyUsersResponse holds api response object and returns a list of company users.
+type CompanyUsersResponse struct {
+	List           []*CompanyUser `json:"data"`
+	ResponseStatus ResponseStatus `json:"status"`
+	Meta           Meta           `json:"meta"`
 }
 
-// Application to hold the app level information of the user.
-type Application struct {
-	ID      int32  `json:"appId"`
-	Current bool   `json:"current"`
-	Default bool   `json:"default"`
+// User to hold any information related to the user.
+type User struct {
+	Email     string    `json:"email"`
+	Username  string    `json:"userName"`
+	FullName  string    `json:"fullName"`
+	Companies []Company `json:"companies"`
+}
+
+// Company holds the information of a company associated to the user.
+type Company struct {
+	ID          int32  `json:"id"`
+	Name        string `json:"name"`
+	DefaultRole string `json:"defaultRole"`
+	Default     bool   `json:"default"`
+	Teams       []Team `json:"teams"`
+}
+
+// Team holds the information about a team associated to a company.
+type Team struct {
+	ID      int32  `json:"id"`
 	Name    string `json:"name"`
+	Role    string `json:"role"`
+	Default bool   `json:"default"`
+	Status  string `json:"status"`
+}
+
+// CompanyUser holds the information of users associated to a company.
+type CompanyUser struct {
+	Email    string `json:"email"`
+	Username string `json:"userName"`
+	FullName string `json:"name"`
 }

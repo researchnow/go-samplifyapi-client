@@ -384,6 +384,46 @@ func (c *Client) GetUserInfo() (*UserResponse, error) {
 	return res, err
 }
 
+// CompanyUsers gives information about the user that is currently logged in.
+func (c *Client) CompanyUsers() (*CompanyUsersResponse, error) {
+	res := &CompanyUsersResponse{}
+	path := fmt.Sprintf("/users")
+	err := c.requestAndParseResponse("GET", path, nil, res)
+	return res, err
+}
+
+// TeamsInfo gives information about the user that is currently logged in.
+func (c *Client) TeamsInfo() (*TeamsResponse, error) {
+	res := &TeamsResponse{}
+	path := fmt.Sprintf("/teams")
+	err := c.requestAndParseResponse("GET", path, nil, res)
+	return res, err
+}
+
+// Roles returns the roles specified in the filter.
+func (c *Client) Roles() (*RolesResponse, error) {
+	res := &RolesResponse{}
+	path := fmt.Sprintf("/roles")
+	err := c.requestAndParseResponse("GET", path, nil, res)
+	return res, err
+}
+
+// // ProjectPermissions gives information about the user that is currently logged in.
+// func (c *Client) ProjectPermissions() (*UserResponse, error) {
+// 	res := &UserResponse{}
+// 	path := fmt.Sprintf("/users/info")
+// 	err := c.requestAndParseResponse("GET", path, nil, res)
+// 	return res, err
+// }
+
+// // UpsertProjectPermissions gives information about the user that is currently logged in.
+// func (c *Client) UpsertProjectPermissions() (*UserResponse, error) {
+// 	res := &UserResponse{}
+// 	path := fmt.Sprintf("/users/info")
+// 	err := c.requestAndParseResponse("GET", path, nil, res)
+// 	return res, err
+// }
+
 // GetStudyMetadata returns study metadata property info
 func (c *Client) GetStudyMetadata() (*StudyMetadataResponse, error) {
 	res := &StudyMetadataResponse{}
