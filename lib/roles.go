@@ -21,9 +21,3 @@ type AllowedAction struct {
 	Action      string `json:"action"`
 	Description string `json:"description"`
 }
-
-// GetRolesCriteria has filters to get specific roles. If no filters are provided then the result would give out all the roles.
-type GetRolesCriteria struct {
-	ID   []string `json:"id" valid:"optional"`
-	Name string   `json:"name" valid:"optional"`
-}

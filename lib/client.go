@@ -401,32 +401,36 @@ func (c *Client) TeamsInfo() (*TeamsResponse, error) {
 }
 
 // Roles returns the roles specified in the filter.
-func (c *Client) Roles(roles *GetRolesCriteria) (*RolesResponse, error) {
-	err := Validate(roles)
-	if err != nil {
-		return nil, err
-	}
+func (c *Client) Roles(options *QueryOptions) (*RolesResponse, error) {
 	res := &RolesResponse{}
-	path := fmt.Sprintf("/roles")
-	err = c.requestAndParseResponse("GET", path, roles, res)
+	path := fmt.Sprintf("/roles%s", query2String(options))
+	err := c.requestAndParseResponse("GET", path, nil, res)
 	return res, err
 }
 
 // ProjectPermissions gives information about the user that is currently logged in.
-// func (c *Client) ProjectPermissions() (*UserResponse, error) {
-// 	res := &UserResponse{}
-// 	path := fmt.Sprintf("/users/info")
-// 	err := c.requestAndParseResponse("GET", path, nil, res)
-// 	return res, err
-// }
+func (c *Client) ProjectPermissions(extProjectID string) (*ProjectPermissionsResponse, error) {
+	err := ValidateNotEmpty(extProjectID)
+	if err != nil {
+		return nil, err
+	}
+	res := &ProjectPermissionsResponse{}
+	path := fmt.Sprintf("/projects/%s/permissions", extProjectID)
+	err = c.requestAndParseResponse("GET", path, nil, res)
+	return res, err
+}
 
 // UpsertProjectPermissions gives information about the user that is currently logged in.
-// func (c *Client) UpsertProjectPermissions() (*UserResponse, error) {
-// 	res := &UserResponse{}
-// 	path := fmt.Sprintf("/users/info")
-// 	err := c.requestAndParseResponse("GET", path, nil, res)
-// 	return res, err
-// }
+func (c *Client) UpsertProjectPermissions(permissions *UpsertPermissionsCriteria) (*ProjectPermissionsResponse, error) {
+	err := Validate(permissions)
+	if err != nil {
+		return nil, err
+	}
+	res := &ProjectPermissionsResponse{}
+	path := fmt.Sprintf("/projects/%s/permissions", permissions.ExtProjectID)
+	err = c.requestAndParseResponse("POST", path, permissions, res)
+	return res, err
+}
 
 // GetStudyMetadata returns study metadata property info
 func (c *Client) GetStudyMetadata() (*StudyMetadataResponse, error) {
