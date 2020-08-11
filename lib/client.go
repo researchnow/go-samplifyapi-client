@@ -401,14 +401,18 @@ func (c *Client) TeamsInfo() (*TeamsResponse, error) {
 }
 
 // Roles returns the roles specified in the filter.
-func (c *Client) Roles() (*RolesResponse, error) {
+func (c *Client) Roles(roles *GetRolesCriteria) (*RolesResponse, error) {
+	err := Validate(roles)
+	if err != nil {
+		return nil, err
+	}
 	res := &RolesResponse{}
 	path := fmt.Sprintf("/roles")
-	err := c.requestAndParseResponse("GET", path, nil, res)
+	err = c.requestAndParseResponse("GET", path, roles, res)
 	return res, err
 }
 
-// // ProjectPermissions gives information about the user that is currently logged in.
+// ProjectPermissions gives information about the user that is currently logged in.
 // func (c *Client) ProjectPermissions() (*UserResponse, error) {
 // 	res := &UserResponse{}
 // 	path := fmt.Sprintf("/users/info")
@@ -416,7 +420,7 @@ func (c *Client) Roles() (*RolesResponse, error) {
 // 	return res, err
 // }
 
-// // UpsertProjectPermissions gives information about the user that is currently logged in.
+// UpsertProjectPermissions gives information about the user that is currently logged in.
 // func (c *Client) UpsertProjectPermissions() (*UserResponse, error) {
 // 	res := &UserResponse{}
 // 	path := fmt.Sprintf("/users/info")
