@@ -603,3 +603,8 @@ func NewClientFromEnv(clientID, username, passsword string, env string, timeout 
 	err := client.SetOptions(env, timeout)
 	return client, err
 }
+
+// GetHealthyStatus ... Get the healthy status on API
+func (c *Client) GetHealthyStatus() (*APIResponse, error) {
+	return c.request("GET", c.Options.GatewayURL, "", nil)
+}
