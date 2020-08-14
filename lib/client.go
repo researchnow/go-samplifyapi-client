@@ -387,7 +387,7 @@ func (c *Client) GetUserInfo() (*UserResponse, error) {
 // CompanyUsers gives information about the user that is currently logged in.
 func (c *Client) CompanyUsers() (*CompanyUsersResponse, error) {
 	res := &CompanyUsersResponse{}
-	path := fmt.Sprintf("/users")
+	path := "/users"
 	err := c.requestAndParseResponse("GET", path, nil, res)
 	return res, err
 }
@@ -395,7 +395,7 @@ func (c *Client) CompanyUsers() (*CompanyUsersResponse, error) {
 // TeamsInfo gives information about the user that is currently logged in.
 func (c *Client) TeamsInfo() (*TeamsResponse, error) {
 	res := &TeamsResponse{}
-	path := fmt.Sprintf("/teams")
+	path := "/teams"
 	err := c.requestAndParseResponse("GET", path, nil, res)
 	return res, err
 }
