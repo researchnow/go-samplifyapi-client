@@ -384,6 +384,54 @@ func (c *Client) GetUserInfo() (*UserResponse, error) {
 	return res, err
 }
 
+// CompanyUsers gives information about the user that is currently logged in.
+func (c *Client) CompanyUsers() (*CompanyUsersResponse, error) {
+	res := &CompanyUsersResponse{}
+	path := "/users"
+	err := c.requestAndParseResponse("GET", path, nil, res)
+	return res, err
+}
+
+// TeamsInfo gives information about the user that is currently logged in.
+func (c *Client) TeamsInfo() (*TeamsResponse, error) {
+	res := &TeamsResponse{}
+	path := "/teams"
+	err := c.requestAndParseResponse("GET", path, nil, res)
+	return res, err
+}
+
+// Roles returns the roles specified in the filter.
+func (c *Client) Roles(options *QueryOptions) (*RolesResponse, error) {
+	res := &RolesResponse{}
+	path := fmt.Sprintf("/roles%s", query2String(options))
+	err := c.requestAndParseResponse("GET", path, nil, res)
+	return res, err
+}
+
+// ProjectPermissions gives information about the user that is currently logged in.
+func (c *Client) ProjectPermissions(extProjectID string) (*ProjectPermissionsResponse, error) {
+	err := ValidateNotEmpty(extProjectID)
+	if err != nil {
+		return nil, err
+	}
+	res := &ProjectPermissionsResponse{}
+	path := fmt.Sprintf("/projects/%s/permissions", extProjectID)
+	err = c.requestAndParseResponse("GET", path, nil, res)
+	return res, err
+}
+
+// UpsertProjectPermissions gives information about the user that is currently logged in.
+func (c *Client) UpsertProjectPermissions(permissions *UpsertPermissionsCriteria) (*ProjectPermissionsResponse, error) {
+	err := Validate(permissions)
+	if err != nil {
+		return nil, err
+	}
+	res := &ProjectPermissionsResponse{}
+	path := fmt.Sprintf("/projects/%s/permissions", permissions.ExtProjectID)
+	err = c.requestAndParseResponse("POST", path, permissions, res)
+	return res, err
+}
+
 // GetStudyMetadata returns study metadata property info
 func (c *Client) GetStudyMetadata() (*StudyMetadataResponse, error) {
 	res := &StudyMetadataResponse{}
