@@ -8,7 +8,7 @@ type ProjectPermissionsResponse struct {
 
 // ProjectPermissions ...
 type ProjectPermissions struct {
-	ExtProjectID string      `json:"id"`
+	ExtProjectID string      `json:"extProjectId"`
 	CurrentUser  CurrentUser `json:"currentUser"`
 	Users        []UserData  `json:"users"`
 	Teams        []TeamData  `json:"teams"`
