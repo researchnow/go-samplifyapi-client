@@ -45,3 +45,11 @@ type CompanyUser struct {
 	Username string `json:"userName"`
 	FullName string `json:"name"`
 }
+
+// SwitchCompanyCriteria ...
+type SwitchCompanyCriteria struct {
+	ClientID     string `json:"clientId"`
+	ClientSecret string `json:"clientSecret"`
+	RefreshToken string `json:"refreshToken"`
+	CompanyID    int32  `json:"companyId"`
+}
