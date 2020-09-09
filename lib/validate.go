@@ -278,10 +278,7 @@ func init() {
 		default:
 			return false
 		}
-		if err != nil {
-			return false
-		}
-		return true
+		return err == nil
 	})
 	govalidator.CustomTypeTagMap.Set("DeviceType", func(i interface{}, o interface{}) bool {
 		var err error
@@ -307,10 +304,7 @@ func init() {
 		default:
 			return false
 		}
-		if err != nil {
-			return false
-		}
-		return true
+		return err == nil
 	})
 	govalidator.CustomTypeTagMap.Set("ExclusionType", func(i interface{}, o interface{}) bool {
 		var err error
@@ -327,10 +321,7 @@ func init() {
 		default:
 			return false
 		}
-		if err != nil {
-			return false
-		}
-		return true
+		return err == nil
 	})
 
 	govalidator.CustomTypeTagMap.Set("quotaPlan", func(i interface{}, o interface{}) bool {
@@ -343,10 +334,7 @@ func init() {
 		default:
 			return false
 		}
-		if err != nil {
-			return false
-		}
-		return true
+		return err == nil
 	})
 	govalidator.CustomTypeTagMap.Set("surveyURL", func(i interface{}, o interface{}) bool {
 		var err error
@@ -358,9 +346,6 @@ func init() {
 		default:
 			return false
 		}
-		if err != nil {
-			return false
-		}
-		return true
+		return err == nil
 	})
 }
