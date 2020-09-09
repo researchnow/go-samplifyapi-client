@@ -15,6 +15,7 @@ type CompanyUsersResponse struct {
 
 // User to hold any information related to the user.
 type User struct {
+	ID        int32     `json:"id,omitempty"`
 	Email     string    `json:"email"`
 	Username  string    `json:"userName"`
 	FullName  string    `json:"fullName"`

@@ -379,7 +379,7 @@ func (c *Client) GetDetailedLineItemReport(extProjectID, extLineItemID string) (
 // GetUserInfo gives information about the user that is currently logged in.
 func (c *Client) GetUserInfo() (*UserResponse, error) {
 	res := &UserResponse{}
-	path := fmt.Sprintf("/users/info")
+	path := "/users/info"
 	err := c.requestAndParseResponse("GET", path, nil, res)
 	return res, err
 }

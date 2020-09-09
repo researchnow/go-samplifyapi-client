@@ -3,6 +3,7 @@ package samplify
 import (
 	"fmt"
 	"net/url"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -96,6 +97,18 @@ type StringSlice []string
 
 func (ss StringSlice) String() string {
 	return strings.Join(ss, ",")
+}
+
+// IntSlice ...
+type IntSlice []int
+
+func (is IntSlice) String() string {
+	strvals := []string{}
+	for _, i := range is {
+		it := strconv.Itoa(i)
+		strvals = append(strvals, it)
+	}
+	return strings.Join(strvals, ",")
 }
 
 const maxLimit uint = 1000
