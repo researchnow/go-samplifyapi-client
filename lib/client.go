@@ -204,6 +204,21 @@ func (c *Client) UpdateLineItemState(extProjectID, extLineItemID string, action 
 	return res, err
 }
 
+// LaunchLineItem utility function to launch a line item
+func (c *Client) LaunchLineItem(pid, lid string) (*UpdateLineItemStateResponse, error) {
+	return c.UpdateLineItemState(pid, lid, ActionLaunched)
+}
+
+// PauseLineItem utility function to pause a lineitem
+func (c *Client) PauseLineItem(pid, lid string) (*UpdateLineItemStateResponse, error) {
+	return c.UpdateLineItemState(pid, lid, ActionPaused)
+}
+
+// CloseLineItem utility function to close a lineitem
+func (c *Client) CloseLineItem(pid, lid string) (*UpdateLineItemStateResponse, error) {
+	return c.UpdateLineItemState(pid, lid, ActionClosed)
+}
+
 // SetQuotaCellStatus ... Changes the state of the line item based on provided action.
 func (c *Client) SetQuotaCellStatus(extProjectID, extLineItemID string, quotaCellID string, action Action) (
 	*QuotaCellResponse, error) {
@@ -379,7 +394,7 @@ func (c *Client) GetDetailedLineItemReport(extProjectID, extLineItemID string) (
 // GetUserInfo gives information about the user that is currently logged in.
 func (c *Client) GetUserInfo() (*UserResponse, error) {
 	res := &UserResponse{}
-	path := fmt.Sprintf("/users/info")
+	path := "/users/info"
 	err := c.requestAndParseResponse("GET", path, nil, res)
 	return res, err
 }

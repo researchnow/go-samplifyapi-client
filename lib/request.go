@@ -33,6 +33,9 @@ func sendRequest(host, method, url, accessToken string, body interface{}, timeou
 		Timeout: time.Second * dur,
 	}
 	req, err := http.NewRequest(method, fmt.Sprintf("%s%s", host, url), bytes.NewBuffer(jstr))
+	if err != nil {
+		return nil, err
+	}
 	req.Header.Add("Accept", "application/json")
 	req.Header.Add("Content-type", "application/json")
 	if len(accessToken) > 0 {
@@ -60,7 +63,7 @@ func sendRequest(host, method, url, accessToken string, body interface{}, timeou
 			HTTPCode:   resp.StatusCode,
 			HTTPPhrase: resp.Status,
 			Path:       errPath,
-			Errors:     []*Error{&Error{Path: errPath, Message: resp.Status}},
+			Errors:     []*Error{{Path: errPath, Message: resp.Status}},
 		}
 		ar.Body = json.RawMessage(bodyjson)
 		// log.WithFields(log.Fields{"module": "go-samplifyapi-client", "function": "sendRequest", "respBody": ar.Body}).Info(err)
@@ -91,6 +94,9 @@ func sendFormData(host, method, path, accessToken string, file multipart.File, f
 	bodyWriter.WriteField("message", message)
 	bodyWriter.Close()
 	req, err := http.NewRequest(method, fmt.Sprintf("%s%s", host, path), bodyBuf)
+	if err != nil {
+		return nil, err
+	}
 	if len(accessToken) > 0 {
 		req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", accessToken))
 	}
@@ -117,7 +123,7 @@ func sendFormData(host, method, path, accessToken string, file multipart.File, f
 			HTTPCode:   resp.StatusCode,
 			HTTPPhrase: resp.Status,
 			Path:       errPath,
-			Errors:     []*Error{&Error{Path: errPath, Message: resp.Status}},
+			Errors:     []*Error{{Path: errPath, Message: resp.Status}},
 		}
 		ar.Body = json.RawMessage(bodyjson)
 		// log.WithFields(log.Fields{"module": "go-samplifyapi-client", "function": "sendFormData"}).Error(err)
