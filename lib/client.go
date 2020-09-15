@@ -399,6 +399,14 @@ func (c *Client) GetUserInfo() (*UserResponse, error) {
 	return res, err
 }
 
+// GetCurrentUser gives information about the user that is currently logged in.
+func (c *Client) GetUserDetails() (*UserDetailsResponse, error) {
+	res := &UserDetailsResponse{}
+	path := "/user"
+	err := c.requestAndParseResponse("GET", path, nil, res)
+	return res, err
+}
+
 // CompanyUsers gives information about the user that is currently logged in.
 func (c *Client) CompanyUsers() (*CompanyUsersResponse, error) {
 	res := &CompanyUsersResponse{}
