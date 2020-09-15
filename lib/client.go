@@ -204,6 +204,21 @@ func (c *Client) UpdateLineItemState(extProjectID, extLineItemID string, action 
 	return res, err
 }
 
+// LaunchLineItem utility function to launch a line item
+func (c *Client) LaunchLineItem(pid, lid string) (*UpdateLineItemStateResponse, error) {
+	return c.UpdateLineItemState(pid, lid, ActionLaunched)
+}
+
+// PauseLineItem utility function to pause a lineitem
+func (c *Client) PauseLineItem(pid, lid string) (*UpdateLineItemStateResponse, error) {
+	return c.UpdateLineItemState(pid, lid, ActionPaused)
+}
+
+// CloseLineItem utility function to close a lineitem
+func (c *Client) CloseLineItem(pid, lid string) (*UpdateLineItemStateResponse, error) {
+	return c.UpdateLineItemState(pid, lid, ActionClosed)
+}
+
 // SetQuotaCellStatus ... Changes the state of the line item based on provided action.
 func (c *Client) SetQuotaCellStatus(extProjectID, extLineItemID string, quotaCellID string, action Action) (
 	*QuotaCellResponse, error) {
@@ -379,8 +394,56 @@ func (c *Client) GetDetailedLineItemReport(extProjectID, extLineItemID string) (
 // GetUserInfo gives information about the user that is currently logged in.
 func (c *Client) GetUserInfo() (*UserResponse, error) {
 	res := &UserResponse{}
-	path := fmt.Sprintf("/users/info")
+	path := "/users/info"
 	err := c.requestAndParseResponse("GET", path, nil, res)
+	return res, err
+}
+
+// CompanyUsers gives information about the user that is currently logged in.
+func (c *Client) CompanyUsers() (*CompanyUsersResponse, error) {
+	res := &CompanyUsersResponse{}
+	path := "/users"
+	err := c.requestAndParseResponse("GET", path, nil, res)
+	return res, err
+}
+
+// TeamsInfo gives information about the user that is currently logged in.
+func (c *Client) TeamsInfo() (*TeamsResponse, error) {
+	res := &TeamsResponse{}
+	path := "/teams"
+	err := c.requestAndParseResponse("GET", path, nil, res)
+	return res, err
+}
+
+// Roles returns the roles specified in the filter.
+func (c *Client) Roles(options *QueryOptions) (*RolesResponse, error) {
+	res := &RolesResponse{}
+	path := fmt.Sprintf("/roles%s", query2String(options))
+	err := c.requestAndParseResponse("GET", path, nil, res)
+	return res, err
+}
+
+// ProjectPermissions gives information about the user that is currently logged in.
+func (c *Client) ProjectPermissions(extProjectID string) (*ProjectPermissionsResponse, error) {
+	err := ValidateNotEmpty(extProjectID)
+	if err != nil {
+		return nil, err
+	}
+	res := &ProjectPermissionsResponse{}
+	path := fmt.Sprintf("/projects/%s/permissions", extProjectID)
+	err = c.requestAndParseResponse("GET", path, nil, res)
+	return res, err
+}
+
+// UpsertProjectPermissions gives information about the user that is currently logged in.
+func (c *Client) UpsertProjectPermissions(permissions *UpsertPermissionsCriteria) (*ProjectPermissionsResponse, error) {
+	err := Validate(permissions)
+	if err != nil {
+		return nil, err
+	}
+	res := &ProjectPermissionsResponse{}
+	path := fmt.Sprintf("/projects/%s/permissions", permissions.ExtProjectID)
+	err = c.requestAndParseResponse("POST", path, permissions, res)
 	return res, err
 }
 
