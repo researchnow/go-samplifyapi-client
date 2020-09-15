@@ -25,8 +25,6 @@ github.com/mitchellh/go-homedir v1.1.0/go.mod h1:SfyaCUpYCn1Vlf4IUYiD9fPX4A5wJrk
 github.com/ngdinhtoan/glide-cleanup v0.2.0/go.mod h1:UQzsmiDOb8YV3nOsCxK/c9zPpCZVNoHScRE3EO9pVMM=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
-github.com/researchnow/go-samplifyapi-client v0.0.0-20210804183500-577717f0c08a h1:aXRVEXx4YX28kEkn/CwRY+YKwGJFXdHi8SDIB6loCZ0=
-github.com/researchnow/go-samplifyapi-client v0.0.0-20210804183500-577717f0c08a/go.mod h1:JgqEsme1RW7PGfTDeqJHyErIu9dCxE24cEi3CJ5SBEQ=
 github.com/researchnow/tareekh v0.0.0-20200818130035-8cc1b656a124 h1:eTHTFsCxFWSxRvDADNGPWKQmxdFzhl+TRJ872uvXJgs=
 github.com/researchnow/tareekh v0.0.0-20200818130035-8cc1b656a124/go.mod h1:kld4GKAdBsg7YmAKwEz6cLXpl0kr6vv7v2kM9tdGAmE=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=

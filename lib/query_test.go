@@ -3,7 +3,7 @@ package samplify_test
 import (
 	"testing"
 
-	samplify "github.com/researchnow/go-samplifyapi-client/lib"
+	samplify "github.com/morningconsult/go-samplifyapi-client/lib"
 )
 
 func TestInSliceString(t *testing.T) {

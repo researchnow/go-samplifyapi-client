@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	samplify "github.com/researchnow/go-samplifyapi-client/lib"
+	samplify "github.com/morningconsult/go-samplifyapi-client/lib"
 )
 
 func TestAuth(t *testing.T) {

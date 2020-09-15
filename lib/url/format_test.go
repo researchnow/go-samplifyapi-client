@@ -4,7 +4,7 @@ import (
 	"net/url"
 	"testing"
 
-	formatURL "github.com/researchnow/go-samplifyapi-client/lib/url"
+	formatURL "github.com/morningconsult/go-samplifyapi-client/lib/url"
 )
 
 func TestFormat(t *testing.T) {
