@@ -6,6 +6,30 @@ type UserResponse struct {
 	ResponseStatus ResponseStatus `json:"status"`
 }
 
+// User to hold any information related to the user.
+type User struct {
+	Applications []Application `json:"applications"`
+	CompanyID    int32         `json:"companyId"`
+	CompanyName  string        `json:"companyName"`
+	Email        string        `json:"email"`
+	Username     string        `json:"username"`
+	FullName     string        `json:"fullName"`
+}
+
+// Application to hold the app level information of the user.
+type Application struct {
+	ID      int32  `json:"appId"`
+	Current bool   `json:"current"`
+	Default bool   `json:"default"`
+	Name    string `json:"name"`
+}
+
+// UserResponse to hold the api response object.
+type UserDetailsResponse struct {
+	User           *UserDetails   `json:"data"`
+	ResponseStatus ResponseStatus `json:"status"`
+}
+
 // CompanyUsersResponse holds api response object and returns a list of company users.
 type CompanyUsersResponse struct {
 	List           []*CompanyUser `json:"data"`
@@ -14,7 +38,7 @@ type CompanyUsersResponse struct {
 }
 
 // User to hold any information related to the user.
-type User struct {
+type UserDetails struct {
 	ID        int32     `json:"id,omitempty"`
 	Email     string    `json:"email"`
 	Username  string    `json:"userName"`
