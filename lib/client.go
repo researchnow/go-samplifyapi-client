@@ -495,6 +495,22 @@ func (c *Client) DeleteTemplate(id int) (*AppError, error) {
 	return res, err
 }
 
+// SwitchCompany ...
+func (c *Client) SwitchCompany(criteria *SwitchCompanyCriteria) error {
+	response, err := c.request("POST", c.Options.AuthURL, "/switchCompany", criteria)
+	if err != nil {
+		return err
+	}
+	err = json.Unmarshal(response.Body, &c.Auth)
+	if err != nil {
+		return err
+	}
+	now := time.Now()
+	c.Auth.Acquired = &now
+	return nil
+}
+
+
 // RefreshToken ...
 func (c *Client) RefreshToken() error {
 	if c.Auth.RefreshTokenExpired() {
