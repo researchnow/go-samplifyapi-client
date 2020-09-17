@@ -169,7 +169,6 @@ func (c *Client) CreateProject(project *CreateProjectCriteria) (*ProjectResponse
 
 // UpdateProjectWithContext ...
 func (c *Client) UpdateProjectWithContext(ctx context.Context, project *UpdateProjectCriteria) (*ProjectResponse, error) {
-
 	err := Validate(project)
 	if err != nil {
 		return nil, err
