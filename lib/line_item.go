@@ -131,7 +131,6 @@ type LineItem struct {
 	FieldSchedule       *Schedule         `json:"fieldSchedule"`
 	LengthOfInterview   int64             `json:"lengthOfInterview"`
 	DeliveryType        *string           `json:"deliveryType"`
-	RequiredCompletes   int64             `json:"requiredCompletes"`
 	QuotaPlan           *QuotaPlan        `json:"quotaPlan"`
 	EndLinks            *EndLinks         `json:"endLinks"`
 	SurveyURLParams     []*URLParameter   `json:"surveyURLParams"`
@@ -187,7 +186,6 @@ type CreateLineItemCriteria struct {
 	FieldSchedule       *Schedule         `json:"fieldSchedule" valid:"optional"`
 	LengthOfInterview   int64             `json:"lengthOfInterview" valid:"required"`
 	DeliveryType        *string           `json:"deliveryType" valid:"optional"`
-	RequiredCompletes   int64             `json:"requiredCompletes" valid:"required"`
 	QuotaPlan           *QuotaPlan        `json:"quotaPlan,omitempty" valid:"optional,quotaPlan"`
 	SurveyURLParams     []*URLParameter   `json:"surveyURLParams" valid:"optional"`
 	SurveyTestURLParams []*URLParameter   `json:"surveyTestURLParams" valid:"optional"`
@@ -209,7 +207,6 @@ type UpdateLineItemCriteria struct {
 	FieldSchedule       *Schedule          `json:"fieldSchedule" valid:"optional"`
 	LengthOfInterview   *int64             `json:"lengthOfInterview,omitempty" valid:"optional"`
 	DeliveryType        *string            `json:"deliveryType" valid:"optional"`
-	RequiredCompletes   *int64             `json:"requiredCompletes,omitempty" valid:"optional"`
 	QuotaPlan           *QuotaPlan         `json:"quotaPlan,omitempty" valid:"optional,quotaPlan"`
 	SurveyURLParams     []*URLParameter    `json:"surveyURLParams" valid:"optional"`
 	SurveyTestURLParams []*URLParameter    `json:"surveyTestURLParams" valid:"optional"`
