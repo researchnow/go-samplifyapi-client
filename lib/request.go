@@ -10,8 +10,6 @@ import (
 	"mime/multipart"
 	"net/http"
 	"time"
-
-	"github.com/hashicorp/go-retryablehttp"
 )
 
 // APIResponse ...
@@ -22,8 +20,8 @@ type APIResponse struct {
 
 // SendRequestWithContext exposing sendrequest to enable custom requests
 func SendRequestWithContext(ctx context.Context, host, method, url, accessToken string, body interface{}, timeout int) (*APIResponse, error) {
-	opt := &extraOptions{}
-	return sendRequest(ctx, host, method, url, accessToken, body, timeout, false, opt)
+	c := NewClient("", "", "", &ClientOptions{Timeout: &timeout})
+	return c.sendRequest(ctx, host, method, url, accessToken, body)
 }
 
 // SendRequest exposing sendrequest to enable custom requests
@@ -31,13 +29,12 @@ func SendRequest(host, method, url, accessToken string, body interface{}, timeou
 	return SendRequestWithContext(context.Background(), host, method, url, accessToken, body, timeout)
 }
 
-func sendRequest(ctx context.Context, host, method, url, accessToken string, body interface{}, timeout int, disableRetry bool, opt *extraOptions) (*APIResponse, error) {
+func (c *Client) sendRequest(ctx context.Context, host, method, url, accessToken string, body interface{}) (*APIResponse, error) {
 	// log.WithFields(log.Fields{"module": "go-samplifyapi-client", "function": "sendRequest", "URL": fmt.Sprintf("%s%s", host, url), "Method": method}).Info()
 	jstr, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
-
 	req, err := http.NewRequest(method, fmt.Sprintf("%s%s", host, url), bytes.NewBuffer(jstr))
 	if err != nil {
 		return nil, err
@@ -48,29 +45,11 @@ func sendRequest(ctx context.Context, host, method, url, accessToken string, bod
 	if len(accessToken) > 0 {
 		req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", accessToken))
 	}
-
-	var resp *http.Response
-	if !disableRetry && opt != nil && opt.retryEnabled {
-
-		retryableClient := retryablehttp.NewClient()
-
-		dur := time.Duration(timeout)
-		retryableClient.HTTPClient.Timeout = time.Second * dur
-
-		retryableClient.RetryMax = opt.maxRetries
-		retryableClient.ErrorHandler = retryablehttp.PassthroughErrorHandler
-
-		resp, err = retryableClient.StandardClient().Do(req)
-	} else {
-		dur := time.Duration(timeout)
-		client := &http.Client{
-			Timeout: time.Second * dur,
-		}
-		resp, err = client.Do(req)
-	}
+	resp, err := c.HTTPClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
+	defer resp.Body.Close()
 
 	bodyjson, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -100,12 +79,8 @@ func sendRequest(ctx context.Context, host, method, url, accessToken string, bod
 	return ar, err
 }
 
-func sendFormData(ctx context.Context, host, method, path, accessToken string, file multipart.File, fileName string, message string, timeout int) (*APIResponse, error) {
+func (c *Client) sendFormData(ctx context.Context, host, method, path, accessToken string, file multipart.File, fileName string, message string) (*APIResponse, error) {
 	// log.WithFields(log.Fields{"module": "go-samplifyapi-client", "function": "sendFormData", "URL": fmt.Sprintf("%s%s", host, path), "Method": method}).Info()
-	dur := time.Duration(timeout)
-	client := &http.Client{
-		Timeout: time.Second * dur,
-	}
 	bodyBuf := &bytes.Buffer{}
 	bodyWriter := multipart.NewWriter(bodyBuf)
 	fileWriter, err := bodyWriter.CreateFormFile("file", fileName)
@@ -128,10 +103,11 @@ func sendFormData(ctx context.Context, host, method, path, accessToken string, f
 	}
 	req.Header.Add("Content-Type", bodyWriter.FormDataContentType())
 	req = req.WithContext(ctx)
-	resp, err := client.Do(req)
+	resp, err := c.HTTPClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
+	defer resp.Body.Close()
 
 	bodyjson, err := ioutil.ReadAll(resp.Body)
 	if err != nil {

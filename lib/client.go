@@ -50,41 +50,20 @@ var ErrSessionExpired = errors.New("session expired")
 
 const defaulttimeout = 20
 
+type httpClient interface {
+	Do(*http.Request) (*http.Response, error)
+}
+
 // ClientOptions ...
+// If an HTTPClient is provided then the Timeout will be ignored
 type ClientOptions struct {
-	APIBaseURL   string `conform:"trim"`
-	AuthURL      string `conform:"trim"`
-	InternalURL  string `conform:"trim"`
-	StatusURL    string `conform:"trim"`
-	GatewayURL   string `conform:"trim"`
-	Timeout      *int
-	extraOptions *extraOptions
-}
-
-// extraOptions ...
-type extraOptions struct {
-	retryEnabled bool
-	maxRetries   int
-}
-
-type ExtraOption func(*extraOptions)
-
-func WithRetry(attempts int) ExtraOption {
-	return func(co *extraOptions) {
-		co.retryEnabled = true
-		co.maxRetries = attempts
-	}
-}
-
-func initExtraOptions(opts []ExtraOption) *extraOptions {
-	o := &extraOptions{
-		retryEnabled: false,
-		maxRetries:   0,
-	}
-	for _, opt := range opts {
-		opt(o)
-	}
-	return o
+	APIBaseURL  string `conform:"trim"`
+	AuthURL     string `conform:"trim"`
+	StatusURL   string `conform:"trim"`
+	InternalURL string `conform:"trim"`
+	GatewayURL  string `conform:"trim"`
+	Timeout     *int
+	HTTPClient  httpClient
 }
 
 // Client is used to make API requests to the Samplify API.
@@ -92,6 +71,7 @@ type Client struct {
 	Credentials TokenRequest
 	Auth        TokenResponse
 	Options     *ClientOptions
+	HTTPClient  httpClient
 }
 
 // GetOrderDetailsWithContext ...
@@ -472,7 +452,7 @@ func (c *Client) GetInvoice(extProjectID string, options *QueryOptions) (*APIRes
 // UploadReconcileWithContext ...  Upload the Request correction file
 func (c *Client) UploadReconcileWithContext(ctx context.Context, extProjectID string, file multipart.File, fileName string, message string, options *QueryOptions) (*APIResponse, error) {
 	path := fmt.Sprintf("/projects/%s/reconcile", extProjectID)
-	res, err := sendFormData(ctx, c.Options.APIBaseURL, "POST", path, c.Auth.AccessToken, file, fileName, message, *c.Options.Timeout)
+	res, err := c.sendFormData(ctx, c.Options.APIBaseURL, "POST", path, c.Auth.AccessToken, file, fileName, message)
 	return res, err
 }
 
@@ -838,7 +818,7 @@ func (c *Client) RefreshTokenWithContext(ctx context.Context) error {
 		ClientID:     c.Credentials.ClientID,
 		RefreshToken: c.Auth.RefreshToken,
 	}
-	ar, err := sendRequest(ctx, c.Options.AuthURL, "POST", "/token/refresh", "", req, *c.Options.Timeout, false, c.Options.extraOptions)
+	ar, err := c.sendRequest(ctx, c.Options.AuthURL, "POST", "/token/refresh", "", req)
 	if err != nil {
 		return err
 	}
@@ -869,7 +849,7 @@ func (c *Client) LogoutWithContext(ctx context.Context) error {
 		RefreshToken: c.Auth.RefreshToken,
 		AccessToken:  c.Auth.AccessToken,
 	}
-	_, err := sendRequest(ctx, c.Options.AuthURL, "POST", "/logout", "", req, *c.Options.Timeout, false, c.Options.extraOptions)
+	_, err := c.sendRequest(ctx, c.Options.AuthURL, "POST", "/logout", "", req)
 	return err
 }
 
@@ -912,14 +892,14 @@ func (c *Client) request(ctx context.Context, method, host, url string, body int
 	if err != nil {
 		return nil, err
 	}
-	ar, err := sendRequest(ctx, host, method, url, c.Auth.AccessToken, body, *c.Options.Timeout, false, c.Options.extraOptions)
+	ar, err := c.sendRequest(ctx, host, method, url, c.Auth.AccessToken, body)
 	errResp, ok := err.(*ErrorResponse)
 	if ok && errResp.HTTPCode == http.StatusUnauthorized {
 		err := c.requestAndParseToken(ctx)
 		if err != nil {
 			return nil, err
 		}
-		return sendRequest(ctx, host, method, url, c.Auth.AccessToken, body, *c.Options.Timeout, false, c.Options.extraOptions)
+		return c.sendRequest(ctx, host, method, url, c.Auth.AccessToken, body)
 	}
 	return ar, err
 }
@@ -927,7 +907,7 @@ func (c *Client) request(ctx context.Context, method, host, url string, body int
 func (c *Client) requestAndParseToken(ctx context.Context) error {
 	// log.WithFields(log.Fields{"module": "go-samplifyapi-client", "function": "requestAndParseToken", "ClientID": c.Credentials.ClientID}).Info()
 	t := time.Now()
-	ar, err := sendRequest(ctx, c.Options.AuthURL, "POST", "/token/password", "", c.Credentials, *c.Options.Timeout, true, c.Options.extraOptions)
+	ar, err := c.sendRequest(ctx, c.Options.AuthURL, "POST", "/token/password", "", c.Credentials)
 	if err != nil {
 		return err
 	}
@@ -965,13 +945,21 @@ func NewClient(clientID, username, passsword string, options *ClientOptions) *Cl
 		options.Timeout = &timeout
 	}
 
+	client := options.HTTPClient
+	if client == nil {
+		client = &http.Client{
+			Timeout: time.Second * time.Duration(*options.Timeout),
+		}
+	}
+
 	return &Client{
 		Credentials: TokenRequest{
 			ClientID: clientID,
 			Username: username,
 			Password: passsword,
 		},
-		Options: options,
+		Options:    options,
+		HTTPClient: client,
 	}
 }
 
@@ -992,17 +980,30 @@ func (c *Client) SetOptions(env string, timeout int) error {
 		return ErrIncorrectEnvironemt
 	}
 
+	if timeout != 0 && c.Options.HTTPClient != nil {
+		return errors.New("either the timeout or the HTTP client should be set but not both")
+	}
+
 	if timeout == 0 {
 		timeout = defaulttimeout
 	}
 
 	c.Options.Timeout = &timeout
 
+	client := c.Options.HTTPClient
+	if client == nil {
+		client = &http.Client{
+			Timeout: time.Second * time.Duration(timeout),
+		}
+	}
+
+	c.HTTPClient = client
+
 	return nil
 }
 
 // NewClientFromEnv returns an API client.
-func NewClientFromEnv(clientID, username, passsword string, env string, timeout int, opts ...ExtraOption) (*Client, error) {
+func NewClientFromEnv(clientID, username, passsword string, env string, timeout int) (*Client, error) {
 	client := &Client{
 		Credentials: TokenRequest{
 			ClientID: clientID,
@@ -1011,7 +1012,6 @@ func NewClientFromEnv(clientID, username, passsword string, env string, timeout 
 		},
 	}
 	err := client.SetOptions(env, timeout)
-	client.Options.extraOptions = initExtraOptions(opts)
 	return client, err
 }
 
