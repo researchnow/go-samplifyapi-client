@@ -721,6 +721,26 @@ func (c *Client) DeleteTemplate(id int) (*AppError, error) {
 	return c.DeleteTemplateWithContext(context.Background(), id)
 }
 
+// SwitchCompanyWithContext ...
+func (c *Client) SwitchCompanyWithContext(ctx context.Context, criteria *SwitchCompanyCriteria) error {
+	response, err := c.request(ctx, "POST", c.Options.AuthURL, "/switchCompany", criteria)
+	if err != nil {
+		return err
+	}
+	err = json.Unmarshal(response.Body, &c.Auth)
+	if err != nil {
+		return err
+	}
+	now := time.Now()
+	c.Auth.Acquired = &now
+	return nil
+}
+
+// SwitchCompany ...
+func (c *Client) SwitchCompany(criteria *SwitchCompanyCriteria) error {
+  return c.SwitchCompanyWithContext(context.Background(), criteria)
+}
+
 // RefreshTokenWithContext ...
 func (c *Client) RefreshTokenWithContext(ctx context.Context) error {
 	if c.Auth.RefreshTokenExpired() {
