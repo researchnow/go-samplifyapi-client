@@ -136,6 +136,7 @@ type LineItem struct {
 	EndLinks            *EndLinks         `json:"endLinks"`
 	SurveyURLParams     []*URLParameter   `json:"surveyURLParams"`
 	Sources             []*LineItemSource `json:"sources"`
+	Targets             []*LineItemTarget `json:"targets"`
 	SurveyTestingNotes  string            `json:"surveyTestingNotes"`
 }
 
@@ -191,6 +192,7 @@ type CreateLineItemCriteria struct {
 	SurveyURLParams     []*URLParameter   `json:"surveyURLParams" valid:"optional"`
 	SurveyTestURLParams []*URLParameter   `json:"surveyTestURLParams" valid:"optional"`
 	Sources             []*LineItemSource `json:"sources,omitempty" valid:"optional"`
+	Targets             []*LineItemTarget `json:"targets"`
 	SurveyTestingNotes  *string           `json:"surveyTestingNotes,omitempty" valid:"optional"`
 }
 
@@ -212,6 +214,7 @@ type UpdateLineItemCriteria struct {
 	SurveyURLParams     []*URLParameter    `json:"surveyURLParams" valid:"optional"`
 	SurveyTestURLParams []*URLParameter    `json:"surveyTestURLParams" valid:"optional"`
 	Sources             *[]*LineItemSource `json:"sources,omitempty" valid:"optional"`
+	Targets             []*LineItemTarget  `json:"targets"`
 	SurveyTestingNotes  *string            `json:"surveyTestingNotes,omitempty" valid:"optional"`
 }
 
@@ -352,6 +355,21 @@ type URLParameter struct {
 type LineItemSource struct {
 	ID   int64  `json:"id"`
 	Name string `json:"name"`
+}
+
+// TargetType ...
+type TargetType string
+
+// TargetType values
+const (
+	TargetTypeComplete TargetType = "COMPLETE"
+)
+
+// LineItemTarget target associated with the line item.
+type LineItemTarget struct {
+	Count      *uint32    `json:"count,omitempty"`
+	DailyLimit *uint32    `json:"dailyLimit,omitempty"`
+	Type       TargetType `json:"type,omitempty"`
 }
 
 // DetailedLineItemReport ...
