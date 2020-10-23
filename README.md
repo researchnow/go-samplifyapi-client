@@ -102,23 +102,41 @@ If multiple sort objects are provided, the order in which they are added in the 
 ## Supported API functions
 
 * CreateProject(project *CreateProjectCriteria) (*ProjectResponse, error)
+* CreateProjectWithContext(ctx context.Context, project *CreateProjectCriteria) (*ProjectResponse, error)
 * UpdateProject(project *UpdateProjectCriteria) (*ProjectResponse, error)
+* UpdateProjectWithContext(ctx context.Context, project *UpdateProjectCriteria) (*ProjectResponse, error)
 * BuyProject(extProjectID string, buy []*BuyProjectCriteria) (*BuyProjectResponse, error)
+* BuyProjectWithContext(ctx context.Context, extProjectID string, buy []*BuyProjectCriteria) (*BuyProjectResponse, error)
 * CloseProject(extProjectID string) (*CloseProjectResponse, error)
+* CloseProjectWithContext(ctx context.Context, extProjectID string) (*CloseProjectResponse, error)
 * GetAllProjects(options *QueryOptions) (*GetAllProjectsResponse, error)
+* GetAllProjectsWithContext(ctx context.Context, options *QueryOptions) (*GetAllProjectsResponse, error)
 * GetProjectBy(extProjectID string) (*ProjectResponse, error)
+* GetProjectByWithContext(ctx context.Context, extProjectID string) (*ProjectResponse, error)
 * GetProjectReport(extProjectID string) (*ProjectReportResponse, error)
+* GetProjectReportWithContext(ctx context.Context, extProjectID string) (*ProjectReportResponse, error)
 * AddLineItem(extProjectID string, lineItem *CreateLineItemCriteria) (*LineItemResponse, error)
+* AddLineItemWithContext(ctx context.Context, extProjectID string, lineItem *CreateLineItemCriteria) (*LineItemResponse, error)
 * UpdateLineItem(extProjectID, extLineItemID string, lineItem *UpdateLineItemCriteria) (*LineItemResponse, error)
+* UpdateLineItemWithContext(ctx context.Context, extProjectID, extLineItemID string, lineItem *UpdateLineItemCriteria) (*LineItemResponse, error)
 * UpdateLineItemState(extProjectID, extLineItemID string, action Action) (*ChangeLineItemStateResponse, error)
+* UpdateLineItemStateWithContext(ctx context.Context, extProjectID, extLineItemID string, action Action) (*ChangeLineItemStateResponse, error)
 * GetAllLineItems(extProjectID string, options *QueryOptions) (*GetAllLineItemsResponse, error)
+* GetAllLineItemsWithContext(ctx context.Context, extProjectID string, options *QueryOptions) (*GetAllLineItemsResponse, error)
 * GetLineItemBy(extProjectID, extLineItemID string) (*LineItemResponse, error)
+* GetLineItemByWithContext(ctx context.Context, extProjectID, extLineItemID string) (*LineItemResponse, error)
 * GetFeasibility(extProjectID string, options *QueryOptions) (*GetFeasibilityResponse, error)
+* GetFeasibilityWithContext(ctx context.Context, extProjectID string, options *QueryOptions) (*GetFeasibilityResponse, error)
 * GetCountries(options *QueryOptions) (*GetCountriesResponse, error)
+* GetCountriesWithContext(ctx context.Context, options *QueryOptions) (*GetCountriesResponse, error)
 * GetAttributes(countryCode, languageCode string, options *QueryOptions) (*GetAttributesResponse, error)
+* GetAttributesWithContext(ctx context.Context, countryCode, languageCode string, options *QueryOptions) (*GetAttributesResponse, error)
 * GetSurveyTopics(options *QueryOptions) (*GetSurveyTopicsResponse, error)
+* GetSurveyTopicsWithContext(ctx context.Context, options *QueryOptions) (*GetSurveyTopicsResponse, error)
 * RefreshToken() error
+* RefreshTokenWithContext(ctx context.Context, ) error
 * Logout() error
+* LogoutWithContext(ctx context.Context, ) error
 
 
 ## Versioning
