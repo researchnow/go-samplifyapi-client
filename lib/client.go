@@ -738,7 +738,7 @@ func (c *Client) SwitchCompanyWithContext(ctx context.Context, criteria *SwitchC
 
 // SwitchCompany ...
 func (c *Client) SwitchCompany(criteria *SwitchCompanyCriteria) error {
-  return c.SwitchCompanyWithContext(context.Background(), criteria)
+	return c.SwitchCompanyWithContext(context.Background(), criteria)
 }
 
 // RefreshTokenWithContext ...
@@ -929,6 +929,10 @@ func NewClientFromEnv(clientID, username, passsword string, env string, timeout 
 }
 
 // GetHealthyStatus ... Get the healthy status on API
+func (c *Client) GetHealthyStatus() (*APIResponse, error) {
+	return c.GetHealthyStatusWithContext(context.Background())
+}
+
 func (c *Client) GetHealthyStatusWithContext(ctx context.Context) (*APIResponse, error) {
 	return c.request(ctx, "GET", c.Options.GatewayURL, "", nil)
 }
