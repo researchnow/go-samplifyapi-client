@@ -137,6 +137,8 @@ If multiple sort objects are provided, the order in which they are added in the 
 * RefreshTokenWithContext(ctx context.Context, ) error
 * Logout() error
 * LogoutWithContext(ctx context.Context, ) error
+* GetHealthyStatus() (*APIResponse, error)
+* GetHealthyStatusWithContext() (*APIResponse, error)
 
 
 ## Versioning
