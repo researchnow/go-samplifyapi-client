@@ -22,6 +22,14 @@ const (
 	RespondentFilterTypeCategory RespondentFilterType = "CATEGORY"
 )
 
+// RespondentFilterTypes ...
+var RespondentFilterTypes = []RespondentFilterType{
+	RespondentFilterTypeProject,
+	RespondentFilterTypeTag,
+	RespondentFilterTypeCategory,
+}
+
+
 type RespondentStatus string
 
 const (
@@ -31,7 +39,7 @@ const (
 	RespondentStatusScreenOut RespondentStatus = "SCREENOUT"
 )
 
-// ExclusionStatuses ...
+// RespondentStatuses ...
 var RespondentStatuses = []RespondentStatus{
 	RespondentStatusCompleted,
 	RespondentStatusAttempted,
@@ -71,6 +79,15 @@ const (
 	RespondentScheduleTypeLastMonths RespondentScheduleType = "LAST_MONTHS"
 	RespondentScheduleTypeCustom     RespondentScheduleType = "CUSTOM"
 )
+
+// RespondentScheduleTypes ...
+var RespondentScheduleTypes = []RespondentScheduleType{
+	RespondentScheduleTypeAllDates,
+	RespondentScheduleTypeThisMonth,
+	RespondentScheduleTypeLastDays,
+	RespondentScheduleTypeLastMonths,
+	RespondentScheduleTypeCustom,
+}
 
 // RespondentFilter ... Project's respondent filter
 type RespondentFilter struct {
