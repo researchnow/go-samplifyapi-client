@@ -59,6 +59,7 @@ type Exclusions struct {
 	List []string      `json:"list"`
 }
 
+
 // Author ...
 type Author struct {
 	Name     string `json:"name"`
@@ -99,12 +100,13 @@ const (
 // Project ...
 type Project struct {
 	ProjectHeader
-	NotificationEmails []string     `json:"notificationEmails"`
-	Devices            []DeviceType `json:"devices"`
-	Category           *Category    `json:"category"`
-	LineItems          []*LineItem  `json:"lineItems"`
-	Exclusions         *Exclusions  `json:"exclusions"`
-	Invoice            os.File      `json:"invoice"`
+	NotificationEmails []string            `json:"notificationEmails"`
+	Devices            []DeviceType        `json:"devices"`
+	Category           *Category           `json:"category"`
+	LineItems          []*LineItem         `json:"lineItems"`
+	Exclusions         *Exclusions         `json:"exclusions"`
+	Invoice            os.File             `json:"invoice"`
+	RespondentFilters  *[]RespondentFilter `json:"respondentFilters"`
 }
 
 // CreateProjectCriteria has the fields to create a project
@@ -117,6 +119,7 @@ type CreateProjectCriteria struct {
 	Category           *Category                 `json:"category" valid:"required"`
 	LineItems          []*CreateLineItemCriteria `json:"lineItems" valid:"required"`
 	Exclusions         *Exclusions               `json:"exclusions,omitempty" valid:"optional"`
+	RespondentFilters  *[]RespondentFilter       `json:"respondentFilters,omitempty" valid:"optional"`
 }
 
 // UpdateProjectCriteria has the fields to update a project
@@ -129,6 +132,7 @@ type UpdateProjectCriteria struct {
 	Category           *Category                  `json:"category,omitempty" valid:"optional"`
 	LineItems          *[]*UpdateLineItemCriteria `json:"lineItems,omitempty" valid:"optional"`
 	Exclusions         *Exclusions                `json:"exclusions,omitempty" valid:"optional"`
+	RespondentFilters  *[]RespondentFilter        `json:"respondentFilters,omitempty" valid:"optional"`
 }
 
 // BuyProjectCriteria ...
