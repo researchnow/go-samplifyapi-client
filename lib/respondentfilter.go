@@ -99,7 +99,7 @@ type RespondentFilter struct {
 
 type RespondentFilterSchedule struct {
 	Type      RespondentScheduleType `json:"type"`
-	Value     *int                   `json:"value"`
+	Value     int32                  `json:"value"`
 	StartDate *string                `json:"startDate"`
 	EndDate   *string                `json:"endDate"`
 }
@@ -124,14 +124,14 @@ func (rf *RespondentFilter) ComputeDates() {
 		rf.List = []string{}
 		return
 	case RespondentScheduleTypeLastDays:
-		multiplier := *rf.Schedule.Value
+		multiplier := int(rf.Schedule.Value)
 		startDate := tareekh.DaysAgo(multiplier * int(RelativeTypeDays)).Format(DateLayout)
 		rf.Schedule.StartDate = &startDate
 		rf.Schedule.EndDate = &current
 		rf.List = []string{}
 		return
 	case RespondentScheduleTypeLastMonths:
-		multiplier := *rf.Schedule.Value
+		multiplier := int(rf.Schedule.Value)
 		startDate := tareekh.DaysAgo(multiplier * int(RelativeTypeMonths)).Format(DateLayout)
 		rf.Schedule.StartDate = &startDate
 		rf.Schedule.EndDate = &current
@@ -149,7 +149,12 @@ func (rf *RespondentFilter) ComputeDates() {
 func (rf *RespondentFilter) ValidateDates() error {
 	switch rf.Schedule.Type {
 	case RespondentScheduleTypeLastDays:
-		if rf.Schedule.Value == nil {
+		if rf.Schedule.Value == 0 {
+			return ErrInvalidRelativeValue
+		}
+		return nil
+	case RespondentScheduleTypeLastMonths:
+		if rf.Schedule.Value == 0 {
 			return ErrInvalidRelativeValue
 		}
 		return nil
