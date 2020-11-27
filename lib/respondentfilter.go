@@ -137,10 +137,6 @@ func (rf *RespondentFilter) ComputeDates() {
 		rf.Schedule.EndDate = &current
 		rf.List = []string{}
 		return
-	case RespondentScheduleTypeCustom:
-		rf.Schedule.StartDate = nil
-		rf.Schedule.EndDate = nil
-		return
 	}
 }
 
