@@ -159,10 +159,10 @@ func (rf *RespondentFilter) ValidateDates() error {
 		}
 		return nil
 	case RespondentScheduleTypeCustom:
-		if rf.Schedule.StartDate == nil {
+		if rf.Schedule.StartDate == nil || len(*rf.Schedule.StartDate) == 0{
 			return ErrInvalidRespondentFilterStartDate
 		}
-		if rf.Schedule.EndDate == nil {
+		if rf.Schedule.EndDate == nil || len(*rf.Schedule.EndDate) == 0{
 			return ErrInvalidRespondentFilterEndDate
 		}
 		start, err := time.Parse(DateLayout, *rf.Schedule.StartDate)
