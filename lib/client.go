@@ -11,10 +11,16 @@ import (
 )
 
 // ErrIncorrectEnvironemt ...
-var ErrIncorrectEnvironemt = errors.New("one of dev/uat/prod only are allowed")
+var ErrIncorrectEnvironemt = errors.New("one of local/dev/uat/prod only are allowed")
 
 // ClientOptions to use while creating a new Client
 var (
+	LocalClientOptions = &ClientOptions{
+		APIBaseURL: "http://localhost:8090/sample/v1",
+		AuthURL:    "http://localhost:8090/auth/v1",
+		StatusURL:  "http://localhost:8090/status",
+		GatewayURL: "http://localhost:8090/status/gateway",
+	}
 	DevClientOptions = &ClientOptions{
 		APIBaseURL: "https://api.dev.pe.dynata.com/sample/v1",
 		AuthURL:    "https://api.dev.pe.dynata.com/auth/v1",
@@ -894,6 +900,8 @@ func NewClient(clientID, username, passsword string, options *ClientOptions) *Cl
 // SetOptions ...
 func (c *Client) SetOptions(env string, timeout int) error {
 	switch env {
+	case "local":
+		c.Options = LocalClientOptions
 	case "dev":
 		c.Options = DevClientOptions
 	case "uat":
