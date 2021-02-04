@@ -117,32 +117,27 @@ func (rf *RespondentFilter) ComputeDates() {
 		rf.Schedule.StartDate = nil
 		rf.Schedule.EndDate = nil
 		rf.Schedule.Value = 0
-		rf.List = []string{}
 		return
 	case RespondentScheduleTypeThisMonth:
 		startDate := tareekh.BeginningOfMonth().Format(DateLayout)
 		rf.Schedule.StartDate = &startDate
 		rf.Schedule.EndDate = &current
 		rf.Schedule.Value = 0
-		rf.List = []string{}
 		return
 	case RespondentScheduleTypeLastDays:
 		multiplier := int(rf.Schedule.Value)
 		startDate := tareekh.DaysAgo(multiplier * int(RelativeTypeDays)).Format(DateLayout)
 		rf.Schedule.StartDate = &startDate
 		rf.Schedule.EndDate = &current
-		rf.List = []string{}
 		return
 	case RespondentScheduleTypeLastMonths:
 		multiplier := int(rf.Schedule.Value)
 		startDate := tareekh.DaysAgo(multiplier * int(RelativeTypeMonths)).Format(DateLayout)
 		rf.Schedule.StartDate = &startDate
 		rf.Schedule.EndDate = &current
-		rf.List = []string{}
 		return
 	case RespondentScheduleTypeCustom:
 		rf.Schedule.Value = 0
-		rf.List = []string{}
 	}
 }
 
