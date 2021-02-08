@@ -91,9 +91,9 @@ var RespondentScheduleTypes = []RespondentScheduleType{
 
 // RespondentFilter ... Project's respondent filter
 type RespondentFilter struct {
-	Type         RespondentFilterType     `json:"type" valid:"RespondentFilterType"`
+	Type         RespondentFilterType     `json:"type"`
 	List         []string                 `json:"list"`
-	Dispositions []RespondentStatus       `json:"dispositions" valid:"RespondentStatus"`
+	Dispositions []RespondentStatus       `json:"dispositions"`
 	Schedule     RespondentFilterSchedule `json:"schedule"`
 }
 
