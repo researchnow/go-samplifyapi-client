@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/sirupsen/logrus"
 	"mime/multipart"
 	"net/http"
 	"time"
@@ -91,6 +92,9 @@ func (c *Client) CreateProject(project *CreateProjectCriteria) (*ProjectResponse
 
 // UpdateProjectWithContext ...
 func (c *Client) UpdateProjectWithContext(ctx context.Context, project *UpdateProjectCriteria) (*ProjectResponse, error) {
+
+	logrus.Infof("RESPONDENTFILTERS: %+v",project.RespondentFilters)
+
 	err := Validate(project)
 	if err != nil {
 		return nil, err
