@@ -29,7 +29,6 @@ var RespondentFilterTypes = []RespondentFilterType{
 	RespondentFilterTypeCategory,
 }
 
-
 type RespondentStatus string
 
 const (
@@ -91,17 +90,17 @@ var RespondentScheduleTypes = []RespondentScheduleType{
 
 // RespondentFilter ... Project's respondent filter
 type RespondentFilter struct {
-	Type         RespondentFilterType     `json:"type"`
+	Type         string                   `json:"type"`
 	List         []string                 `json:"list"`
-	Dispositions []RespondentStatus       `json:"dispositions"`
+	Dispositions []string                 `json:"dispositions"`
 	Schedule     RespondentFilterSchedule `json:"schedule"`
 }
 
 type RespondentFilterSchedule struct {
-	Type      RespondentScheduleType `json:"type"`
-	Value     int32                  `json:"value"`
-	StartDate *string                `json:"startDate"`
-	EndDate   *string                `json:"endDate"`
+	Type      string  `json:"type"`
+	Value     int32   `json:"value"`
+	StartDate *string `json:"startDate"`
+	EndDate   *string `json:"endDate"`
 }
 
 // ComputeDates for Respondent Schedule Types
@@ -113,30 +112,30 @@ func (rf *RespondentFilter) ComputeDates() {
 	now := time.Now()
 	current := now.Format(DateLayout)
 	switch rf.Schedule.Type {
-	case RespondentScheduleTypeAllDates:
+	case string(RespondentScheduleTypeAllDates):
 		rf.Schedule.StartDate = nil
 		rf.Schedule.EndDate = nil
 		rf.Schedule.Value = 0
 		return
-	case RespondentScheduleTypeThisMonth:
+	case string(RespondentScheduleTypeThisMonth):
 		startDate := tareekh.BeginningOfMonth().Format(DateLayout)
 		rf.Schedule.StartDate = &startDate
 		rf.Schedule.EndDate = &current
 		rf.Schedule.Value = 0
 		return
-	case RespondentScheduleTypeLastDays:
+	case string(RespondentScheduleTypeLastDays):
 		multiplier := int(rf.Schedule.Value)
 		startDate := tareekh.DaysAgo(multiplier * int(RelativeTypeDays)).Format(DateLayout)
 		rf.Schedule.StartDate = &startDate
 		rf.Schedule.EndDate = &current
 		return
-	case RespondentScheduleTypeLastMonths:
+	case string(RespondentScheduleTypeLastMonths):
 		multiplier := int(rf.Schedule.Value)
 		startDate := tareekh.DaysAgo(multiplier * int(RelativeTypeMonths)).Format(DateLayout)
 		rf.Schedule.StartDate = &startDate
 		rf.Schedule.EndDate = &current
 		return
-	case RespondentScheduleTypeCustom:
+	case string(RespondentScheduleTypeCustom):
 		rf.Schedule.Value = 0
 	}
 }
@@ -145,21 +144,21 @@ func (rf *RespondentFilter) ComputeDates() {
 // (valid start date, valid end date, valid relation between start and end date)
 func (rf *RespondentFilter) ValidateDates() error {
 	switch rf.Schedule.Type {
-	case RespondentScheduleTypeLastDays:
+	case string(RespondentScheduleTypeLastDays):
 		if rf.Schedule.Value == 0 {
 			return ErrInvalidRelativeValue
 		}
 		return nil
-	case RespondentScheduleTypeLastMonths:
+	case string(RespondentScheduleTypeLastMonths):
 		if rf.Schedule.Value == 0 {
 			return ErrInvalidRelativeValue
 		}
 		return nil
-	case RespondentScheduleTypeCustom:
-		if rf.Schedule.StartDate == nil || len(*rf.Schedule.StartDate) == 0{
+	case string(RespondentScheduleTypeCustom):
+		if rf.Schedule.StartDate == nil || len(*rf.Schedule.StartDate) == 0 {
 			return ErrInvalidRespondentFilterStartDate
 		}
-		if rf.Schedule.EndDate == nil || len(*rf.Schedule.EndDate) == 0{
+		if rf.Schedule.EndDate == nil || len(*rf.Schedule.EndDate) == 0 {
 			return ErrInvalidRespondentFilterEndDate
 		}
 		start, err := time.Parse(DateLayout, *rf.Schedule.StartDate)
