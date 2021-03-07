@@ -78,6 +78,16 @@ func (c *Client) GetOrderDetailsWithContext(ctx context.Context, ordNumber strin
 func (c *Client) GetOrderDetails(ordNumber string) (*APIResponse, error) {
 	return c.GetOrderDetailsWithContext(context.Background(), ordNumber)
 }
+// CheckOrderNumberWithContext ...
+func (c *Client) CheckOrderNumberWithContext(ctx context.Context, ordNumber string) (*APIResponse, error) {
+	path := fmt.Sprintf("/orderdetails/check/%s", ordNumber)
+	return c.request(ctx, "GET", c.Options.InternalURL, path, nil)
+}
+
+// CheckOrderNumber ...
+func (c *Client) CheckOrderNumber(ordNumber string) (*APIResponse, error) {
+	return c.CheckOrderNumberWithContext(context.Background(), ordNumber)
+}
 
 // GetInvoicesSummaryWithContext ...
 func (c *Client) GetInvoicesSummaryWithContext(ctx context.Context, options *QueryOptions) (*APIResponse, error) {
