@@ -16,28 +16,32 @@ var ErrIncorrectEnvironemt = errors.New("one of local/dev/uat/prod only are allo
 // ClientOptions to use while creating a new Client
 var (
 	LocalClientOptions = &ClientOptions{
-		APIBaseURL: "http://localhost:8090/sample/v1",
-		AuthURL:    "http://localhost:8090/auth/v1",
-		StatusURL:  "http://localhost:8090/status",
-		GatewayURL: "http://localhost:8090/status/gateway",
+		APIBaseURL:  "http://localhost:8090/sample/v1",
+		AuthURL:     "http://localhost:8090/auth/v1",
+		InternalURL: "http://localhost:8090/internal/v1",
+		StatusURL:   "http://localhost:8090/status",
+		GatewayURL:  "http://localhost:8090/status/gateway",
 	}
 	DevClientOptions = &ClientOptions{
-		APIBaseURL: "https://api.dev.pe.dynata.com/sample/v1",
-		AuthURL:    "https://api.dev.pe.dynata.com/auth/v1",
-		StatusURL:  "https://api.dev.pe.dynata.com/status",
-		GatewayURL: "https://api.dev.pe.dynata.com/status/gateway",
+		APIBaseURL:  "https://api.dev.pe.dynata.com/sample/v1",
+		AuthURL:     "https://api.dev.pe.dynata.com/auth/v1",
+		InternalURL: "https://api.dev.pe.dynata.com/internal/v1",
+		StatusURL:   "https://api.dev.pe.dynata.com/status",
+		GatewayURL:  "https://api.dev.pe.dynata.com/status/gateway",
 	}
 	UATClientOptions = &ClientOptions{
-		APIBaseURL: "https://api.uat.pe.dynata.com/sample/v1",
-		AuthURL:    "https://api.uat.pe.dynata.com/auth/v1",
-		StatusURL:  "https://api.uat.pe.dynata.com/status",
-		GatewayURL: "https://api.uat.pe.dynata.com/status/gateway",
+		APIBaseURL:  "https://api.uat.pe.dynata.com/sample/v1",
+		AuthURL:     "https://api.uat.pe.dynata.com/auth/v1",
+		InternalURL: "https://api.uat.pe.dynata.com/internal/v1",
+		StatusURL:   "https://api.uat.pe.dynata.com/status",
+		GatewayURL:  "https://api.uat.pe.dynata.com/status/gateway",
 	}
 	ProdClientOptions = &ClientOptions{
-		APIBaseURL: "https://api.researchnow.com/sample/v1",
-		AuthURL:    "https://api.researchnow.com/auth/v1",
-		StatusURL:  "https://api.researchnow.com/status",
-		GatewayURL: "https://api.researchnow.com/status/gateway",
+		APIBaseURL:  "https://api.researchnow.com/sample/v1",
+		AuthURL:     "https://api.researchnow.com/auth/v1",
+		InternalURL: "https://api.researchnow.com/internal/v1",
+		StatusURL:   "https://api.researchnow.com/status",
+		GatewayURL:  "https://api.researchnow.com/status/gateway",
 	}
 )
 
@@ -48,11 +52,12 @@ const defaulttimeout = 20
 
 // ClientOptions ...
 type ClientOptions struct {
-	APIBaseURL string `conform:"trim"`
-	AuthURL    string `conform:"trim"`
-	StatusURL  string `conform:"trim"`
-	GatewayURL string `conform:"trim"`
-	Timeout    *int
+	APIBaseURL  string `conform:"trim"`
+	AuthURL     string `conform:"trim"`
+	InternalURL string `conform:"trim"`
+	StatusURL   string `conform:"trim"`
+	GatewayURL  string `conform:"trim"`
+	Timeout     *int
 }
 
 // Client is used to make API requests to the Samplify API.
@@ -60,6 +65,18 @@ type Client struct {
 	Credentials TokenRequest
 	Auth        TokenResponse
 	Options     *ClientOptions
+}
+
+
+// GetOrderDetailsWithContext ...
+func (c *Client) GetOrderDetailsWithContext(ctx context.Context, ordNumber string) (*APIResponse, error) {
+	path := fmt.Sprintf("/orderdetails/%s/", ordNumber)
+	return c.request(ctx, "GET", c.Options.InternalURL, path, nil)
+}
+
+// GetOrderDetails ...
+func (c *Client) GetOrderDetails(ordNumber string) (*APIResponse, error) {
+	return c.GetOrderDetailsWithContext(context.Background(), ordNumber)
 }
 
 // GetInvoicesSummaryWithContext ...
