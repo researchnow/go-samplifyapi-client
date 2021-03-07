@@ -72,7 +72,17 @@ type Client struct {
 func (c *Client) GetOrderDetailsWithContext(ctx context.Context, ordNumber string) (*OrderDetailResponse, error) {
 	path := fmt.Sprintf("/orderdetails/%s/", ordNumber)
 	res := &OrderDetailResponse{}
-	err := c.requestAndParseResponse(ctx, "GET", c.Options.InternalURL, path, res)
+	resp, err := c.request(ctx, "GET", c.Options.InternalURL, path, res)
+	if err != nil {
+		if resp != nil {
+			json.Unmarshal(resp.Body, &res)
+		}
+		return nil, err
+	}
+	err = json.Unmarshal(resp.Body, &res)
+	if err != nil {
+		return nil, err
+	}
 	return res , err
 }
 
@@ -84,7 +94,17 @@ func (c *Client) GetOrderDetails(ordNumber string) (*OrderDetailResponse, error)
 func (c *Client) CheckOrderNumberWithContext(ctx context.Context, ordNumber string) (*OrderDetailResponse, error) {
 	path := fmt.Sprintf("/orderdetails/check/%s", ordNumber)
 	res := &OrderDetailResponse{}
-	err := c.requestAndParseResponse(ctx, "GET", c.Options.InternalURL, path, res)
+	resp, err := c.request(ctx, "GET", c.Options.InternalURL, path, res)
+	if err != nil {
+		if resp != nil {
+			json.Unmarshal(resp.Body, &res)
+		}
+		return nil, err
+	}
+	err = json.Unmarshal(resp.Body, &res)
+	if err != nil {
+		return nil, err
+	}
 	return res , err
 }
 
