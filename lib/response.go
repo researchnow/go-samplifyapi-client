@@ -154,6 +154,13 @@ type OrderDetailResponse struct {
 	Meta           Meta           `json:"meta"`
 }
 
+// CheckOrderNumber ...
+type CheckOrderNumberResponse struct {
+	Availability bool `json:"availability"`
+	Errors       interface{}
+}
+
+
 type OrderDetail struct {
 	// sales order
 	SalesOrder *SalesOrder `form:"salesOrder" json:"salesOrder" yaml:"salesOrder" xml:"salesOrder"`

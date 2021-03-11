@@ -8,7 +8,6 @@ import (
 	"mime/multipart"
 	"net/http"
 	"time"
-	"reflect"
 )
 
 // ErrIncorrectEnvironemt ...
@@ -94,12 +93,15 @@ func (c *Client) GetOrderDetails(ordNumber string) (*OrderDetailResponse, error)
 // CheckOrderNumberWithContext ...
 func (c *Client) CheckOrderNumberWithContext(ctx context.Context, ordNumber string) (bool, error) {
 	path := fmt.Sprintf("/orderdetails/check/%s", ordNumber)
+	res := &CheckOrderNumberResponse{}
 	resp, err := c.request(ctx, "GET", c.Options.InternalURL, path, nil)
 	if err != nil {
 		return false, err
 	}
-	availability := reflect.ValueOf(resp.Body).Bool()
-	return availability , nil
+	if resp != nil {
+		json.Unmarshal(resp.Body, &res)
+	}
+	return res.Availability , nil
 }
 
 // CheckOrderNumber ...
