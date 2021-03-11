@@ -8,6 +8,7 @@ import (
 	"mime/multipart"
 	"net/http"
 	"time"
+	"reflect"
 )
 
 // ErrIncorrectEnvironemt ...
@@ -91,25 +92,18 @@ func (c *Client) GetOrderDetails(ordNumber string) (*OrderDetailResponse, error)
 	return c.GetOrderDetailsWithContext(context.Background(), ordNumber)
 }
 // CheckOrderNumberWithContext ...
-func (c *Client) CheckOrderNumberWithContext(ctx context.Context, ordNumber string) (*OrderDetailResponse, error) {
+func (c *Client) CheckOrderNumberWithContext(ctx context.Context, ordNumber string) (bool, error) {
 	path := fmt.Sprintf("/orderdetails/check/%s", ordNumber)
-	res := &OrderDetailResponse{}
-	resp, err := c.request(ctx, "GET", c.Options.InternalURL, path, res)
+	resp, err := c.request(ctx, "GET", c.Options.InternalURL, path, nil)
 	if err != nil {
-		if resp != nil {
-			json.Unmarshal(resp.Body, &res)
-		}
-		return nil, err
+		return false, err
 	}
-	err = json.Unmarshal(resp.Body, &res)
-	if err != nil {
-		return nil, err
-	}
-	return res , err
+	availability := reflect.ValueOf(resp.Body).Bool()
+	return availability , nil
 }
 
 // CheckOrderNumber ...
-func (c *Client) CheckOrderNumber(ordNumber string) (*OrderDetailResponse, error) {
+func (c *Client) CheckOrderNumber(ordNumber string) (bool, error) {
 	return c.CheckOrderNumberWithContext(context.Background(), ordNumber)
 }
 
