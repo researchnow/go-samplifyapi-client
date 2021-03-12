@@ -94,14 +94,18 @@ func (c *Client) GetOrderDetails(ordNumber string) (*OrderDetailResponse, error)
 func (c *Client) CheckOrderNumberWithContext(ctx context.Context, ordNumber string) (bool, error) {
 	path := fmt.Sprintf("/orderdetails/check/%s", ordNumber)
 	res := &CheckOrderNumberResponse{}
-	resp, err := c.request(ctx, "GET", c.Options.InternalURL, path, nil)
+	resp, err := c.request(ctx, "GET", c.Options.InternalURL, path, res)
+	if err != nil {
+		if resp != nil {
+			json.Unmarshal(resp.Body, &res)
+		}
+		return false, err
+	}
+	err = json.Unmarshal(resp.Body, &res)
 	if err != nil {
 		return false, err
 	}
-	if resp != nil {
-		json.Unmarshal(resp.Body, &res)
-	}
-	return res.Availability , nil
+	return res.CheckOrderNumber.Availability , err
 }
 
 // CheckOrderNumber ...

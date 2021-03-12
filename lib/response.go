@@ -156,10 +156,14 @@ type OrderDetailResponse struct {
 
 // CheckOrderNumber ...
 type CheckOrderNumberResponse struct {
-	Availability bool `json:"availability"`
-	Errors       interface{}
+	CheckOrderNumber CheckOrderNumber `json:"data"`
+	ResponseStatus   ResponseStatus   `json:"status"`
+	Meta             Meta             `json:"meta"`
 }
 
+type CheckOrderNumber struct {
+	Availability bool `json:"availability"`
+}
 
 type OrderDetail struct {
 	// sales order
