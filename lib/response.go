@@ -147,6 +147,113 @@ type QuotaCellResponse struct {
 	Meta           Meta           `json:"meta"`
 }
 
+// OrderDetailResponseData ...
+type OrderDetailResponse struct {
+	OrderDetail    OrderDetail    `json:"data"`
+	ResponseStatus ResponseStatus `json:"status"`
+	Meta           Meta           `json:"meta"`
+}
+
+// CheckOrderNumber ...
+type CheckOrderNumberResponse struct {
+	CheckOrderNumber CheckOrderNumber `json:"data"`
+	ResponseStatus   ResponseStatus   `json:"status"`
+	Meta             Meta             `json:"meta"`
+}
+
+type CheckOrderNumber struct {
+	Availability bool `json:"availability"`
+}
+
+type OrderDetail struct {
+	// sales order
+	SalesOrder *SalesOrder `form:"salesOrder" json:"salesOrder" yaml:"salesOrder" xml:"salesOrder"`
+	// sales details
+	SalesOrderDetails []*SalesOrderDetails `form:"salesOrderDetails" json:"salesOrderDetails" yaml:"salesOrderDetails" xml:"salesOrderDetails"`
+}
+
+// SalesOrder user type.
+type SalesOrder struct {
+	// basicSecurityKey
+	BasicSecurityKey string `form:"basicSecurityKey" json:"basicSecurityKey" yaml:"basicSecurityKey" xml:"basicSecurityKey"`
+	// Unique guid
+	GUID string `form:"guid" json:"guid" yaml:"guid" xml:"guid"`
+	// highSecurityKey
+	HighSecurityKey string `form:"highSecurityKey" json:"highSecurityKey" yaml:"highSecurityKey" xml:"highSecurityKey"`
+	// name
+	Name string `form:"name" json:"name" yaml:"name" xml:"name"`
+	// noCharge
+	NoCharge bool `form:"noCharge" json:"noCharge" yaml:"noCharge" xml:"noCharge"`
+	// orderType
+	OrderType string `form:"orderType" json:"orderType" yaml:"orderType" xml:"orderType"`
+	// ordernumber
+	Ordernumber string `form:"ordernumber" json:"ordernumber" yaml:"ordernumber" xml:"ordernumber"`
+	// relatedOrderCpi
+	RelatedOrderCpi float64 `form:"relatedOrderCpi" json:"relatedOrderCpi" yaml:"relatedOrderCpi" xml:"relatedOrderCpi"`
+	// secureEndLinkLevel
+	SecureEndLinkLevel int `form:"secureEndLinkLevel" json:"secureEndLinkLevel" yaml:"secureEndLinkLevel" xml:"secureEndLinkLevel"`
+	// secureEndLinkLevelName
+	SecureEndLinkLevelName string `form:"secureEndLinkLevelName" json:"secureEndLinkLevelName" yaml:"secureEndLinkLevelName" xml:"secureEndLinkLevelName"`
+}
+
+// SalesOrderDetails ...
+type SalesOrderDetails struct {
+	// costPerInterview
+	CostPerInterview float64 `form:"costPerInterview" json:"costPerInterview" yaml:"costPerInterview" xml:"costPerInterview"`
+	// costPerInterviewWithCurrency
+	CostPerInterviewWithCurrency string `form:"costPerInterviewWithCurrency" json:"costPerInterviewWithCurrency" yaml:"costPerInterviewWithCurrency" xml:"costPerInterviewWithCurrency"`
+	// countryIsoCode
+	CountryIsoCode string `form:"countryIsoCode" json:"countryIsoCode" yaml:"countryIsoCode" xml:"countryIsoCode"`
+	// extendedamount
+	Extendedamount string `form:"extendedamount" json:"extendedamount" yaml:"extendedamount" xml:"extendedamount"`
+	// guid
+	GUID string `form:"guid" json:"guid" yaml:"guid" xml:"guid"`
+	// labelForMobile
+	LabelForMobile string `form:"labelForMobile" json:"labelForMobile" yaml:"labelForMobile" xml:"labelForMobile"`
+	// productIdGuid
+	ProductIDGUID string `form:"productIdGuid" json:"productIdGuid" yaml:"productIdGuid" xml:"productIdGuid"`
+	// productIdName
+	ProductIDName string `form:"productIdName" json:"productIdName" yaml:"productIdName" xml:"productIdName"`
+	// quantity
+	Quantity int `form:"quantity" json:"quantity" yaml:"quantity" xml:"quantity"`
+	// ssiAdditionalPoints
+	SsiAdditionalPoints int `form:"ssiAdditionalPoints" json:"ssiAdditionalPoints" yaml:"ssiAdditionalPoints" xml:"ssiAdditionalPoints"`
+	// ssiCalculatedIr
+	SsiCalculatedIr string `form:"ssiCalculatedIr" json:"ssiCalculatedIr" yaml:"ssiCalculatedIr" xml:"ssiCalculatedIr"`
+	// ssiCalculatedLoi
+	SsiCalculatedLoi string `form:"ssiCalculatedLoi" json:"ssiCalculatedLoi" yaml:"ssiCalculatedLoi" xml:"ssiCalculatedLoi"`
+	// ssiChartsNum
+	SsiChartsNum int `form:"ssiChartsNum" json:"ssiChartsNum" yaml:"ssiChartsNum" xml:"ssiChartsNum"`
+	// ssiFamilyId
+	SsiFamilyID string `form:"ssiFamilyId" json:"ssiFamilyId" yaml:"ssiFamilyId" xml:"ssiFamilyId"`
+	// ssiImagesNum
+	SsiImagesNum int `form:"ssiImagesNum" json:"ssiImagesNum" yaml:"ssiImagesNum" xml:"ssiImagesNum"`
+	// ssiImagesSpecialNum
+	SsiImagesSpecialNum int `form:"ssiImagesSpecialNum" json:"ssiImagesSpecialNum" yaml:"ssiImagesSpecialNum" xml:"ssiImagesSpecialNum"`
+	// ssiInputPrice
+	SsiInputPrice float64 `form:"ssiInputPrice" json:"ssiInputPrice" yaml:"ssiInputPrice" xml:"ssiInputPrice"`
+	// ssiIr
+	SsiIr int `form:"ssiIr" json:"ssiIr" yaml:"ssiIr" xml:"ssiIr"`
+	// ssiLabel
+	SsiLabel string `form:"ssiLabel" json:"ssiLabel" yaml:"ssiLabel" xml:"ssiLabel"`
+	// ssiProductType
+	SsiProductType string `form:"ssiProductType" json:"ssiProductType" yaml:"ssiProductType" xml:"ssiProductType"`
+	// ssiProductTypeId
+	SsiProductTypeID int `form:"ssiProductTypeId" json:"ssiProductTypeId" yaml:"ssiProductTypeId" xml:"ssiProductTypeId"`
+	// ssiSampleCountryCode
+	SsiSampleCountryCode string `form:"ssiSampleCountryCode" json:"ssiSampleCountryCode" yaml:"ssiSampleCountryCode" xml:"ssiSampleCountryCode"`
+	// ssiSampleCountryId
+	SsiSampleCountryID string `form:"ssiSampleCountryId" json:"ssiSampleCountryId" yaml:"ssiSampleCountryId" xml:"ssiSampleCountryId"`
+	// ssiTitle
+	SsiTitle string `form:"ssiTitle" json:"ssiTitle" yaml:"ssiTitle" xml:"ssiTitle"`
+	// ssiVendorUsed
+	SsiVendorUsed string `form:"ssiVendorUsed" json:"ssiVendorUsed" yaml:"ssiVendorUsed" xml:"ssiVendorUsed"`
+	// ssiVideosNum
+	SsiVideosNum int `form:"ssiVideosNum" json:"ssiVideosNum" yaml:"ssiVideosNum" xml:"ssiVideosNum"`
+	// vendorLine
+	VendorLine bool `form:"vendorLine" json:"vendorLine" yaml:"vendorLine" xml:"vendorLine"`
+}
+
 // ResponseStatus is the custom status part in API response. (Optional in some endpoints)
 type ResponseStatus struct {
 	Message string      `json:"message"`
