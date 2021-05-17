@@ -31,19 +31,25 @@ var RespondentFilterTypes = []RespondentFilterType{
 
 type RespondentStatus string
 
+
 const (
 	RespondentStatusCompleted RespondentStatus = "COMPLETED"
-	RespondentStatusAttempted RespondentStatus = "ATTEMPTED"
-	RespondentStatusOverQuota RespondentStatus = "OVERQUOTA"
-	RespondentStatusScreenOut RespondentStatus = "SCREENOUT"
+	RespondentStatusLaunched RespondentStatus = "LAUNCHED"
+	RespondentStatusQuotaFull RespondentStatus = "QUOTA_FULL"
+	RespondentStatusRefused RespondentStatus = "REFUSED"
+	RespondentStatusScreenedOut RespondentStatus = "SCREENED_OUT"
+	RespondentStatusStartedNotCompleted RespondentStatus = "STARTED_NOT_COMPLETED"
+
 )
 
 // RespondentStatuses ...
 var RespondentStatuses = []RespondentStatus{
 	RespondentStatusCompleted,
-	RespondentStatusAttempted,
-	RespondentStatusOverQuota,
-	RespondentStatusScreenOut,
+	RespondentStatusLaunched,
+	RespondentStatusQuotaFull,
+	RespondentStatusRefused,
+	RespondentStatusScreenedOut,
+	RespondentStatusStartedNotCompleted,
 }
 
 var (
