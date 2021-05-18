@@ -34,7 +34,6 @@ type RespondentStatus string
 
 const (
 	RespondentStatusCompleted RespondentStatus = "COMPLETED"
-	RespondentStatusLaunched RespondentStatus = "LAUNCHED"
 	RespondentStatusQuotaFull RespondentStatus = "QUOTA_FULL"
 	RespondentStatusRefused RespondentStatus = "REFUSED"
 	RespondentStatusScreenedOut RespondentStatus = "SCREENED_OUT"
@@ -45,7 +44,6 @@ const (
 // RespondentStatuses ...
 var RespondentStatuses = []RespondentStatus{
 	RespondentStatusCompleted,
-	RespondentStatusLaunched,
 	RespondentStatusQuotaFull,
 	RespondentStatusRefused,
 	RespondentStatusScreenedOut,
