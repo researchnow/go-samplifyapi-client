@@ -34,20 +34,18 @@ type RespondentStatus string
 
 const (
 	RespondentStatusCompleted RespondentStatus = "COMPLETED"
-	RespondentStatusQuotaFull RespondentStatus = "QUOTA_FULL"
-	RespondentStatusRefused RespondentStatus = "REFUSED"
-	RespondentStatusScreenedOut RespondentStatus = "SCREENED_OUT"
-	RespondentStatusStartedNotCompleted RespondentStatus = "STARTED_NOT_COMPLETED"
+	RespondentStatusOverQuota RespondentStatus = "OVERQUOTA"
+	RespondentStatusScreenOut RespondentStatus = "SCREENOUT"
+	RespondentStatusDropOff RespondentStatus = "DROPOFF"
 
 )
 
 // RespondentStatuses ...
 var RespondentStatuses = []RespondentStatus{
 	RespondentStatusCompleted,
-	RespondentStatusQuotaFull,
-	RespondentStatusRefused,
-	RespondentStatusScreenedOut,
-	RespondentStatusStartedNotCompleted,
+	RespondentStatusOverQuota,
+	RespondentStatusScreenOut,
+	RespondentStatusDropOff,
 }
 
 var (
