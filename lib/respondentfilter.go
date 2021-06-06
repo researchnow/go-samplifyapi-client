@@ -36,7 +36,7 @@ const (
 	RespondentStatusCompleted RespondentStatus = "COMPLETED"
 	RespondentStatusOverQuota RespondentStatus = "OVERQUOTA"
 	RespondentStatusScreenOut RespondentStatus = "SCREENOUT"
-	RespondentStatusDropOff RespondentStatus = "DROPOFF"
+	RespondentStatusInComplete RespondentStatus = "INCOMPLETE"
 
 )
 
@@ -45,7 +45,7 @@ var RespondentStatuses = []RespondentStatus{
 	RespondentStatusCompleted,
 	RespondentStatusOverQuota,
 	RespondentStatusScreenOut,
-	RespondentStatusDropOff,
+	RespondentStatusInComplete,
 }
 
 var (
