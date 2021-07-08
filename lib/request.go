@@ -10,6 +10,8 @@ import (
 	"mime/multipart"
 	"net/http"
 	"time"
+
+	"github.com/hashicorp/go-retryablehttp"
 )
 
 // APIResponse ...
@@ -19,25 +21,22 @@ type APIResponse struct {
 }
 
 // SendRequestWithContext exposing sendrequest to enable custom requests
-func SendRequestWithContext(ctx context.Context, host, method, url, accessToken string, body interface{}, timeout int) (*APIResponse, error) {
-	return sendRequest(ctx, host, method, url, accessToken, body, timeout)
+func SendRequestWithContext(ctx context.Context, host, method, url, accessToken string, body interface{}, timeout, retryMax int) (*APIResponse, error) {
+	return sendRequest(ctx, host, method, url, accessToken, body, timeout, retryMax)
 }
 
 // SendRequest exposing sendrequest to enable custom requests
-func SendRequest(host, method, url, accessToken string, body interface{}, timeout int) (*APIResponse, error) {
-	return SendRequestWithContext(context.Background(), host, method, url, accessToken, body, timeout)
+func SendRequest(host, method, url, accessToken string, body interface{}, timeout, retryMax int) (*APIResponse, error) {
+	return SendRequestWithContext(context.Background(), host, method, url, accessToken, body, timeout, retryMax)
 }
 
-func sendRequest(ctx context.Context, host, method, url, accessToken string, body interface{}, timeout int) (*APIResponse, error) {
+func sendRequest(ctx context.Context, host, method, url, accessToken string, body interface{}, timeout, retryMax int) (*APIResponse, error) {
 	// log.WithFields(log.Fields{"module": "go-samplifyapi-client", "function": "sendRequest", "URL": fmt.Sprintf("%s%s", host, url), "Method": method}).Info()
 	jstr, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
-	dur := time.Duration(timeout)
-	client := &http.Client{
-		Timeout: time.Second * dur,
-	}
+
 	req, err := http.NewRequest(method, fmt.Sprintf("%s%s", host, url), bytes.NewBuffer(jstr))
 	if err != nil {
 		return nil, err
@@ -48,7 +47,24 @@ func sendRequest(ctx context.Context, host, method, url, accessToken string, bod
 	if len(accessToken) > 0 {
 		req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", accessToken))
 	}
-	resp, err := client.Do(req)
+
+	retryReq, err := retryablehttp.FromRequest(req)
+	if err != nil {
+		panic(err)
+	}
+	retryableClient := retryablehttp.NewClient()
+
+	dur := time.Duration(timeout)
+	retryableClient.HTTPClient = &http.Client{
+		Timeout: time.Second * dur,
+	}
+
+	retryableClient.RetryMax = retryMax
+	retryableClient.ErrorHandler = retryablehttp.PassthroughErrorHandler
+
+	resp, err := retryableClient.Do(retryReq)
+
+	// resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
 	}
