@@ -53,13 +53,14 @@ const defaultretrymax = 10
 
 // ClientOptions ...
 type ClientOptions struct {
-	APIBaseURL  string `conform:"trim"`
-	AuthURL     string `conform:"trim"`
-	InternalURL string `conform:"trim"`
-	StatusURL   string `conform:"trim"`
-	GatewayURL  string `conform:"trim"`
-	Timeout     *int
-	RetryMax    *int
+	APIBaseURL   string `conform:"trim"`
+	AuthURL      string `conform:"trim"`
+	InternalURL  string `conform:"trim"`
+	StatusURL    string `conform:"trim"`
+	GatewayURL   string `conform:"trim"`
+	Timeout      *int
+	RetryEnabled bool
+	MaxRetries   int
 }
 
 // Client is used to make API requests to the Samplify API.
@@ -814,7 +815,7 @@ func (c *Client) RefreshTokenWithContext(ctx context.Context) error {
 		ClientID:     c.Credentials.ClientID,
 		RefreshToken: c.Auth.RefreshToken,
 	}
-	ar, err := sendRequest(ctx, c.Options.AuthURL, "POST", "/token/refresh", "", req, *c.Options.Timeout, *c.Options.RetryMax)
+	ar, err := sendRequest(ctx, c.Options.AuthURL, "POST", "/token/refresh", "", req, c.Options, false)
 	if err != nil {
 		return err
 	}
@@ -845,7 +846,7 @@ func (c *Client) LogoutWithContext(ctx context.Context) error {
 		RefreshToken: c.Auth.RefreshToken,
 		AccessToken:  c.Auth.AccessToken,
 	}
-	_, err := sendRequest(ctx, c.Options.AuthURL, "POST", "/logout", "", req, *c.Options.Timeout, *c.Options.RetryMax)
+	_, err := sendRequest(ctx, c.Options.AuthURL, "POST", "/logout", "", req, c.Options, false)
 	return err
 }
 
@@ -888,14 +889,14 @@ func (c *Client) request(ctx context.Context, method, host, url string, body int
 	if err != nil {
 		return nil, err
 	}
-	ar, err := sendRequest(ctx, host, method, url, c.Auth.AccessToken, body, *c.Options.Timeout, *c.Options.RetryMax)
+	ar, err := sendRequest(ctx, host, method, url, c.Auth.AccessToken, body, c.Options, false)
 	errResp, ok := err.(*ErrorResponse)
 	if ok && errResp.HTTPCode == http.StatusUnauthorized {
 		err := c.requestAndParseToken(ctx)
 		if err != nil {
 			return nil, err
 		}
-		return sendRequest(ctx, host, method, url, c.Auth.AccessToken, body, *c.Options.Timeout, *c.Options.RetryMax)
+		return sendRequest(ctx, host, method, url, c.Auth.AccessToken, body, c.Options, false)
 	}
 	return ar, err
 }
@@ -903,7 +904,7 @@ func (c *Client) request(ctx context.Context, method, host, url string, body int
 func (c *Client) requestAndParseToken(ctx context.Context) error {
 	// log.WithFields(log.Fields{"module": "go-samplifyapi-client", "function": "requestAndParseToken", "ClientID": c.Credentials.ClientID}).Info()
 	t := time.Now()
-	ar, err := sendRequest(ctx, c.Options.AuthURL, "POST", "/token/password", "", c.Credentials, *c.Options.Timeout, *c.Options.RetryMax)
+	ar, err := sendRequest(ctx, c.Options.AuthURL, "POST", "/token/password", "", c.Credentials, c.Options, true)
 	if err != nil {
 		return err
 	}
@@ -941,9 +942,9 @@ func NewClient(clientID, username, passsword string, options *ClientOptions) *Cl
 		options.Timeout = &timeout
 	}
 
-	if options != nil && options.RetryMax == nil {
+	if options != nil && options.MaxRetries == 0 {
 		retryMax := defaultretrymax
-		options.RetryMax = &retryMax
+		options.MaxRetries = retryMax
 	}
 
 	return &Client{
@@ -957,7 +958,7 @@ func NewClient(clientID, username, passsword string, options *ClientOptions) *Cl
 }
 
 // SetOptions ...
-func (c *Client) SetOptions(env string, timeout, retryMax int) error {
+func (c *Client) SetOptions(env string, timeout, maxRetries int) error {
 	switch env {
 	case "local":
 		c.Options = LocalClientOptions
@@ -979,11 +980,11 @@ func (c *Client) SetOptions(env string, timeout, retryMax int) error {
 
 	c.Options.Timeout = &timeout
 
-	if retryMax == 0 {
-		retryMax = defaultretrymax
+	if maxRetries == 0 {
+		maxRetries = defaultretrymax
 	}
 
-	c.Options.RetryMax = &retryMax
+	c.Options.MaxRetries = maxRetries
 
 	return nil
 }
