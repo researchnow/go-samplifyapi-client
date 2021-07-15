@@ -22,7 +22,7 @@ type APIResponse struct {
 
 // SendRequestWithContext exposing sendrequest to enable custom requests
 func SendRequestWithContext(ctx context.Context, host, method, url, accessToken string, body interface{}, timeout int) (*APIResponse, error) {
-	opt := &retryOptions{}
+	opt := &extraOptions{}
 	return sendRequest(ctx, host, method, url, accessToken, body, timeout, false, opt)
 }
 
@@ -31,7 +31,7 @@ func SendRequest(host, method, url, accessToken string, body interface{}, timeou
 	return SendRequestWithContext(context.Background(), host, method, url, accessToken, body, timeout)
 }
 
-func sendRequest(ctx context.Context, host, method, url, accessToken string, body interface{}, timeout int, disableRetry bool, opt *retryOptions) (*APIResponse, error) {
+func sendRequest(ctx context.Context, host, method, url, accessToken string, body interface{}, timeout int, disableRetry bool, opt *extraOptions) (*APIResponse, error) {
 	// log.WithFields(log.Fields{"module": "go-samplifyapi-client", "function": "sendRequest", "URL": fmt.Sprintf("%s%s", host, url), "Method": method}).Info()
 	jstr, err := json.Marshal(body)
 	if err != nil {
@@ -52,15 +52,10 @@ func sendRequest(ctx context.Context, host, method, url, accessToken string, bod
 	var resp *http.Response
 	if !disableRetry && opt.retryEnabled {
 
-		// configure backoff time
-		// in what situation it will retry
-
 		retryableClient := retryablehttp.NewClient()
 
 		dur := time.Duration(timeout)
-		retryableClient.HTTPClient = &http.Client{
-			Timeout: time.Second * dur,
-		}
+		retryableClient.HTTPClient.Timeout = time.Second * dur
 
 		retryableClient.RetryMax = opt.maxRetries
 		retryableClient.ErrorHandler = retryablehttp.PassthroughErrorHandler
