@@ -50,7 +50,7 @@ func sendRequest(ctx context.Context, host, method, url, accessToken string, bod
 	}
 
 	var resp *http.Response
-	if !disableRetry && opt.retryEnabled {
+	if !disableRetry && opt != nil && opt.retryEnabled {
 
 		retryableClient := retryablehttp.NewClient()
 
