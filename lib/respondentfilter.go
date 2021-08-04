@@ -31,19 +31,21 @@ var RespondentFilterTypes = []RespondentFilterType{
 
 type RespondentStatus string
 
+
 const (
 	RespondentStatusCompleted RespondentStatus = "COMPLETED"
-	RespondentStatusAttempted RespondentStatus = "ATTEMPTED"
 	RespondentStatusOverQuota RespondentStatus = "OVERQUOTA"
 	RespondentStatusScreenOut RespondentStatus = "SCREENOUT"
+	RespondentStatusInComplete RespondentStatus = "INCOMPLETE"
+
 )
 
 // RespondentStatuses ...
 var RespondentStatuses = []RespondentStatus{
 	RespondentStatusCompleted,
-	RespondentStatusAttempted,
 	RespondentStatusOverQuota,
 	RespondentStatusScreenOut,
+	RespondentStatusInComplete,
 }
 
 var (
