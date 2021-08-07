@@ -268,7 +268,6 @@ func getLineItemCriteria() *samplify.CreateLineItemCriteria {
 		IndicativeIncidence: 20.0,
 		DaysInField:         20,
 		LengthOfInterview:   10,
-		RequiredCompletes:   200,
 		SurveyTestingNotes:  &surveyTestingNotesVal,
 		QuotaPlan: &samplify.QuotaPlan{
 			Filters: []*samplify.QuotaFilters{
