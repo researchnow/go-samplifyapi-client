@@ -1,6 +1,7 @@
 package samplify
 
 import (
+	"encoding/json"
 	"strings"
 	"time"
 )
@@ -28,4 +29,9 @@ var nilTime = (time.Time{}).UnixNano()
 // IsSet ...
 func (ct *CustomTime) IsSet() bool {
 	return ct.UnixNano() != nilTime
+}
+
+func (ct *CustomTime) MarshalJSON() (text []byte, err error) {
+	timeString := ct.Time.Format(ctLayout)
+	return json.Marshal(timeString)
 }
