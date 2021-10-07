@@ -293,6 +293,7 @@ func getLineItemCriteria() *samplify.CreateLineItemCriteria {
 				},
 			},
 		},
+		CostPerInterview: 5.0,
 	}
 }
 

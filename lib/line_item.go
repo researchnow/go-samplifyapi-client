@@ -138,7 +138,7 @@ type LineItem struct {
 	Sources             []*LineItemSource `json:"sources"`
 	Targets             []*LineItemTarget `json:"targets"`
 	SurveyTestingNotes  string            `json:"surveyTestingNotes"`
-	CPI                 float32           `json:"CPI"`
+	CostPerInterview    float64           `json:"costPerInterview"`
 }
 
 // IsUpdateable returns false if the line item cannot be updated.
@@ -195,7 +195,7 @@ type CreateLineItemCriteria struct {
 	Sources             []*LineItemSource `json:"sources,omitempty" valid:"optional"`
 	Targets             []*LineItemTarget `json:"targets"`
 	SurveyTestingNotes  *string           `json:"surveyTestingNotes,omitempty" valid:"optional"`
-	CPI                 float32           `json:"CPI,omitempty" valid:"optional"`
+	CostPerInterview    float64           `json:"costPerInterview,omitempty" valid:"optional"`
 }
 
 // UpdateLineItemCriteria has the fields to update a LineItem
@@ -218,7 +218,6 @@ type UpdateLineItemCriteria struct {
 	Sources             *[]*LineItemSource `json:"sources,omitempty" valid:"optional"`
 	Targets             []*LineItemTarget  `json:"targets"`
 	SurveyTestingNotes  *string            `json:"surveyTestingNotes,omitempty" valid:"optional"`
-	CPI                 float32            `json:"CPI,omitempty" valid:"optional"`
 }
 
 // BuyProjectLineItem ...
