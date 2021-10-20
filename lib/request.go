@@ -10,6 +10,8 @@ import (
 	"mime/multipart"
 	"net/http"
 	"time"
+
+	"github.com/hashicorp/go-retryablehttp"
 )
 
 // APIResponse ...
@@ -20,7 +22,8 @@ type APIResponse struct {
 
 // SendRequestWithContext exposing sendrequest to enable custom requests
 func SendRequestWithContext(ctx context.Context, host, method, url, accessToken string, body interface{}, timeout int) (*APIResponse, error) {
-	return sendRequest(ctx, host, method, url, accessToken, body, timeout)
+	opt := &extraOptions{}
+	return sendRequest(ctx, host, method, url, accessToken, body, timeout, false, opt)
 }
 
 // SendRequest exposing sendrequest to enable custom requests
@@ -28,16 +31,13 @@ func SendRequest(host, method, url, accessToken string, body interface{}, timeou
 	return SendRequestWithContext(context.Background(), host, method, url, accessToken, body, timeout)
 }
 
-func sendRequest(ctx context.Context, host, method, url, accessToken string, body interface{}, timeout int) (*APIResponse, error) {
+func sendRequest(ctx context.Context, host, method, url, accessToken string, body interface{}, timeout int, disableRetry bool, opt *extraOptions) (*APIResponse, error) {
 	// log.WithFields(log.Fields{"module": "go-samplifyapi-client", "function": "sendRequest", "URL": fmt.Sprintf("%s%s", host, url), "Method": method}).Info()
 	jstr, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
-	dur := time.Duration(timeout)
-	client := &http.Client{
-		Timeout: time.Second * dur,
-	}
+
 	req, err := http.NewRequest(method, fmt.Sprintf("%s%s", host, url), bytes.NewBuffer(jstr))
 	if err != nil {
 		return nil, err
@@ -48,7 +48,26 @@ func sendRequest(ctx context.Context, host, method, url, accessToken string, bod
 	if len(accessToken) > 0 {
 		req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", accessToken))
 	}
-	resp, err := client.Do(req)
+
+	var resp *http.Response
+	if !disableRetry && opt != nil && opt.retryEnabled {
+
+		retryableClient := retryablehttp.NewClient()
+
+		dur := time.Duration(timeout)
+		retryableClient.HTTPClient.Timeout = time.Second * dur
+
+		retryableClient.RetryMax = opt.maxRetries
+		retryableClient.ErrorHandler = retryablehttp.PassthroughErrorHandler
+
+		resp, err = retryableClient.StandardClient().Do(req)
+	} else {
+		dur := time.Duration(timeout)
+		client := &http.Client{
+			Timeout: time.Second * dur,
+		}
+		resp, err = client.Do(req)
+	}
 	if err != nil {
 		return nil, err
 	}

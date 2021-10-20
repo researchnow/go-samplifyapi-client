@@ -52,12 +52,39 @@ const defaulttimeout = 20
 
 // ClientOptions ...
 type ClientOptions struct {
-	APIBaseURL  string `conform:"trim"`
-	AuthURL     string `conform:"trim"`
-	InternalURL string `conform:"trim"`
-	StatusURL   string `conform:"trim"`
-	GatewayURL  string `conform:"trim"`
-	Timeout     *int
+	APIBaseURL   string `conform:"trim"`
+	AuthURL      string `conform:"trim"`
+	InternalURL  string `conform:"trim"`
+	StatusURL    string `conform:"trim"`
+	GatewayURL   string `conform:"trim"`
+	Timeout      *int
+	extraOptions *extraOptions
+}
+
+// extraOptions ...
+type extraOptions struct {
+	retryEnabled bool
+	maxRetries   int
+}
+
+type ExtraOption func(*extraOptions)
+
+func WithRetry(attempts int) ExtraOption {
+	return func(co *extraOptions) {
+		co.retryEnabled = true
+		co.maxRetries = attempts
+	}
+}
+
+func initExtraOptions(opts []ExtraOption) *extraOptions {
+	o := &extraOptions{
+		retryEnabled: false,
+		maxRetries:   0,
+	}
+	for _, opt := range opts {
+		opt(o)
+	}
+	return o
 }
 
 // Client is used to make API requests to the Samplify API.
@@ -66,7 +93,6 @@ type Client struct {
 	Auth        TokenResponse
 	Options     *ClientOptions
 }
-
 
 // GetOrderDetailsWithContext ...
 func (c *Client) GetOrderDetailsWithContext(ctx context.Context, ordNumber string) (*OrderDetailResponse, error) {
@@ -83,13 +109,14 @@ func (c *Client) GetOrderDetailsWithContext(ctx context.Context, ordNumber strin
 	if err != nil {
 		return nil, err
 	}
-	return res , err
+	return res, err
 }
 
 // GetOrderDetails ...
 func (c *Client) GetOrderDetails(ordNumber string) (*OrderDetailResponse, error) {
 	return c.GetOrderDetailsWithContext(context.Background(), ordNumber)
 }
+
 // CheckOrderNumberWithContext ...
 func (c *Client) CheckOrderNumberWithContext(ctx context.Context, ordNumber string) (bool, error) {
 	path := fmt.Sprintf("/orderdetails/check/%s", ordNumber)
@@ -105,7 +132,7 @@ func (c *Client) CheckOrderNumberWithContext(ctx context.Context, ordNumber stri
 	if err != nil {
 		return false, err
 	}
-	return res.CheckOrderNumber.Availability , err
+	return res.CheckOrderNumber.Availability, err
 }
 
 // CheckOrderNumber ...
@@ -812,7 +839,7 @@ func (c *Client) RefreshTokenWithContext(ctx context.Context) error {
 		ClientID:     c.Credentials.ClientID,
 		RefreshToken: c.Auth.RefreshToken,
 	}
-	ar, err := sendRequest(ctx, c.Options.AuthURL, "POST", "/token/refresh", "", req, *c.Options.Timeout)
+	ar, err := sendRequest(ctx, c.Options.AuthURL, "POST", "/token/refresh", "", req, *c.Options.Timeout, false, c.Options.extraOptions)
 	if err != nil {
 		return err
 	}
@@ -843,7 +870,7 @@ func (c *Client) LogoutWithContext(ctx context.Context) error {
 		RefreshToken: c.Auth.RefreshToken,
 		AccessToken:  c.Auth.AccessToken,
 	}
-	_, err := sendRequest(ctx, c.Options.AuthURL, "POST", "/logout", "", req, *c.Options.Timeout)
+	_, err := sendRequest(ctx, c.Options.AuthURL, "POST", "/logout", "", req, *c.Options.Timeout, false, c.Options.extraOptions)
 	return err
 }
 
@@ -886,14 +913,14 @@ func (c *Client) request(ctx context.Context, method, host, url string, body int
 	if err != nil {
 		return nil, err
 	}
-	ar, err := sendRequest(ctx, host, method, url, c.Auth.AccessToken, body, *c.Options.Timeout)
+	ar, err := sendRequest(ctx, host, method, url, c.Auth.AccessToken, body, *c.Options.Timeout, false, c.Options.extraOptions)
 	errResp, ok := err.(*ErrorResponse)
 	if ok && errResp.HTTPCode == http.StatusUnauthorized {
 		err := c.requestAndParseToken(ctx)
 		if err != nil {
 			return nil, err
 		}
-		return sendRequest(ctx, host, method, url, c.Auth.AccessToken, body, *c.Options.Timeout)
+		return sendRequest(ctx, host, method, url, c.Auth.AccessToken, body, *c.Options.Timeout, false, c.Options.extraOptions)
 	}
 	return ar, err
 }
@@ -901,7 +928,7 @@ func (c *Client) request(ctx context.Context, method, host, url string, body int
 func (c *Client) requestAndParseToken(ctx context.Context) error {
 	// log.WithFields(log.Fields{"module": "go-samplifyapi-client", "function": "requestAndParseToken", "ClientID": c.Credentials.ClientID}).Info()
 	t := time.Now()
-	ar, err := sendRequest(ctx, c.Options.AuthURL, "POST", "/token/password", "", c.Credentials, *c.Options.Timeout)
+	ar, err := sendRequest(ctx, c.Options.AuthURL, "POST", "/token/password", "", c.Credentials, *c.Options.Timeout, true, c.Options.extraOptions)
 	if err != nil {
 		return err
 	}
@@ -976,7 +1003,7 @@ func (c *Client) SetOptions(env string, timeout int) error {
 }
 
 // NewClientFromEnv returns an API client.
-func NewClientFromEnv(clientID, username, passsword string, env string, timeout int) (*Client, error) {
+func NewClientFromEnv(clientID, username, passsword string, env string, timeout int, opts ...ExtraOption) (*Client, error) {
 	client := &Client{
 		Credentials: TokenRequest{
 			ClientID: clientID,
@@ -985,6 +1012,7 @@ func NewClientFromEnv(clientID, username, passsword string, env string, timeout 
 		},
 	}
 	err := client.SetOptions(env, timeout)
+	client.Options.extraOptions = initExtraOptions(opts)
 	return client, err
 }
 
