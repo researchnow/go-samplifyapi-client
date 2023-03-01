@@ -120,9 +120,9 @@ type QueryOptions struct {
 	SortBy        []*Sort
 	Offset        uint
 	Limit         uint
-	Scope         string `conform:"trim"`
-	ExtProjectId  *string
-	ExtLineItemId *string
+	Scope         string  `conform:"trim"`
+	ExtProjectId  *string `conform:"trim"`
+	ExtLineItemId *string `conform:"trim"`
 	EventType     *string `conform:"trim"`
 }
 
@@ -132,7 +132,7 @@ func query2String(options *QueryOptions) string {
 		query = "?"
 		sep := ""
 		if len(options.Scope) > 0 {
-			query = fmt.Sprintf("?scope=%s", options.Scope)
+			query = fmt.Sprintf("?scope=%s", url.QueryEscape(options.Scope))
 			sep = "&amp;"
 		}
 		if len(options.FilterBy) > 0 {
@@ -163,14 +163,14 @@ func query2String(options *QueryOptions) string {
 			query = fmt.Sprintf("%s%slimit=%d", query, sep, options.Limit)
 		}
 		if options.ExtProjectId != nil {
-			query = fmt.Sprintf("%s%sextProjectId=%s", query, sep, *options.ExtProjectId)
+			query = fmt.Sprintf("%s%sextProjectId=%s", query, sep, url.QueryEscape(*options.ExtProjectId))
 			sep = "&amp;"
 		}
 		if options.ExtLineItemId != nil {
-			query = fmt.Sprintf("%s%sextLineItemId=%s", query, sep, *options.ExtLineItemId)
+			query = fmt.Sprintf("%s%sextLineItemId=%s", query, sep, url.QueryEscape(*options.ExtLineItemId))
 		}
 		if options.EventType != nil {
-			query = fmt.Sprintf("%s%seventType=%s", query, sep, *options.EventType)
+			query = fmt.Sprintf("%s%seventType=%s", query, sep, url.QueryEscape(*options.EventType))
 		}
 	}
 	return query
